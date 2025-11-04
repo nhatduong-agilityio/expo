@@ -7,12 +7,10 @@ This document provides information about React Native Expo practice one.
 ## ✨ Features
 
 - **Authentication**
-
   - Sign In / Sign Up functionality
   - Secure user session management
 
 - **Posts Management**
-
   - Paginated posts list (100+ items)
   - Search posts
   - Filter posts by categories
@@ -20,7 +18,6 @@ This document provides information about React Native Expo practice one.
   - Bookmark favorite posts
 
 - **Profile**
-
   - View and edit user profile
   - Change avatar using Camera or Image Picker
   - Profile settings management
