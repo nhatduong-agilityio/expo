@@ -4,7 +4,6 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -65,9 +64,9 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "prettier --write .",
-      "expo lint",
-      "jest --watchAll"
+      "prettier --write",
+      "jest --silent",
+      "expo lint"
     ]
   }
 }
