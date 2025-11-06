@@ -1,4 +1,5 @@
-import { memo, ReactNode } from 'react';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { ComponentProps, memo } from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -12,13 +13,13 @@ type ButtonVariants = UnistylesVariants<typeof styles>;
 
 export type ButtonProps = Omit<PressableProps, 'children'> & {
   variant?: ButtonVariants['variant'];
-  size?: 'md' | 'sm' | 'lg';
+  size?: 'md' | 'sm' | 'lg' | 'xs';
   fullWidth?: boolean;
   disabled?: boolean;
   loading?: boolean;
   children: string;
-  leftIcon?: ReactNode;
-  rightIcon?: ReactNode;
+  leftIcon?: ComponentProps<typeof Ionicons>['name'];
+  rightIcon?: ComponentProps<typeof Ionicons>['name'];
 };
 
 export const Button = memo(
@@ -51,11 +52,19 @@ export const Button = memo(
 
       return (
         <View style={styles.contentContainer}>
-          {leftIcon && <View style={styles.leftIcon}>{leftIcon}</View>}
+          {leftIcon && (
+            <View>
+              <Ionicons name={leftIcon} color={styles.text.color} size={24} />
+            </View>
+          )}
           <Text variant="button" style={styles.text}>
             {children}
           </Text>
-          {rightIcon && <View style={styles.rightIcon}>{rightIcon}</View>}
+          {rightIcon && (
+            <View>
+              <Ionicons name={rightIcon} color={styles.text.color} size={24} />
+            </View>
+          )}
         </View>
       );
     };
@@ -82,7 +91,7 @@ const styles = StyleSheet.create(theme => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: theme.borderRadius.md,
+    borderRadius: theme.borderRadius.sm,
     overflow: 'hidden',
     variants: {
       variant: {
@@ -105,6 +114,11 @@ const styles = StyleSheet.create(theme => ({
         },
       },
       size: {
+        xs: {
+          paddingHorizontal: theme.spacing.sm,
+          paddingVertical: theme.spacing.xs,
+          minHeight: 32,
+        },
         sm: {
           paddingHorizontal: theme.spacing.md,
           paddingVertical: theme.spacing.sm,
@@ -142,13 +156,7 @@ const styles = StyleSheet.create(theme => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: theme.spacing.sm,
-  },
-  leftIcon: {
-    marginRight: theme.spacing.xs,
-  },
-  rightIcon: {
-    marginLeft: theme.spacing.xs,
+    gap: theme.spacing.xs,
   },
   loadingContainer: {
     flexDirection: 'row',

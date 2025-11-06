@@ -19,6 +19,7 @@ export const Text = memo(
     align,
     textTransform,
     decoration,
+    style,
     ...rest
   }: TextProps) => {
     styles.useVariants({
@@ -29,7 +30,7 @@ export const Text = memo(
       decoration,
     });
 
-    return <RNText style={styles.container} {...rest} />;
+    return <RNText style={[styles.container, style]} {...rest} />;
   },
 );
 
