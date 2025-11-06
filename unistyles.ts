@@ -27,6 +27,6 @@ StyleSheet.configure({
   themes,
   breakpoints,
   settings: {
-    adaptiveThemes: true,
+    initialTheme: 'light',
   },
 });
