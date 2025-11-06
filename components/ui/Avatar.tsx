@@ -2,7 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { memo, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { ImageSourcePropType, Pressable, View } from 'react-native';
 import {
   StyleSheet,
   UnistylesVariants,
@@ -13,11 +13,12 @@ import { Text } from './Text';
 type AvatarVariants = UnistylesVariants<typeof styles>;
 
 export type AvatarProps = {
-  source?: string | null;
+  source?: string | ImageSourcePropType | null;
   editable?: boolean;
   onChangeImage?: (uri: string) => void;
   size?: AvatarVariants['size'];
   fallbackLabel?: string;
+  rounded?: boolean;
 };
 
 export const Avatar = memo(
@@ -27,20 +28,22 @@ export const Avatar = memo(
     onChangeImage,
     size = 'xl',
     fallbackLabel,
+    rounded = true,
   }: AvatarProps) => {
     const { theme } = useUnistyles();
-    const [imageUri, setImageUri] = useState<string | null>(source || null);
+    const [imageUri, setImageUri] = useState<
+      string | ImageSourcePropType | null
+    >(source || null);
 
-    styles.useVariants({ size });
+    styles.useVariants({ size, rounded: rounded || undefined });
 
     const handlePickImage = async () => {
       if (!editable) return;
 
-      // No permissions request is necessary for launching the image library
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images', 'videos'],
         allowsEditing: true,
-        aspect: [4, 3],
+        aspect: [1, 1],
         quality: 1,
       });
 
@@ -53,9 +56,11 @@ export const Avatar = memo(
 
     const renderAvatar = () => {
       if (imageUri) {
+        const imageSource =
+          typeof imageUri === 'string' ? { uri: imageUri } : imageUri;
         return (
           <Image
-            source={{ uri: imageUri }}
+            source={imageSource}
             style={styles.image}
             contentFit="cover"
             transition={200}
@@ -66,7 +71,7 @@ export const Avatar = memo(
       if (fallbackLabel) {
         return (
           <View style={styles.fallbackContainer}>
-            <Text variant="button" color="secondary">
+            <Text variant="button" style={styles.fallbackText}>
               {fallbackLabel}
             </Text>
           </View>
@@ -83,6 +88,7 @@ export const Avatar = memo(
           pressed && editable && { opacity: theme.opacity.pressed },
         ]}
         onPress={editable ? handlePickImage : undefined}
+        disabled={!editable}
       >
         {renderAvatar()}
         {editable && (
@@ -104,23 +110,31 @@ Avatar.displayName = 'Avatar';
 const styles = StyleSheet.create(theme => ({
   container: {
     position: 'relative',
-    borderRadius: theme.borderRadius.full,
     backgroundColor: theme.colors.backgroundSecondary,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'visible',
     variants: {
       size: {
+        xs: { width: 20, height: 20 },
         sm: { width: 24, height: 24 },
         md: { width: 40, height: 40 },
         lg: { width: 70, height: 70 },
         xl: { width: 140, height: 140 },
+      },
+      rounded: {
+        true: {
+          borderRadius: theme.borderRadius.full,
+        },
+        false: {
+          borderRadius: theme.borderRadius.sm,
+        },
       },
     },
   },
   image: {
     width: '100%',
     height: '100%',
-    borderRadius: theme.borderRadius.full,
   },
   placeholder: {
     flex: 1,
@@ -135,6 +149,9 @@ const styles = StyleSheet.create(theme => ({
     backgroundColor: theme.colors.backgroundSecondary,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  fallbackText: {
+    color: theme.colors.textSecondary,
   },
   iconContainer: {
     position: 'absolute',
