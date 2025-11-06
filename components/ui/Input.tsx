@@ -24,7 +24,7 @@ export type InputProps = Omit<TextInputProps, 'placeholderTextColor'> & {
 export const Input = memo(
   ({
     variant = 'primary',
-    size = 'medium',
+    size = 'md',
     label,
     error,
     disabled = false,
@@ -89,7 +89,7 @@ export const Input = memo(
 
           {showClear && onClear && (
             <Pressable onPress={onClear} style={styles.clearButton} hitSlop={8}>
-              <Text variant="bodySmall" color="tertiary">
+              <Text variant="bodySm" color="tertiary">
                 ✕
               </Text>
             </Pressable>
@@ -141,15 +141,15 @@ const styles = StyleSheet.create(theme => ({
         },
       },
       size: {
-        small: {
+        sm: {
           minHeight: 36,
           paddingHorizontal: theme.spacing.sm,
         },
-        medium: {
+        md: {
           minHeight: 48,
           paddingHorizontal: theme.spacing.md,
         },
-        large: {
+        lg: {
           minHeight: 56,
           paddingHorizontal: theme.spacing.lg,
         },
@@ -197,15 +197,15 @@ const styles = StyleSheet.create(theme => ({
     paddingVertical: theme.spacing.sm,
     variants: {
       size: {
-        small: {
+        sm: {
           fontSize: theme.fontSize.sm,
           lineHeight: theme.lineHeight.sm,
         },
-        medium: {
+        md: {
           fontSize: theme.fontSize.md,
           lineHeight: theme.lineHeight.md,
         },
-        large: {
+        lg: {
           fontSize: theme.fontSize.lg,
           lineHeight: theme.lineHeight.lg,
         },
