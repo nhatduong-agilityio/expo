@@ -81,14 +81,14 @@ const styles = StyleSheet.create(theme => ({
           fontWeight: theme.fontWeight.regular,
           color: theme.colors.textPrimary,
         },
-        bodyLarge: {
+        bodyLg: {
           fontSize: theme.fontSize.lg,
           lineHeight: theme.lineHeight.lg,
           fontFamily: theme.fontFamily.regular,
           fontWeight: theme.fontWeight.regular,
           color: theme.colors.textPrimary,
         },
-        bodySmall: {
+        bodySm: {
           fontSize: theme.fontSize.sm,
           lineHeight: theme.lineHeight.sm,
           fontFamily: theme.fontFamily.regular,

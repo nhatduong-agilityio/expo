@@ -12,7 +12,7 @@ type ButtonVariants = UnistylesVariants<typeof styles>;
 
 export type ButtonProps = Omit<PressableProps, 'children'> & {
   variant?: ButtonVariants['variant'];
-  size?: 'medium' | 'small' | 'large';
+  size?: 'md' | 'sm' | 'lg';
   fullWidth?: boolean;
   disabled?: boolean;
   loading?: boolean;
@@ -24,7 +24,7 @@ export type ButtonProps = Omit<PressableProps, 'children'> & {
 export const Button = memo(
   ({
     variant = 'primary',
-    size = 'medium',
+    size = 'md',
     fullWidth = false,
     disabled = false,
     loading = false,
@@ -105,17 +105,17 @@ const styles = StyleSheet.create(theme => ({
         },
       },
       size: {
-        small: {
+        sm: {
           paddingHorizontal: theme.spacing.md,
           paddingVertical: theme.spacing.sm,
           minHeight: 36,
         },
-        medium: {
+        md: {
           paddingHorizontal: theme.spacing.lg,
           paddingVertical: theme.spacing.md,
           minHeight: 48,
         },
-        large: {
+        lg: {
           paddingHorizontal: theme.spacing.xl,
           paddingVertical: theme.spacing.lg,
           minHeight: 56,
