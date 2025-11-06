@@ -66,7 +66,7 @@ export const lightTheme = {
 
     // Input states
     inputBackground: neutral.white,
-    inputBorder: grey.grey15,
+    inputBorder: grey.grey70,
     inputBorderHover: grey.grey20,
     inputBorderFocus: blue.blue50,
     inputBorderError: red.red50,
@@ -92,8 +92,8 @@ export const darkTheme = {
     error: red.red40,
     errorHover: red.red30,
     errorPressed: red.red20,
-    errorLight: red.red90,
-    errorDark: red.red60,
+    errorLight: red.red10,
+    errorDark: red.red40,
 
     success: green.green40,
     successHover: green.green30,
@@ -139,7 +139,7 @@ export const darkTheme = {
     buttonSecondary: grey.grey80,
     buttonSecondaryHover: grey.grey70,
     buttonSecondaryPressed: grey.grey60,
-    buttonDisabled: grey.grey80,
+    buttonDisabled: grey.grey15,
     buttonTextDisabled: grey.grey60,
 
     // Input states
@@ -209,8 +209,9 @@ export const sharedTheme = {
   // Border radius
   borderRadius: {
     none: 0,
-    xs: 2,
-    sm: 4,
+    xxs: 2,
+    xs: 4,
+    sm: 6,
     md: 8,
     lg: 12,
     xl: 16,
