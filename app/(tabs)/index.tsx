@@ -1,8 +1,12 @@
-import { Avatar, Text } from '@/components/ui';
+import { Avatar, Checkbox, FloatButton, Switch, Text } from '@/components/ui';
+import { useState } from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 export default function HomeScreen() {
+  const [isChecked, setIsChecked] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
+
   const handleChange = (uri: string) => {
     console.log('New avatar selected:', uri);
   };
@@ -15,6 +19,13 @@ export default function HomeScreen() {
         editable
         onChangeImage={handleChange}
       />
+      <Checkbox
+        checked={isChecked}
+        onChange={setIsChecked}
+        label="Accept terms"
+      />
+      <Switch value={isEnabled} onChange={setIsEnabled} label="Notifications" />
+      <FloatButton onPress={() => console.log('pressed')} />
     </View>
   );
 }
