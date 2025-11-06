@@ -77,6 +77,10 @@ export const lightTheme = {
     iconTertiary: grey.grey40,
     iconDisabled: grey.grey30,
     iconOnPrimary: neutral.white,
+
+    // Checkbox
+    checkboxBorder: grey.grey60,
+    checkboxChecked: grey.grey60,
   },
 } as const;
 
@@ -155,6 +159,10 @@ export const darkTheme = {
     iconTertiary: grey.grey50,
     iconDisabled: grey.grey60,
     iconOnPrimary: neutral.white,
+
+    // Controls
+    checkboxBorder: grey.grey60,
+    checkboxChecked: grey.grey60,
   },
 } as const;
 
