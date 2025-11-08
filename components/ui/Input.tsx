@@ -1,4 +1,5 @@
-import { memo, ReactNode, useState } from 'react';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { ComponentProps, memo, useState } from 'react';
 import { Pressable, TextInput, TextInputProps, View } from 'react-native';
 import {
   StyleSheet,
@@ -15,10 +16,12 @@ export type InputProps = Omit<TextInputProps, 'placeholderTextColor'> & {
   label?: string;
   error?: string;
   disabled?: boolean;
-  leftIcon?: ReactNode;
-  rightIcon?: ReactNode;
+  leftIcon?: ComponentProps<typeof Ionicons>['name'];
+  rightIcon?: ComponentProps<typeof Ionicons>['name'];
   onClear?: () => void;
   showClearButton?: boolean;
+  onRightIconPress?: () => void;
+  onLeftIconPress?: () => void;
 };
 
 export const Input = memo(
@@ -35,6 +38,8 @@ export const Input = memo(
     value,
     onFocus,
     onBlur,
+    onRightIconPress,
+    onLeftIconPress,
     ...rest
   }: InputProps) => {
     const { theme } = useUnistyles();
@@ -75,7 +80,19 @@ export const Input = memo(
         )}
 
         <View style={styles.container}>
-          {leftIcon && <View style={styles.leftIconContainer}>{leftIcon}</View>}
+          {leftIcon && (
+            <Pressable
+              style={styles.leftIconContainer}
+              onPress={onLeftIconPress}
+              hitSlop={8}
+            >
+              <Ionicons
+                name={leftIcon}
+                size={24}
+                color={styles.icon(!!error).color}
+              />
+            </Pressable>
+          )}
 
           <TextInput
             style={styles.input}
@@ -89,21 +106,38 @@ export const Input = memo(
 
           {showClear && onClear && (
             <Pressable onPress={onClear} style={styles.clearButton} hitSlop={8}>
-              <Text variant="bodySm" color="tertiary">
-                ✕
-              </Text>
+              <Ionicons
+                name="close"
+                size={24}
+                color={styles.icon(!!error).color}
+              />
             </Pressable>
           )}
 
           {rightIcon && !showClear && (
-            <View style={styles.rightIconContainer}>{rightIcon}</View>
+            <Pressable
+              style={styles.rightIconContainer}
+              onPress={onRightIconPress}
+              hitSlop={8}
+            >
+              <Ionicons
+                name={rightIcon}
+                size={24}
+                color={styles.icon(!!error).color}
+              />
+            </Pressable>
           )}
         </View>
 
         {error && (
           <View style={styles.errorContainer}>
+            <Ionicons
+              name="alert-circle-outline"
+              size={16}
+              color={styles.icon(!!error).color}
+            />
             <Text variant="caption" color="error">
-              ⓘ {error}
+              {error}
             </Text>
           </View>
         )}
@@ -219,12 +253,12 @@ const styles = StyleSheet.create(theme => ({
     },
   },
   leftIconContainer: {
-    marginRight: theme.spacing.sm,
+    marginHorizontal: theme.spacing.sm,
     justifyContent: 'center',
     alignItems: 'center',
   },
   rightIconContainer: {
-    marginLeft: theme.spacing.sm,
+    marginHorizontal: theme.spacing.sm,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -238,5 +272,9 @@ const styles = StyleSheet.create(theme => ({
     marginTop: theme.spacing.xs,
     flexDirection: 'row',
     alignItems: 'center',
+    gap: theme.spacing.xs,
   },
+  icon: (isError: boolean) => ({
+    color: isError ? theme.colors.inputBorderError : theme.colors.inputBorder,
+  }),
 }));

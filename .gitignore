@@ -45,3 +45,6 @@ app-example
 # test
 coverage
 
+
+# Giga Creator
+.giga/
