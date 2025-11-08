@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { ComponentProps, memo, useState } from 'react';
+import { ComponentProps, forwardRef, memo, useState } from 'react';
 import { Pressable, TextInput, TextInputProps, View } from 'react-native';
 import {
   StyleSheet,
@@ -18,132 +18,144 @@ export type InputProps = Omit<TextInputProps, 'placeholderTextColor'> & {
   disabled?: boolean;
   leftIcon?: ComponentProps<typeof Ionicons>['name'];
   rightIcon?: ComponentProps<typeof Ionicons>['name'];
-  onClear?: () => void;
   showClearButton?: boolean;
   onRightIconPress?: () => void;
   onLeftIconPress?: () => void;
 };
 
 export const Input = memo(
-  ({
-    variant = 'primary',
-    size = 'md',
-    label,
-    error,
-    disabled = false,
-    leftIcon,
-    rightIcon,
-    onClear,
-    showClearButton = false,
-    value,
-    onFocus,
-    onBlur,
-    onRightIconPress,
-    onLeftIconPress,
-    ...rest
-  }: InputProps) => {
-    const { theme } = useUnistyles();
-    const [isFocused, setIsFocused] = useState(false);
-    const hasValue = value && value.length > 0;
+  forwardRef<TextInput, InputProps>(
+    (
+      {
+        variant = 'primary',
+        size = 'md',
+        label,
+        error,
+        disabled = false,
+        leftIcon,
+        rightIcon,
+        showClearButton = false,
+        value,
+        onFocus,
+        onBlur,
+        onRightIconPress,
+        onLeftIconPress,
+        ...rest
+      },
+      ref,
+    ) => {
+      const { theme } = useUnistyles();
+      const [isFocused, setIsFocused] = useState(false);
+      const hasValue = value && value.length > 0;
 
-    styles.useVariants({
-      variant: error ? 'error' : variant,
-      size,
-      disabled: disabled || undefined,
-      focused: isFocused || undefined,
-      hasLeftIcon: !!leftIcon || undefined,
-      hasRightIcon: !!rightIcon || showClearButton || undefined,
-    });
+      styles.useVariants({
+        variant: error ? 'error' : variant,
+        size,
+        disabled: disabled || undefined,
+        focused: isFocused || undefined,
+        hasLeftIcon: !!leftIcon || undefined,
+        hasRightIcon: !!rightIcon || showClearButton || undefined,
+      });
 
-    const handleFocus = (e: any) => {
-      setIsFocused(true);
-      onFocus?.(e);
-    };
+      const handleFocus = (e: any) => {
+        setIsFocused(true);
+        onFocus?.(e);
+      };
 
-    const handleBlur = (e: any) => {
-      setIsFocused(false);
-      onBlur?.(e);
-    };
+      const handleBlur = (e: any) => {
+        setIsFocused(false);
+        onBlur?.(e);
+      };
 
-    const showClear = showClearButton && hasValue && !disabled && isFocused;
+      const handleOnClear = () => {
+        rest.onChangeText?.('');
+      };
 
-    return (
-      <View style={styles.wrapper}>
-        {label && (
-          <Text
-            variant="label"
-            color={disabled ? 'disabled' : error ? 'error' : 'primary'}
-            style={styles.label}
-          >
-            {label}
-          </Text>
-        )}
+      const showClear = showClearButton && hasValue && !disabled && isFocused;
 
-        <View style={styles.container}>
-          {leftIcon && (
-            <Pressable
-              style={styles.leftIconContainer}
-              onPress={onLeftIconPress}
-              hitSlop={8}
+      return (
+        <View style={styles.wrapper}>
+          {label && (
+            <Text
+              variant="label"
+              color={disabled ? 'disabled' : error ? 'error' : 'primary'}
+              style={styles.label}
             >
-              <Ionicons
-                name={leftIcon}
-                size={24}
-                color={styles.icon(!!error).color}
-              />
-            </Pressable>
+              {label}
+            </Text>
           )}
 
-          <TextInput
-            style={styles.input}
-            placeholderTextColor={theme.colors.textPlaceholder}
-            editable={!disabled}
-            value={value}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            {...rest}
-          />
+          <View style={styles.container}>
+            {leftIcon && (
+              <Pressable
+                style={styles.leftIconContainer}
+                onPress={onLeftIconPress}
+                hitSlop={8}
+              >
+                <Ionicons
+                  name={leftIcon}
+                  size={24}
+                  color={styles.icon(!!error).color}
+                />
+              </Pressable>
+            )}
 
-          {showClear && onClear && (
-            <Pressable onPress={onClear} style={styles.clearButton} hitSlop={8}>
+            <TextInput
+              ref={ref}
+              style={styles.input}
+              placeholderTextColor={theme.colors.textPlaceholder}
+              editable={!disabled}
+              value={value}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              {...rest}
+            />
+
+            {showClear && (
+              <Pressable
+                onPress={handleOnClear}
+                style={styles.clearButton}
+                hitSlop={8}
+              >
+                <Ionicons
+                  name="close"
+                  size={24}
+                  color={styles.icon(!!error).color}
+                />
+              </Pressable>
+            )}
+
+            {rightIcon && !showClear && (
+              <Pressable
+                style={styles.rightIconContainer}
+                onPress={onRightIconPress}
+                hitSlop={8}
+              >
+                <Ionicons
+                  name={rightIcon}
+                  size={24}
+                  color={styles.icon(!!error).color}
+                />
+              </Pressable>
+            )}
+          </View>
+
+          {error && (
+            <View style={styles.errorContainer}>
               <Ionicons
-                name="close"
-                size={24}
+                name="alert-circle-outline"
+                size={16}
                 color={styles.icon(!!error).color}
               />
-            </Pressable>
-          )}
-
-          {rightIcon && !showClear && (
-            <Pressable
-              style={styles.rightIconContainer}
-              onPress={onRightIconPress}
-              hitSlop={8}
-            >
-              <Ionicons
-                name={rightIcon}
-                size={24}
-                color={styles.icon(!!error).color}
-              />
-            </Pressable>
+              <Text variant="caption" color="error">
+                {error}
+              </Text>
+            </View>
           )}
         </View>
-
-        {error && (
-          <View style={styles.errorContainer}>
-            <Ionicons
-              name="alert-circle-outline"
-              size={16}
-              color={styles.icon(!!error).color}
-            />
-            <Text variant="caption" color="error">
-              {error}
-            </Text>
-          </View>
-        )}
-      </View>
-    );
-  },
+      );
+    },
+  ),
 );
 
 Input.displayName = 'Input';

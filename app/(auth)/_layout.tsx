@@ -1,10 +1,15 @@
 import { Stack } from 'expo-router';
 
-export default function AuthLayout() {
+// Constants
+import { SCREENS } from '@/constants';
+
+const AuthLayout = () => {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="login" />
-      <Stack.Screen name="signup" />
+      <Stack.Screen name={SCREENS.AUTH.LOGIN} />
+      <Stack.Screen name={SCREENS.AUTH.SIGNUP} />
     </Stack>
   );
-}
+};
+
+export default AuthLayout;

@@ -1,9 +1,9 @@
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
-export default function TabTwoScreen() {
+const TabTwoScreen = () => {
   return <View style={styles.titleContainer}></View>;
-}
+};
 
 const styles = StyleSheet.create({
   headerImage: {
@@ -17,3 +17,5 @@ const styles = StyleSheet.create({
     gap: 8,
   },
 });
+
+export default TabTwoScreen;

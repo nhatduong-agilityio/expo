@@ -1,6 +1,9 @@
 import { Tabs } from 'expo-router';
 
-export default function TabLayout() {
+// Constants
+import { TABS } from '@/constants';
+
+const TabLayout = () => {
   return (
     <Tabs
       screenOptions={{
@@ -8,17 +11,19 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name={TABS.HOME.NAME}
         options={{
-          title: 'Home',
+          title: TABS.HOME.TITLE,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name={TABS.EXPLORE.NAME}
         options={{
-          title: 'Explore',
+          title: TABS.EXPLORE.TITLE,
         }}
       />
     </Tabs>
   );
-}
+};
+
+export default TabLayout;
