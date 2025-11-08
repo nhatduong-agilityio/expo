@@ -81,6 +81,10 @@ export const lightTheme = {
     // Checkbox
     checkboxBorder: grey.grey60,
     checkboxChecked: grey.grey60,
+
+    // Tabs
+    tabActive: neutral.black,
+    tabInactive: grey.grey60,
   },
 } as const;
 
@@ -163,6 +167,10 @@ export const darkTheme = {
     // Controls
     checkboxBorder: grey.grey60,
     checkboxChecked: grey.grey60,
+
+    // Tabs
+    tabActive: neutral.white,
+    tabInactive: grey.grey40,
   },
 } as const;
 
