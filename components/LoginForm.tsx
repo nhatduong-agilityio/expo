@@ -52,7 +52,6 @@ export const LoginForm = memo(
               autoComplete="email"
               disabled={isLoading}
               showClearButton
-              onClear={() => onChange('')}
             />
           )}
         />

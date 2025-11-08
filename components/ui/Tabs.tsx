@@ -121,6 +121,9 @@ const styles = StyleSheet.create(theme => ({
         primary: {
           backgroundColor: theme.colors.primary,
         },
+        secondary: {
+          backgroundColor: theme.colors.primary,
+        },
       },
     },
   },

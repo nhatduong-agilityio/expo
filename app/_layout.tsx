@@ -9,14 +9,17 @@ import { StatusBar } from 'expo-status-bar';
 import { Fragment, useEffect } from 'react';
 import 'react-native-reanimated';
 
+// Constants
+import { ROUTES, SCREENS } from '@/constants';
+
 // This is a mock auth hook.
 const useAuth = () => {
   return {
-    isSignedIn: false,
+    isSignedIn: true,
   };
 };
 
-export default function RootLayout() {
+const RootLayout = () => {
   const { isSignedIn } = useAuth();
   const segments = useSegments();
   const router = useRouter();
@@ -32,12 +35,12 @@ export default function RootLayout() {
       return;
     }
 
-    const inAuthGroup = segments[0] === '(auth)';
+    const inAuthGroup = segments[0] === SCREENS.AUTH.LAYOUT;
 
     if (isSignedIn && inAuthGroup) {
-      router.replace('/(tabs)');
+      router.replace(ROUTES.HOME);
     } else if (!isSignedIn && !inAuthGroup) {
-      router.replace('/(auth)/login');
+      router.replace(ROUTES.LOGIN);
     }
   }, [loaded, isSignedIn, segments, router]);
 
@@ -49,9 +52,18 @@ export default function RootLayout() {
   return (
     <Fragment>
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name={SCREENS.TABS.LAYOUT} />
+        <Stack.Screen
+          name={SCREENS.SEARCH}
+          options={{
+            presentation: 'containedModal',
+            animation: 'slide_from_bottom',
+          }}
+        />
       </Stack>
       <StatusBar style="auto" />
     </Fragment>
   );
-}
+};
+
+export default RootLayout;

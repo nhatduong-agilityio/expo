@@ -1,6 +1,7 @@
+// Components
 import { AccessLayout, LoginForm } from '@/components';
 
-export default function LoginScreen() {
+const LoginScreen = () => {
   return (
     <AccessLayout mode="login">
       <LoginForm
@@ -11,4 +12,6 @@ export default function LoginScreen() {
       />
     </AccessLayout>
   );
-}
+};
+
+export default LoginScreen;

@@ -1,6 +1,7 @@
+// Components
 import { AccessLayout, SignupForm } from '@/components';
 
-export default function SignupScreen() {
+const SignupScreen = () => {
   return (
     <AccessLayout mode="signup">
       <SignupForm
@@ -12,4 +13,6 @@ export default function SignupScreen() {
       />
     </AccessLayout>
   );
-}
+};
+
+export default SignupScreen;
