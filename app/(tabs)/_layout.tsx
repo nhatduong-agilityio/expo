@@ -3,9 +3,13 @@ import { Tabs } from 'expo-router';
 // Constants
 import { TABS } from '@/constants';
 
+// Components
+import { CustomTabBar } from '@/components';
+
 const TabLayout = () => {
   return (
     <Tabs
+      tabBar={props => <CustomTabBar {...props} />}
       screenOptions={{
         headerShown: false,
       }}
@@ -20,6 +24,18 @@ const TabLayout = () => {
         name={TABS.EXPLORE.NAME}
         options={{
           title: TABS.EXPLORE.TITLE,
+        }}
+      />
+      <Tabs.Screen
+        name={TABS.BOOKMARK.NAME}
+        options={{
+          title: TABS.BOOKMARK.TITLE,
+        }}
+      />
+      <Tabs.Screen
+        name={TABS.PROFILE.NAME}
+        options={{
+          title: TABS.PROFILE.TITLE,
         }}
       />
     </Tabs>

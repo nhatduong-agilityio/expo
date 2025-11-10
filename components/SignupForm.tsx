@@ -1,10 +1,14 @@
-import { signupSchema } from '@/constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { memo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 import { z } from 'zod';
+
+// Constants
+import { signupSchema } from '@/constants';
+
+// Components
 import { Button, Checkbox, Input } from './ui';
 
 type SignupFormData = z.infer<typeof signupSchema>;
@@ -54,7 +58,6 @@ export const SignupForm = memo(
               autoComplete="email"
               disabled={isLoading}
               showClearButton
-              onClear={() => onChange('')}
             />
           )}
         />

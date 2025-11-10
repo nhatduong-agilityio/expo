@@ -7,12 +7,14 @@ import {
 import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Fragment, useEffect } from 'react';
 import 'react-native-reanimated';
 
 // Constants
 import { ROUTES, SCREENS } from '@/constants';
+
+// Prevent the splash screen from auto-hiding
+SplashScreen.preventAutoHideAsync();
 
 // This is a mock auth hook.
 const useAuth = () => {
@@ -21,43 +23,23 @@ const useAuth = () => {
   };
 };
 
-// Keep the splash screen visible while we fetch resources
-SplashScreen.preventAutoHideAsync();
-
-// Set the animation options. This is optional.
-SplashScreen.setOptions({
-  duration: 1000,
-  fade: true,
-});
-
 const RootLayout = () => {
   const { isSignedIn } = useAuth();
   const segments = useSegments();
   const router = useRouter();
-  const [appIsReady, setAppIsReady] = useState(false);
 
   const [loaded, error] = useFonts({
-    'Poppins-Regular': Poppins_400Regular,
-    'Poppins-SemiBold': Poppins_600SemiBold,
-    'Poppins-Bold': Poppins_700Bold,
+    Poppins_400Regular,
+    Poppins_600SemiBold,
+    Poppins_700Bold,
   });
 
   useEffect(() => {
-    const prepare = async () => {
-      if (loaded || error) {
-        // Simulate loading time - REMOVE THIS IN PRODUCTION
-        // This helps you see the splash screen for testing
-        await new Promise(resolve => setTimeout(resolve, 3000));
-
-        setAppIsReady(true);
-      }
-    };
-
-    prepare();
-  }, [loaded, error]);
+    if (error) throw error;
+  }, [error]);
 
   useEffect(() => {
-    if (!appIsReady) {
+    if (!loaded) {
       return;
     }
 
@@ -68,21 +50,17 @@ const RootLayout = () => {
     } else if (!isSignedIn && !inAuthGroup) {
       router.replace(ROUTES.LOGIN);
     }
-  }, [appIsReady, isSignedIn, segments, router]);
 
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      // Hide the splash screen after the app is ready
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
+    // Hide splash screen after fonts are loaded and navigation is ready
+    SplashScreen.hideAsync();
+  }, [loaded, isSignedIn, segments, router]);
 
-  if (!appIsReady) {
+  if (!loaded) {
     return null;
   }
 
   return (
-    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+    <Fragment>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name={SCREENS.TABS.LAYOUT} />
         <Stack.Screen
@@ -92,9 +70,23 @@ const RootLayout = () => {
             animation: 'slide_from_bottom',
           }}
         />
+        <Stack.Screen
+          name={SCREENS.SETTINGS}
+          options={{
+            presentation: 'containedModal',
+            animation: 'slide_from_right',
+          }}
+        />
+        <Stack.Screen
+          name={SCREENS.EDIT_PROFILE}
+          options={{
+            presentation: 'containedModal',
+            animation: 'slide_from_bottom',
+          }}
+        />
       </Stack>
       <StatusBar style="auto" />
-    </View>
+    </Fragment>
   );
 };
 

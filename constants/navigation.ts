@@ -11,10 +11,14 @@ export const SCREENS = {
     LAYOUT: '(tabs)',
     HOME: 'index',
     EXPLORE: 'explore',
+    BOOKMARK: 'bookmark',
+    PROFILE: 'profile',
   },
 
   // Modal screens
   SEARCH: 'search',
+  SETTINGS: 'settings',
+  EDIT_PROFILE: 'edit-profile',
 } as const;
 
 export const TABS = {
@@ -29,5 +33,17 @@ export const TABS = {
     TITLE: 'Explore',
     ICON: 'compass',
     ICON_OUTLINE: 'compass-outline',
+  },
+  BOOKMARK: {
+    NAME: 'bookmark',
+    TITLE: 'Bookmark',
+    ICON: 'bookmark',
+    ICON_OUTLINE: 'bookmark-outline',
+  },
+  PROFILE: {
+    NAME: 'profile',
+    TITLE: 'Profile',
+    ICON: 'person-circle',
+    ICON_OUTLINE: 'person-circle-outline',
   },
 } as const;

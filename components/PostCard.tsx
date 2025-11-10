@@ -8,6 +8,11 @@ import {
   View,
 } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
+
+// Constants
+import { BLUR_HASH } from '@/constants';
+
+// Components
 import { AuthorCard } from './AuthorCard';
 import { Text } from './ui';
 
@@ -62,6 +67,7 @@ export const PostCard = memo(
             style={styles.imageHorizontal}
             contentFit="cover"
             transition={200}
+            placeholder={{ blurhash: BLUR_HASH }}
           />
           <View style={styles.contentHorizontal}>
             <Text style={styles.category} numberOfLines={1}>
@@ -99,6 +105,7 @@ export const PostCard = memo(
           style={styles.imageVertical}
           contentFit="cover"
           transition={200}
+          placeholder={{ blurhash: BLUR_HASH }}
         />
         <View style={styles.contentVertical}>
           <Text style={styles.category} numberOfLines={1}>

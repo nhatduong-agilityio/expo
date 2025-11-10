@@ -5,7 +5,10 @@ import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 import { z } from 'zod';
 
+// Constants
 import { loginSchema } from '@/constants';
+
+// Components
 import { Button, Checkbox, Input } from './ui';
 
 export type LoginFormData = z.infer<typeof loginSchema>;

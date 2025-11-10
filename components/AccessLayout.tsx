@@ -3,6 +3,8 @@ import { memo, ReactNode, useMemo } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native-unistyles';
+
+// Components
 import { Text } from './ui';
 
 type AccessLayoutProps = {
