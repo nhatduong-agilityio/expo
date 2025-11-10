@@ -1,4 +1,5 @@
 export * from './filter';
+export * from './image';
 export * from './navigation';
 export * from './palettes';
 export * from './route';

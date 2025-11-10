@@ -8,6 +8,11 @@ import {
   UnistylesVariants,
   useUnistyles,
 } from 'react-native-unistyles';
+
+// Constants
+import { BLUR_HASH, DEFAULT_AVATAR } from '@/constants';
+
+// Components
 import { Text } from './Text';
 
 type AvatarVariants = UnistylesVariants<typeof styles>;
@@ -41,7 +46,7 @@ export const Avatar = memo(
       if (!editable) return;
 
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ['images', 'videos'],
+        mediaTypes: ['images'],
         allowsEditing: true,
         aspect: [1, 1],
         quality: 1,
@@ -55,6 +60,7 @@ export const Avatar = memo(
     };
 
     const renderAvatar = () => {
+      // If we have an image source, show it
       if (imageUri) {
         const imageSource =
           typeof imageUri === 'string' ? { uri: imageUri } : imageUri;
@@ -64,10 +70,12 @@ export const Avatar = memo(
             style={styles.image}
             contentFit="cover"
             transition={200}
+            placeholder={{ blurhash: BLUR_HASH }}
           />
         );
       }
 
+      // If we have a fallback label, show it
       if (fallbackLabel) {
         return (
           <View style={styles.fallbackContainer}>
@@ -78,7 +86,16 @@ export const Avatar = memo(
         );
       }
 
-      return <View style={styles.placeholder} />;
+      // Otherwise show default avatar
+      return (
+        <Image
+          source={DEFAULT_AVATAR}
+          style={styles.image}
+          contentFit="scale-down"
+          transition={200}
+          placeholder={{ blurhash: BLUR_HASH }}
+        />
+      );
     };
 
     return (
@@ -113,7 +130,6 @@ const styles = StyleSheet.create(theme => ({
     backgroundColor: theme.colors.backgroundSecondary,
     alignItems: 'center',
     justifyContent: 'center',
-    overflow: 'visible',
     variants: {
       size: {
         xs: { width: 20, height: 20 },
@@ -135,12 +151,34 @@ const styles = StyleSheet.create(theme => ({
   image: {
     width: '100%',
     height: '100%',
+    variants: {
+      size: {},
+      rounded: {
+        true: {
+          borderRadius: theme.borderRadius.full,
+        },
+        false: {
+          borderRadius: theme.borderRadius.sm,
+        },
+      },
+    },
   },
   placeholder: {
     flex: 1,
     width: '100%',
     height: '100%',
     backgroundColor: theme.colors.backgroundSecondary,
+    variants: {
+      size: {},
+      rounded: {
+        true: {
+          borderRadius: theme.borderRadius.full,
+        },
+        false: {
+          borderRadius: theme.borderRadius.sm,
+        },
+      },
+    },
   },
   fallbackContainer: {
     flex: 1,
@@ -149,6 +187,17 @@ const styles = StyleSheet.create(theme => ({
     backgroundColor: theme.colors.backgroundSecondary,
     alignItems: 'center',
     justifyContent: 'center',
+    variants: {
+      size: {},
+      rounded: {
+        true: {
+          borderRadius: theme.borderRadius.full,
+        },
+        false: {
+          borderRadius: theme.borderRadius.sm,
+        },
+      },
+    },
   },
   fallbackText: {
     color: theme.colors.textSecondary,

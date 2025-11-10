@@ -1,0 +1,193 @@
+// Mock data
+export const mockNews = [
+  {
+    id: '1',
+    category: 'Europe',
+    title:
+      "Ukraine's President Zelensky to BBC: Blood money being paid for Russian...",
+    image: 'https://picsum.photos/400/300?random=1',
+    authorAvatar: 'https://picsum.photos/100/100?random=1',
+    authorName: 'BBC News',
+    timeAgo: '14m ago',
+  },
+  {
+    id: '2',
+    category: 'Travel',
+    title: 'Russian warship: Moskva sinks in Black Sea',
+    image: 'https://picsum.photos/400/300?random=2',
+    authorAvatar: 'https://picsum.photos/100/100?random=2',
+    authorName: 'BBC News',
+    timeAgo: '1h ago',
+  },
+  {
+    id: '3',
+    category: 'Travel',
+    title:
+      'Her train broke down. Her phone died. And then she met her future husband',
+    image: 'https://picsum.photos/400/300?random=3',
+    authorAvatar: 'https://picsum.photos/100/100?random=3',
+    authorName: 'CNN',
+    timeAgo: '1h ago',
+  },
+  {
+    id: '4',
+    category: 'Politics',
+    title: 'Breaking: Major political development in Washington',
+    image: 'https://picsum.photos/400/300?random=4',
+    authorAvatar: 'https://picsum.photos/100/100?random=4',
+    authorName: 'USA Today',
+    timeAgo: '2h ago',
+  },
+  {
+    id: '5',
+    category: 'Technology',
+    title: 'New AI breakthrough announced by leading tech company',
+    image: 'https://picsum.photos/400/300?random=5',
+    authorAvatar: 'https://picsum.photos/100/100?random=5',
+    authorName: 'CNET',
+    timeAgo: '3h ago',
+  },
+];
+
+export const mockTopics = [
+  {
+    id: '1',
+    title: 'Health',
+    description: 'View the latest health news and explore articles on...',
+    image: 'https://picsum.photos/100/100?random=10',
+    saved: false,
+  },
+  {
+    id: '2',
+    title: 'Technology',
+    description: "The latest tech news about the world's best hardware...",
+    image: 'https://picsum.photos/100/100?random=11',
+    saved: true,
+  },
+  {
+    id: '3',
+    title: 'Art',
+    description: 'The Art Newspaper is the journal of record for...',
+    image: 'https://picsum.photos/100/100?random=12',
+    saved: true,
+  },
+  {
+    id: '4',
+    title: 'Politics',
+    description: 'opinion and analysis of American and global politi...',
+    image: 'https://picsum.photos/100/100?random=13',
+    saved: false,
+  },
+  {
+    id: '5',
+    title: 'Sport',
+    description: 'Sports news and live sports coverage including scores...',
+    image: 'https://picsum.photos/100/100?random=14',
+    saved: false,
+  },
+  {
+    id: '6',
+    title: 'Travel',
+    description: 'The latest travel news on the most significant developm...',
+    image: 'https://picsum.photos/100/100?random=15',
+    saved: false,
+  },
+  {
+    id: '7',
+    title: 'Money',
+    description: 'The latest breaking financial news on the US and world...',
+    image: 'https://picsum.photos/100/100?random=16',
+    saved: false,
+  },
+];
+
+export const mockAuthors = [
+  {
+    id: '1',
+    name: 'BBC News',
+    avatar: 'https://picsum.photos/100/100?random=20',
+    followers: '1.2M Followers',
+    following: true,
+  },
+  {
+    id: '2',
+    name: 'CNN',
+    avatar: 'https://picsum.photos/100/100?random=21',
+    followers: '959K Followers',
+    following: false,
+  },
+  {
+    id: '3',
+    name: 'Vox',
+    avatar: 'https://picsum.photos/100/100?random=22',
+    followers: '452K Followers',
+    following: true,
+  },
+  {
+    id: '4',
+    name: 'USA Today',
+    avatar: 'https://picsum.photos/100/100?random=23',
+    followers: '325K Followers',
+    following: true,
+  },
+  {
+    id: '5',
+    name: 'CNBC',
+    avatar: 'https://picsum.photos/100/100?random=24',
+    followers: '21K Followers',
+    following: false,
+  },
+  {
+    id: '6',
+    name: 'CNET',
+    avatar: 'https://picsum.photos/100/100?random=25',
+    followers: '18K Followers',
+    following: false,
+  },
+  {
+    id: '7',
+    name: 'MSN',
+    avatar: 'https://picsum.photos/100/100?random=26',
+    followers: '15K Followers',
+    following: false,
+  },
+];
+
+export const mockUserNews = [
+  {
+    id: '1',
+    category: 'NFTs',
+    title: "Minting Your First NFT: A Beginner's Guide to Creating...",
+    image: 'https://picsum.photos/400/300?random=1',
+    authorAvatar: 'https://picsum.photos/100/100?random=1',
+    authorName: 'Wilson Franci',
+    timeAgo: '15m ago',
+  },
+  {
+    id: '2',
+    category: 'Business',
+    title: '5 things to know before the stock market opens Monday',
+    image: 'https://picsum.photos/400/300?random=2',
+    authorAvatar: 'https://picsum.photos/100/100?random=2',
+    authorName: 'Wilson Franci',
+    timeAgo: '1h ago',
+  },
+  {
+    id: '3',
+    category: 'Travel',
+    title: 'Bali plans to reopen to international tourists in Septe...',
+    image: 'https://picsum.photos/400/300?random=3',
+    authorAvatar: 'https://picsum.photos/100/100?random=3',
+    authorName: 'Wilson Franci',
+    timeAgo: '1w ago',
+  },
+  {
+    id: '4',
+    category: 'Health',
+    title: 'Healthy Living: Diet and Exercise',
+    image: 'https://picsum.photos/400/300?random=4',
+    authorAvatar: 'https://picsum.photos/100/100?random=4',
+    authorName: 'Wilson Franci',
+    timeAgo: '2w ago',
+  },
+];

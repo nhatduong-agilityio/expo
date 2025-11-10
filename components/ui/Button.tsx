@@ -32,6 +32,7 @@ export const Button = memo(
     children,
     leftIcon,
     rightIcon,
+    style,
     ...rest
   }: ButtonProps) => {
     styles.useVariants({
@@ -71,9 +72,10 @@ export const Button = memo(
 
     return (
       <Pressable
-        style={({ pressed }) => [
+        style={({ pressed, hovered }) => [
           styles.container,
           pressed && !disabled && !loading && styles.pressed,
+          typeof style === 'function' ? style({ pressed, hovered }) : style,
         ]}
         disabled={disabled || loading}
         {...rest}

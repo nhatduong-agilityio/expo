@@ -6,16 +6,16 @@ import { StyleSheet } from 'react-native-unistyles';
 import { ScreenHeader } from '@/components';
 import { Text } from '@/components/ui';
 
-const ExploreScreen = () => {
+const BookmarkScreen = () => {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <ScreenHeader title="Explore" />
+      <ScreenHeader title="Bookmark" />
       <View style={styles.content}>
         <Text variant="h2" align="center">
-          Explore
+          Bookmark
         </Text>
         <Text variant="body" color="secondary" align="center">
-          Discover new topics and trending stories
+          Your saved articles will appear here
         </Text>
       </View>
     </SafeAreaView>
@@ -36,4 +36,4 @@ const styles = StyleSheet.create(theme => ({
   },
 }));
 
-export default ExploreScreen;
+export default BookmarkScreen;
