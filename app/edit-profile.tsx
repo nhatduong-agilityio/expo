@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 // Components
 import { ScreenHeader } from '@/components';
@@ -10,6 +10,7 @@ import { Avatar, Input } from '@/components/ui';
 
 const EditProfileScreen = () => {
   const router = useRouter();
+  const { rt } = useUnistyles();
 
   const [username, setUsername] = useState('wilsonfranci');
   const [fullName, setFullName] = useState('Wilson Franci');
@@ -26,16 +27,15 @@ const EditProfileScreen = () => {
 
   const handleSavePress = () => {
     // Handle save logic
-    console.log('Save pressed');
     router.back();
   };
 
   const handleAvatarChange = (uri: string) => {
-    console.log('Avatar changed:', uri);
+    // TODO : Handle avatar change
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={['top']} key={rt.themeName}>
       {/* Header */}
       <ScreenHeader
         title="Edit Profile"

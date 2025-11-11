@@ -28,7 +28,13 @@ export const ProfileStats = memo(
   }: ProfileStatsProps) => {
     return (
       <View style={styles.container}>
-        <Pressable style={styles.stat} onPress={onFollowersPress}>
+        <Pressable
+          style={styles.stat}
+          onPress={onFollowersPress}
+          accessibilityRole="button"
+          accessibilityLabel={`${formatNumber(followers)} Followers`}
+          accessibilityHint="Opens the followers screen"
+        >
           <Text variant="h3" style={styles.statNumber}>
             {formatNumber(followers)}
           </Text>
@@ -37,7 +43,13 @@ export const ProfileStats = memo(
           </Text>
         </Pressable>
 
-        <Pressable style={styles.stat} onPress={onFollowingPress}>
+        <Pressable
+          style={styles.stat}
+          onPress={onFollowingPress}
+          accessibilityRole="button"
+          accessibilityLabel={`${formatNumber(following)} Following`}
+          accessibilityHint="Opens the following screen"
+        >
           <Text variant="h3" style={styles.statNumber}>
             {formatNumber(following)}
           </Text>
@@ -46,7 +58,13 @@ export const ProfileStats = memo(
           </Text>
         </Pressable>
 
-        <Pressable style={styles.stat} onPress={onNewsPress}>
+        <Pressable
+          style={styles.stat}
+          onPress={onNewsPress}
+          accessibilityRole="button"
+          accessibilityLabel={`${formatNumber(news)} News`}
+          accessibilityHint="Opens the news screen"
+        >
           <Text variant="h3" style={styles.statNumber}>
             {formatNumber(news)}
           </Text>

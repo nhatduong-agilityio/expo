@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
 import { memo } from 'react';
 import {
   ImageSourcePropType,
@@ -10,19 +11,21 @@ import {
 import { StyleSheet } from 'react-native-unistyles';
 
 // Constants
-import { BLUR_HASH } from '@/constants';
+import { BLUR_HASH, ROUTES } from '@/constants';
 
 // Components
 import { AuthorCard } from './AuthorCard';
 import { Text } from './ui';
 
 export type PostCardProps = Omit<PressableProps, 'children'> & {
+  id?: string;
   variant?: 'vertical' | 'horizontal';
   image: ImageSourcePropType | string;
   category: string;
   title: string;
   authorAvatar: ImageSourcePropType | string;
   authorName: string;
+  authorId: string;
   timeAgo: string;
   following?: boolean;
   onFollowPress?: (following: boolean) => void;
@@ -31,24 +34,44 @@ export type PostCardProps = Omit<PressableProps, 'children'> & {
 
 export const PostCard = memo(
   ({
+    id,
     variant = 'vertical',
     image,
     category,
     title,
     authorAvatar,
     authorName,
+    authorId,
     timeAgo,
     following = false,
     onFollowPress,
     onMenuPress,
     ...rest
   }: PostCardProps) => {
+    const router = useRouter();
+
     styles.useVariants({
       variant,
     });
 
+    const handlePress = () => {
+      if (id) {
+        router.push(ROUTES.POST_DETAIL(id));
+      }
+    };
+
+    const handleAuthorPress = () => {
+      router.push(ROUTES.AUTHOR_PROFILE(authorId));
+    };
+
     const renderMenuButton = () => (
-      <Pressable onPress={onMenuPress} hitSlop={8}>
+      <Pressable
+        onPress={onMenuPress}
+        hitSlop={8}
+        accessibilityRole="button"
+        accessibilityLabel="More options"
+        accessibilityHint="Opens a menu with more options for this post"
+      >
         <Ionicons
           style={styles.menuIcon}
           name="ellipsis-horizontal"
@@ -58,16 +81,27 @@ export const PostCard = memo(
     );
 
     const imageSource = typeof image === 'string' ? { uri: image } : image;
+    const accessibilityProps = {
+      accessibilityRole: 'button' as const,
+      accessibilityLabel: `${title} by ${authorName}`,
+      accessibilityHint: 'Opens the post details',
+    };
 
     if (variant === 'horizontal') {
       return (
-        <Pressable style={styles.container} {...rest}>
+        <Pressable
+          style={styles.container}
+          onPress={handlePress}
+          {...accessibilityProps}
+          {...rest}
+        >
           <Image
             source={imageSource}
             style={styles.imageHorizontal}
             contentFit="cover"
             transition={200}
             placeholder={{ blurhash: BLUR_HASH }}
+            accessibilityIgnoresInvertColors
           />
           <View style={styles.contentHorizontal}>
             <Text style={styles.category} numberOfLines={1}>
@@ -84,6 +118,7 @@ export const PostCard = memo(
                   size="xs"
                   following={following}
                   onFollowPress={onFollowPress}
+                  onPress={handleAuthorPress}
                 />
               </View>
               <View style={styles.timeContainer}>
@@ -99,13 +134,19 @@ export const PostCard = memo(
     }
 
     return (
-      <Pressable style={styles.container} {...rest}>
+      <Pressable
+        style={styles.container}
+        onPress={handlePress}
+        {...accessibilityProps}
+        {...rest}
+      >
         <Image
           source={imageSource}
           style={styles.imageVertical}
           contentFit="cover"
           transition={200}
           placeholder={{ blurhash: BLUR_HASH }}
+          accessibilityIgnoresInvertColors
         />
         <View style={styles.contentVertical}>
           <Text style={styles.category} numberOfLines={1}>
@@ -122,6 +163,7 @@ export const PostCard = memo(
                 size="xs"
                 following={following}
                 onFollowPress={onFollowPress}
+                onPress={handleAuthorPress}
               />
             </View>
             <View style={styles.timeContainer}>
@@ -141,8 +183,8 @@ PostCard.displayName = 'PostCard';
 
 const styles = StyleSheet.create(theme => ({
   container: {
-    backgroundColor: theme.colors.surface,
-    borderRadius: theme.borderRadius.md,
+    backgroundColor: 'transparent',
+    borderRadius: theme.borderRadius.sm,
     overflow: 'hidden',
     ...theme.shadow.sm,
     variants: {
@@ -162,6 +204,7 @@ const styles = StyleSheet.create(theme => ({
     width: '100%',
     height: 183,
     backgroundColor: theme.colors.backgroundSecondary,
+    borderRadius: theme.borderRadius.sm,
   },
   imageHorizontal: {
     width: 96,
@@ -186,6 +229,7 @@ const styles = StyleSheet.create(theme => ({
   },
   footer: {
     flexDirection: 'row',
+    alignItems: 'center',
     marginTop: theme.spacing.xs,
     gap: theme.spacing.xs,
   },

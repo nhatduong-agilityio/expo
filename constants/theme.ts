@@ -152,7 +152,7 @@ export const darkTheme = {
 
     // Input states
     inputBackground: grey.grey80,
-    inputBorder: grey.grey70,
+    inputBorder: grey.grey95,
     inputBorderHover: grey.grey60,
     inputBorderFocus: blue.blue50,
     inputBorderError: red.red40,

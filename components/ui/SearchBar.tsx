@@ -13,7 +13,12 @@ export const SearchBar = memo(
     ({ onPress, editable = true, ...rest }, ref) => {
       if (!editable && onPress) {
         return (
-          <Pressable onPress={onPress} style={styles.pressableContainer}>
+          <Pressable
+            onPress={onPress}
+            style={styles.pressableContainer}
+            accessibilityRole="search"
+            accessibilityHint="Opens the search screen"
+          >
             <Input
               leftIcon="search"
               placeholder="Search"

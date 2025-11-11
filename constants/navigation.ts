@@ -19,6 +19,9 @@ export const SCREENS = {
   SEARCH: 'search',
   SETTINGS: 'settings',
   EDIT_PROFILE: 'edit-profile',
+  AUTHOR_PROFILE: 'author/[id]',
+  POST_DETAIL: 'post/[id]',
+  CREATE_POST: 'post/create',
 } as const;
 
 export const TABS = {

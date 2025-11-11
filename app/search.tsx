@@ -4,10 +4,10 @@ import { useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 // Constants
-import { CONTENT_TABS, FILTER_CONTENT_TABS } from '@/constants';
+import { CONTENT_TABS, FILTER_CONTENT_TABS, ROUTES } from '@/constants';
 
 // Mock data
 import { mockAuthors, mockNews, mockTopics } from '@/mocks';
@@ -26,6 +26,7 @@ type AuthorItem = (typeof mockAuthors)[0];
 const SearchScreen = () => {
   const router = useRouter();
   const inputRef = useRef<TextInput>(null);
+  const { rt } = useUnistyles();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<string>(CONTENT_TABS.NEWS.ID);
@@ -72,6 +73,10 @@ const SearchScreen = () => {
     [debouncedSearch],
   );
 
+  const handleAuthorPress = (authorId: string) => {
+    router.push(ROUTES.AUTHOR_PROFILE(authorId));
+  };
+
   // Memoized render functions
   const renderNewsItem = useCallback(
     ({ item }: { item: NewsItem }) => (
@@ -83,6 +88,7 @@ const SearchScreen = () => {
           title={item.title}
           authorAvatar={item.authorAvatar}
           authorName={item.authorName}
+          authorId={item.authorId}
           timeAgo={item.timeAgo}
         />
       </View>
@@ -112,6 +118,7 @@ const SearchScreen = () => {
           name={item.name}
           followers={item.followers}
           following={item.following}
+          onPress={() => handleAuthorPress(item.id)}
         />
       </View>
     ),
@@ -180,12 +187,15 @@ const SearchScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={['top']} key={rt.themeName}>
       <View style={styles.header}>
         <Pressable
           onPress={() => router.back()}
           style={styles.backButton}
           hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel="Go back"
+          accessibilityHint="Navigates to the previous screen"
         >
           <Ionicons name="arrow-back" size={24} color={styles.backIcon.color} />
         </Pressable>

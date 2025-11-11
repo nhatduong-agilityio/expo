@@ -2,18 +2,20 @@ import { Link, LinkProps } from 'expo-router';
 import { memo, ReactNode, useMemo } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 // Components
 import { Text } from './ui';
 
 type AccessLayoutProps = {
+  loading?: boolean;
   mode: 'login' | 'signup';
   children: ReactNode;
 };
 
 export const AccessLayout = memo(
-  ({ mode = 'login', children }: AccessLayoutProps) => {
+  ({ loading = false, mode = 'login', children }: AccessLayoutProps) => {
+    const { rt } = useUnistyles();
     const isLogin = mode === 'login';
 
     const content = useMemo(
@@ -33,7 +35,7 @@ export const AccessLayout = memo(
     );
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} key={rt.themeName}>
         <ScrollView style={styles.scrollView}>
           {/* Header */}
           <View style={styles.header}>
@@ -60,7 +62,12 @@ export const AccessLayout = memo(
                 {content.footerText}
               </Text>
               <Link href={content.footerLinkHref as LinkProps['href']} asChild>
-                <Pressable>
+                <Pressable
+                  disabled={loading}
+                  accessibilityRole="link"
+                  accessibilityLabel={content.footerLinkText}
+                  accessibilityHint={`Navigates to the ${content.footerLinkText} screen`}
+                >
                   <Text variant="bodySm" color="link">
                     {content.footerLinkText}
                   </Text>

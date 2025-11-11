@@ -72,6 +72,7 @@ export const CustomTabBar = ({
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
+            accessibilityHint={`Navigates to the ${label} screen`}
             testID={options.tabBarButtonTestID}
             onPress={onPress}
             onLongPress={onLongPress}

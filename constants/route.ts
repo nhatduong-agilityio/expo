@@ -1,3 +1,5 @@
+import { Href } from 'expo-router';
+
 export const ROUTES = {
   // Auth routes
   LOGIN: '/(auth)/login',
@@ -13,4 +15,7 @@ export const ROUTES = {
   SEARCH: '/search',
   SETTINGS: '/settings',
   EDIT_PROFILE: '/edit-profile',
+  AUTHOR_PROFILE: (id: string): Href => `/author/${id}`,
+  POST_DETAIL: (id: string): Href => `/post/${id}`,
+  CREATE_POST: '/post/create',
 } as const;

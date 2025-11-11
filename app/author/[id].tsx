@@ -1,5 +1,5 @@
 import { FlashList } from '@shopify/flash-list';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import {
@@ -9,33 +9,41 @@ import {
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 // Constants
-import { FILTER_PROFILE_TABS, PROFILE_TABS, ROUTES } from '@/constants';
+import { FILTER_PROFILE_TABS, PROFILE_TABS } from '@/constants';
 
 // Mock data
-import { mockUserNews } from '@/mocks';
+import { mockAuthors, mockUserNews } from '@/mocks';
 
 // Components
 import { PostCard, ProfileStats, ScreenHeader } from '@/components';
-import { Avatar, Button, FloatButton, Tabs, Text } from '@/components/ui';
+import { Avatar, Button, Tabs, Text } from '@/components/ui';
 
 type NewsItem = (typeof mockUserNews)[0];
 
-const ProfileScreen = () => {
+const AuthorProfileScreen = () => {
+  const { rt } = useUnistyles();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { rt } = useUnistyles();
+  const { id: authorId } = useLocalSearchParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState<string>(PROFILE_TABS.RECENT.ID);
+  const [isFollowing, setIsFollowing] = useState(false);
 
-  const handleSettingsPress = () => {
-    router.push(ROUTES.SETTINGS);
+  const author = mockAuthors.find(a => a.id === authorId) || mockAuthors[0];
+
+  const handleBackPress = () => {
+    router.back();
   };
 
-  const handleEditProfilePress = () => {
-    router.push(ROUTES.EDIT_PROFILE);
+  const handleMenuPress = () => {
+    // TODO: Handle menu press
   };
 
-  const handleCreatePostPress = () => {
-    router.push(ROUTES.CREATE_POST);
+  const handleFollowPress = () => {
+    setIsFollowing(!isFollowing);
+  };
+
+  const handleWebsitePress = () => {
+    // TODO: Handle website press
   };
 
   const handleFollowersPress = () => {
@@ -54,8 +62,8 @@ const ProfileScreen = () => {
     ({ item }: { item: NewsItem }) => (
       <View style={styles.newsItem}>
         <PostCard
-          id={item.id}
           variant="horizontal"
+          id={item.id}
           image={item.image}
           category={item.category}
           title={item.title}
@@ -73,11 +81,14 @@ const ProfileScreen = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']} key={rt.themeName}>
-      {/* Fixed Header */}
+      {/* Header */}
       <ScreenHeader
-        title="Profile"
-        rightIcon="settings-outline"
-        onRightPress={handleSettingsPress}
+        title=""
+        leftIcon="arrow-back"
+        rightIcon="ellipsis-vertical"
+        onLeftPress={handleBackPress}
+        onRightPress={handleMenuPress}
+        showLeftIcon
         showRightIcon
       />
 
@@ -86,34 +97,29 @@ const ProfileScreen = () => {
         {/* Avatar and Stats Row */}
         <View style={styles.topSection}>
           <View style={styles.avatarContainer}>
-            <Avatar
-              source="https://picsum.photos/200/200?random=1"
-              size="xl"
-              editable={false}
-            />
+            <Avatar source={author.avatar} size="xl" editable={false} />
           </View>
 
-          {/* Profile Stats
-            TODO: Update with real data from api
-          */}
+          {/* Profile Stats */}
           <ProfileStats
-            followers={2156}
-            following={567}
-            news={23}
+            followers={1200000}
+            following={124000}
+            news={326}
             onFollowersPress={handleFollowersPress}
             onFollowingPress={handleFollowingPress}
             onNewsPress={handleNewsPress}
           />
         </View>
 
-        {/* User Info */}
-        <View style={styles.userInfo}>
-          <Text variant="h3" style={styles.userName}>
-            Wilson Franci
+        {/* Author Info */}
+        <View style={styles.authorInfo}>
+          <Text variant="h3" style={styles.authorName}>
+            {author.name}
           </Text>
-          <Text variant="body" color="secondary" style={styles.userBio}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
+          <Text variant="body" color="secondary" style={styles.authorBio}>
+            is an operational business division of the British Broadcasting
+            Corporation responsible for the gathering and broadcasting of news
+            and current affairs.
           </Text>
         </View>
 
@@ -122,12 +128,17 @@ const ProfileScreen = () => {
           <Button
             variant="primary"
             size="md"
-            onPress={handleEditProfilePress}
+            onPress={handleFollowPress}
             style={styles.button}
           >
-            Edit profile
+            {isFollowing ? 'Following' : 'Follow'}
           </Button>
-          <Button variant="primary" size="md" style={styles.button}>
+          <Button
+            variant="primary"
+            size="md"
+            onPress={handleWebsitePress}
+            style={styles.button}
+          >
             Website
           </Button>
         </View>
@@ -150,16 +161,9 @@ const ProfileScreen = () => {
         keyExtractor={newsKeyExtractor}
         contentContainerStyle={[
           styles.listContent,
-          { paddingBottom: insets.bottom },
+          { paddingBottom: insets.bottom + 20 },
         ]}
         showsVerticalScrollIndicator={false}
-      />
-
-      {/* Floating Action Button */}
-      <FloatButton
-        iconName="add"
-        position="bottom-right"
-        onPress={handleCreatePostPress}
       />
     </SafeAreaView>
   );
@@ -184,14 +188,14 @@ const styles = StyleSheet.create(theme => ({
   avatarContainer: {
     width: 140,
   },
-  userInfo: {
+  authorInfo: {
     gap: theme.spacing.xs,
     marginBottom: theme.spacing.lg,
   },
-  userName: {
+  authorName: {
     color: theme.colors.textPrimary,
   },
-  userBio: {
+  authorBio: {
     color: theme.colors.textSecondary,
   },
   actionButtons: {
@@ -214,4 +218,4 @@ const styles = StyleSheet.create(theme => ({
   },
 }));
 
-export default ProfileScreen;
+export default AuthorProfileScreen;

@@ -8,6 +8,7 @@ export const mockNews = [
     image: 'https://picsum.photos/400/300?random=1',
     authorAvatar: 'https://picsum.photos/100/100?random=1',
     authorName: 'BBC News',
+    authorId: '1',
     timeAgo: '14m ago',
   },
   {
@@ -17,6 +18,7 @@ export const mockNews = [
     image: 'https://picsum.photos/400/300?random=2',
     authorAvatar: 'https://picsum.photos/100/100?random=2',
     authorName: 'BBC News',
+    authorId: '2',
     timeAgo: '1h ago',
   },
   {
@@ -27,6 +29,7 @@ export const mockNews = [
     image: 'https://picsum.photos/400/300?random=3',
     authorAvatar: 'https://picsum.photos/100/100?random=3',
     authorName: 'CNN',
+    authorId: '3',
     timeAgo: '1h ago',
   },
   {
@@ -36,6 +39,7 @@ export const mockNews = [
     image: 'https://picsum.photos/400/300?random=4',
     authorAvatar: 'https://picsum.photos/100/100?random=4',
     authorName: 'USA Today',
+    authorId: '4',
     timeAgo: '2h ago',
   },
   {
@@ -45,7 +49,38 @@ export const mockNews = [
     image: 'https://picsum.photos/400/300?random=5',
     authorAvatar: 'https://picsum.photos/100/100?random=5',
     authorName: 'CNET',
+    authorId: '5',
     timeAgo: '3h ago',
+  },
+  {
+    id: '6',
+    category: 'Health',
+    title: 'New study reveals benefits of Mediterranean diet',
+    image: 'https://picsum.photos/400/300?random=6',
+    authorAvatar: 'https://picsum.photos/100/100?random=6',
+    authorName: 'Health Today',
+    authorId: '6',
+    timeAgo: '4h ago',
+  },
+  {
+    id: '7',
+    category: 'Sport',
+    title: 'Champions League final: Real Madrid wins dramatic match',
+    image: 'https://picsum.photos/400/300?random=7',
+    authorAvatar: 'https://picsum.photos/100/100?random=7',
+    authorName: 'ESPN',
+    authorId: '7',
+    timeAgo: '5h ago',
+  },
+  {
+    id: '8',
+    category: 'Business',
+    title: 'Stock market reaches new highs amid economic recovery',
+    image: 'https://picsum.photos/400/300?random=8',
+    authorAvatar: 'https://picsum.photos/100/100?random=8',
+    authorName: 'Bloomberg',
+    authorId: '8',
+    timeAgo: '6h ago',
   },
 ];
 
@@ -161,6 +196,7 @@ export const mockUserNews = [
     image: 'https://picsum.photos/400/300?random=1',
     authorAvatar: 'https://picsum.photos/100/100?random=1',
     authorName: 'Wilson Franci',
+    authorId: '1',
     timeAgo: '15m ago',
   },
   {
@@ -170,6 +206,7 @@ export const mockUserNews = [
     image: 'https://picsum.photos/400/300?random=2',
     authorAvatar: 'https://picsum.photos/100/100?random=2',
     authorName: 'Wilson Franci',
+    authorId: '2',
     timeAgo: '1h ago',
   },
   {
@@ -179,6 +216,7 @@ export const mockUserNews = [
     image: 'https://picsum.photos/400/300?random=3',
     authorAvatar: 'https://picsum.photos/100/100?random=3',
     authorName: 'Wilson Franci',
+    authorId: '3',
     timeAgo: '1w ago',
   },
   {
@@ -188,6 +226,73 @@ export const mockUserNews = [
     image: 'https://picsum.photos/400/300?random=4',
     authorAvatar: 'https://picsum.photos/100/100?random=4',
     authorName: 'Wilson Franci',
+    authorId: '4',
     timeAgo: '2w ago',
   },
+];
+
+// Popular news for Explore screen
+export const mockPopularNews = [
+  {
+    id: 'p1',
+    category: 'Technology',
+    title: 'The Future of AI: What to Expect in 2024',
+    image: 'https://picsum.photos/400/300?random=30',
+    authorAvatar: 'https://picsum.photos/100/100?random=30',
+    authorName: 'Tech Insider',
+    authorId: '5',
+    timeAgo: '2h ago',
+  },
+  {
+    id: 'p2',
+    category: 'Health',
+    title: 'Breakthrough in Cancer Research Shows Promise',
+    image: 'https://picsum.photos/400/300?random=31',
+    authorAvatar: 'https://picsum.photos/100/100?random=31',
+    authorName: 'Medical News',
+    authorId: '6',
+    timeAgo: '3h ago',
+  },
+  {
+    id: 'p3',
+    category: 'Sport',
+    title: 'Olympic Games 2024: Top Athletes to Watch',
+    image: 'https://picsum.photos/400/300?random=32',
+    authorAvatar: 'https://picsum.photos/100/100?random=32',
+    authorName: 'Sports Daily',
+    authorId: '7',
+    timeAgo: '4h ago',
+  },
+  {
+    id: 'p4',
+    category: 'Travel',
+    title: 'Top 10 Hidden Gems in Southeast Asia',
+    image: 'https://picsum.photos/400/300?random=33',
+    authorAvatar: 'https://picsum.photos/100/100?random=33',
+    authorName: 'Travel Guide',
+    authorId: '8',
+    timeAgo: '5h ago',
+  },
+  {
+    id: 'p5',
+    category: 'Politics',
+    title: 'Global Summit Addresses Climate Change Concerns',
+    image: 'https://picsum.photos/400/300?random=34',
+    authorAvatar: 'https://picsum.photos/100/100?random=34',
+    authorName: 'World News',
+    authorId: '9',
+    timeAgo: '6h ago',
+  },
+];
+
+// Mock categories for filtering
+export const mockCategories = [
+  { id: 'all', label: 'All' },
+  { id: 'health', label: 'Health' },
+  { id: 'technology', label: 'Technology' },
+  { id: 'sport', label: 'Sport' },
+  { id: 'politics', label: 'Politics' },
+  { id: 'business', label: 'Business' },
+  { id: 'travel', label: 'Travel' },
+  { id: 'europe', label: 'Europe' },
 ];
