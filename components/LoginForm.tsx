@@ -16,8 +16,10 @@ export type LoginFormData = z.infer<typeof loginSchema>;
 export const LoginForm = memo(
   ({
     onSubmit,
+    loading,
   }: {
     onSubmit: (data: LoginFormData) => void | Promise<void>;
+    loading?: boolean;
   }) => {
     const [showPassword, setShowPassword] = useState(false);
 
@@ -34,7 +36,7 @@ export const LoginForm = memo(
       },
     });
 
-    const isLoading = isSubmitting;
+    const isLoading = isSubmitting || loading;
 
     return (
       <View style={styles.container}>

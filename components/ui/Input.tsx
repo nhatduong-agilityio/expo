@@ -1,6 +1,13 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { ComponentProps, forwardRef, memo, useState } from 'react';
-import { Pressable, TextInput, TextInputProps, View } from 'react-native';
+import {
+  Pressable,
+  StyleProp,
+  TextInput,
+  TextInputProps,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {
   StyleSheet,
   UnistylesVariants,
@@ -19,6 +26,7 @@ export type InputProps = Omit<TextInputProps, 'placeholderTextColor'> & {
   leftIcon?: ComponentProps<typeof Ionicons>['name'];
   rightIcon?: ComponentProps<typeof Ionicons>['name'];
   showClearButton?: boolean;
+  styleContainer?: StyleProp<ViewStyle>;
   onRightIconPress?: () => void;
   onLeftIconPress?: () => void;
 };
@@ -36,10 +44,12 @@ export const Input = memo(
         rightIcon,
         showClearButton = false,
         value,
+        styleContainer,
         onFocus,
         onBlur,
         onRightIconPress,
         onLeftIconPress,
+        style,
         ...rest
       },
       ref,
@@ -85,12 +95,15 @@ export const Input = memo(
             </Text>
           )}
 
-          <View style={styles.container}>
+          <View style={[styles.container, styleContainer]}>
             {leftIcon && (
               <Pressable
                 style={styles.leftIconContainer}
                 onPress={onLeftIconPress}
                 hitSlop={8}
+                accessibilityRole="button"
+                accessibilityLabel={`Press to ${leftIcon}`}
+                accessibilityHint={`Press to ${leftIcon}`}
               >
                 <Ionicons
                   name={leftIcon}
@@ -102,12 +115,14 @@ export const Input = memo(
 
             <TextInput
               ref={ref}
-              style={styles.input}
+              style={[styles.input, style]}
               placeholderTextColor={theme.colors.textPlaceholder}
               editable={!disabled}
               value={value}
               onFocus={handleFocus}
               onBlur={handleBlur}
+              accessibilityLabel={label}
+              accessibilityHint="Input field"
               {...rest}
             />
 
@@ -116,6 +131,9 @@ export const Input = memo(
                 onPress={handleOnClear}
                 style={styles.clearButton}
                 hitSlop={8}
+                accessibilityRole="button"
+                accessibilityLabel="Clear input"
+                accessibilityHint="Clears the text from the input field"
               >
                 <Ionicons
                   name="close"
@@ -130,6 +148,9 @@ export const Input = memo(
                 style={styles.rightIconContainer}
                 onPress={onRightIconPress}
                 hitSlop={8}
+                accessibilityRole="button"
+                accessibilityLabel={`Press to ${rightIcon}`}
+                accessibilityHint={`Press to ${rightIcon}`}
               >
                 <Ionicons
                   name={rightIcon}
@@ -287,6 +308,6 @@ const styles = StyleSheet.create(theme => ({
     gap: theme.spacing.xs,
   },
   icon: (isError: boolean) => ({
-    color: isError ? theme.colors.inputBorderError : theme.colors.inputBorder,
+    color: isError ? theme.colors.inputBorderError : theme.colors.iconSecondary,
   }),
 }));

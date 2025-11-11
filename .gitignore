@@ -48,3 +48,6 @@ coverage
 
 # Giga Creator
 .giga/
+
+# Environment
+.env

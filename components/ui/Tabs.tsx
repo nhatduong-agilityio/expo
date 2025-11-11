@@ -46,6 +46,10 @@ export const Tabs = memo(
                   pressed && styles.pressed,
                 ]}
                 onPress={() => onTabChange(tab.id)}
+                accessibilityRole="tab"
+                accessibilityState={{ selected: isActive }}
+                accessibilityLabel={tab.label}
+                accessibilityHint={`Switch to the ${tab.label} tab`}
               >
                 <Text variant="body" style={styles.tabText}>
                   {tab.label}
@@ -82,7 +86,7 @@ const styles = StyleSheet.create(theme => ({
     gap: theme.spacing.xl,
   },
   tabButton: {
-    paddingVertical: theme.spacing.sm,
+    paddingBottom: theme.spacing.sm,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
@@ -97,6 +101,9 @@ const styles = StyleSheet.create(theme => ({
           color: theme.colors.tabInactive,
         },
         primary: {
+          color: theme.colors.tabInactive,
+        },
+        secondary: {
           color: theme.colors.tabInactive,
         },
       },

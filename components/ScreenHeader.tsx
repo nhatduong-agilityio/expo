@@ -39,7 +39,13 @@ export const ScreenHeader = memo(
           {leftComponent ? (
             leftComponent
           ) : showLeftIcon && leftIcon ? (
-            <Pressable onPress={onLeftPress} hitSlop={8}>
+            <Pressable
+              onPress={onLeftPress}
+              hitSlop={8}
+              accessibilityRole="button"
+              accessibilityLabel={leftIcon.replace(/-/g, ' ')}
+              accessibilityHint={`Press to ${leftIcon.replace(/-/g, ' ')}`}
+            >
               <Ionicons
                 name={leftIcon}
                 size={24}
@@ -63,7 +69,13 @@ export const ScreenHeader = memo(
           {rightComponent ? (
             rightComponent
           ) : showRightIcon && rightIcon ? (
-            <Pressable onPress={onRightPress} hitSlop={8}>
+            <Pressable
+              onPress={onRightPress}
+              hitSlop={8}
+              accessibilityRole="button"
+              accessibilityLabel={rightIcon.replace(/-/g, ' ')}
+              accessibilityHint={`Press to ${rightIcon.replace(/-/g, ' ')}`}
+            >
               <Ionicons
                 name={rightIcon}
                 size={24}

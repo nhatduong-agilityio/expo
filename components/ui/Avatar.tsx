@@ -40,7 +40,7 @@ export const Avatar = memo(
       string | ImageSourcePropType | null
     >(source || null);
 
-    styles.useVariants({ size, rounded: rounded || undefined });
+    styles.useVariants({ size, rounded: rounded });
 
     const handlePickImage = async () => {
       if (!editable) return;
@@ -71,6 +71,7 @@ export const Avatar = memo(
             contentFit="cover"
             transition={200}
             placeholder={{ blurhash: BLUR_HASH }}
+            accessibilityIgnoresInvertColors
           />
         );
       }
@@ -94,20 +95,36 @@ export const Avatar = memo(
           contentFit="scale-down"
           transition={200}
           placeholder={{ blurhash: BLUR_HASH }}
+          accessibilityIgnoresInvertColors
         />
       );
     };
 
+    const accessibilityProps = editable
+      ? {
+          accessibilityRole: 'button' as const,
+          accessibilityLabel: 'Change avatar',
+          accessibilityHint: 'Opens the image library to select a new avatar',
+        }
+      : {
+          accessibilityRole: 'image' as const,
+          accessibilityLabel: fallbackLabel || 'Avatar',
+          accessibilityHint: '',
+        };
+
     return (
-      <Pressable
-        style={({ pressed }) => [
-          styles.container,
-          pressed && editable && { opacity: theme.opacity.pressed },
-        ]}
-        onPress={editable ? handlePickImage : undefined}
-        disabled={!editable}
-      >
-        {renderAvatar()}
+      <View style={styles.wrapper}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.container,
+            pressed && editable && { opacity: theme.opacity.pressed },
+          ]}
+          onPress={editable ? handlePickImage : undefined}
+          disabled={!editable}
+          {...accessibilityProps}
+        >
+          {renderAvatar()}
+        </Pressable>
         {editable && (
           <View style={styles.iconContainer}>
             <Ionicons
@@ -117,7 +134,7 @@ export const Avatar = memo(
             />
           </View>
         )}
-      </Pressable>
+      </View>
     );
   },
 );
@@ -125,11 +142,8 @@ export const Avatar = memo(
 Avatar.displayName = 'Avatar';
 
 const styles = StyleSheet.create(theme => ({
-  container: {
+  wrapper: {
     position: 'relative',
-    backgroundColor: theme.colors.backgroundSecondary,
-    alignItems: 'center',
-    justifyContent: 'center',
     variants: {
       size: {
         xs: { width: 20, height: 20 },
@@ -148,9 +162,13 @@ const styles = StyleSheet.create(theme => ({
       },
     },
   },
-  image: {
+  container: {
     width: '100%',
     height: '100%',
+    backgroundColor: theme.colors.backgroundSecondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
     variants: {
       size: {},
       rounded: {
@@ -163,11 +181,9 @@ const styles = StyleSheet.create(theme => ({
       },
     },
   },
-  placeholder: {
-    flex: 1,
+  image: {
     width: '100%',
     height: '100%',
-    backgroundColor: theme.colors.backgroundSecondary,
     variants: {
       size: {},
       rounded: {
