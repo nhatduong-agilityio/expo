@@ -1,13 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-// Services
 import { categoryService } from '@/services';
-
-// Stores
 import { useAuthStore } from '@/stores';
-
-// Types
-import { Category, TopicSubscription } from '@/types';
 
 export const CATEGORY_QUERY_KEYS = {
   all: ['categories'] as const,
@@ -48,7 +42,7 @@ export const useIsSubscribed = (categoryId: string) => {
   });
 };
 
-// Toggle subscription with optimistic update
+// Toggle subscription
 export const useToggleSubscription = () => {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
@@ -56,85 +50,7 @@ export const useToggleSubscription = () => {
   return useMutation({
     mutationFn: (categoryId: string) =>
       categoryService.toggleSubscription(user!.id, categoryId),
-
-    // Optimistic update
-    onMutate: async categoryId => {
-      // Cancel outgoing refetches
-      await queryClient.cancelQueries({
-        queryKey: CATEGORY_QUERY_KEYS.check(categoryId),
-      });
-      await queryClient.cancelQueries({
-        queryKey: CATEGORY_QUERY_KEYS.subscriptions(user!.id),
-      });
-
-      // Snapshot previous values
-      const previousIsSubscribed = queryClient.getQueryData<boolean>(
-        CATEGORY_QUERY_KEYS.check(categoryId),
-      );
-
-      const previousSubscriptions = queryClient.getQueryData<
-        TopicSubscription[]
-      >(CATEGORY_QUERY_KEYS.subscriptions(user!.id));
-
-      // Optimistically update check status
-      queryClient.setQueryData<boolean>(
-        CATEGORY_QUERY_KEYS.check(categoryId),
-        old => !old,
-      );
-
-      // Optimistically update subscriptions list
-      queryClient.setQueryData<TopicSubscription[]>(
-        CATEGORY_QUERY_KEYS.subscriptions(user!.id),
-        old => {
-          if (!old) return old;
-
-          if (previousIsSubscribed) {
-            // Remove subscription
-            return old.filter(sub => sub.categoryId !== categoryId);
-          } else {
-            // Add subscription (we'll get the full data on success)
-            const category = queryClient
-              .getQueryData<Category[]>(CATEGORY_QUERY_KEYS.lists())
-              ?.find(cat => cat.id === categoryId);
-
-            if (category) {
-              return [
-                ...old,
-                {
-                  id: `temp-${categoryId}`,
-                  userId: user!.id,
-                  categoryId,
-                  createdAt: new Date().toISOString(),
-                  category,
-                },
-              ];
-            }
-          }
-          return old;
-        },
-      );
-
-      return { previousIsSubscribed, previousSubscriptions };
-    },
-
-    // On error, rollback
-    onError: (_err, categoryId, context) => {
-      if (context?.previousIsSubscribed !== undefined) {
-        queryClient.setQueryData(
-          CATEGORY_QUERY_KEYS.check(categoryId),
-          context.previousIsSubscribed,
-        );
-      }
-      if (context?.previousSubscriptions) {
-        queryClient.setQueryData(
-          CATEGORY_QUERY_KEYS.subscriptions(user!.id),
-          context.previousSubscriptions,
-        );
-      }
-    },
-
-    // Always refetch after error or success
-    onSettled: (_data, _error, categoryId) => {
+    onSuccess: (_, categoryId) => {
       queryClient.invalidateQueries({
         queryKey: CATEGORY_QUERY_KEYS.check(categoryId),
       });

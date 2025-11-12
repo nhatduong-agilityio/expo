@@ -12,7 +12,7 @@ import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { FILTER_PROFILE_TABS, PROFILE_TABS } from '@/constants';
 
 // Hooks
-import { useIsFollowing, useNews, useOptimisticFollow } from '@/hooks';
+import { useIsFollowing, useNews, useToggleFollow } from '@/hooks';
 
 // Services
 import { authService } from '@/services';
@@ -44,13 +44,18 @@ const AuthorProfileScreen = () => {
     }
   }, [authorId]);
 
-  // Check if following with optimistic updates
+  // Check if following
   const { data: isFollowingData } = useIsFollowing(authorId!);
-  const {
-    isFollowing,
-    isPending: isFollowPending,
-    toggleFollow,
-  } = useOptimisticFollow(authorId!, isFollowingData);
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  useEffect(() => {
+    if (isFollowingData !== undefined) {
+      setIsFollowing(isFollowingData);
+    }
+  }, [isFollowingData]);
+
+  // Toggle follow mutation
+  const { mutate: toggleFollow } = useToggleFollow();
 
   // Fetch author's news
   const { data, isLoading, refetch, isRefetching } = useNews(
@@ -69,7 +74,8 @@ const AuthorProfileScreen = () => {
   };
 
   const handleFollowPress = () => {
-    toggleFollow();
+    setIsFollowing(!isFollowing);
+    toggleFollow(authorId!);
   };
 
   const handleWebsitePress = () => {
@@ -145,8 +151,6 @@ const AuthorProfileScreen = () => {
             size="md"
             onPress={handleFollowPress}
             style={styles.button}
-            loading={isFollowPending}
-            disabled={isFollowPending}
           >
             {isFollowing ? 'Following' : 'Follow'}
           </Button>
