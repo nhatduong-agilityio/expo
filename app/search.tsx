@@ -112,6 +112,7 @@ const SearchScreen = () => {
           title={item.name}
           description={item.description || ''}
           saved={false}
+          categoryId={item.id}
         />
       </View>
     ),
@@ -122,6 +123,7 @@ const SearchScreen = () => {
     ({ item }: { item: AuthorItem }) => (
       <View style={styles.authorItem}>
         <AuthorCard
+          authorId={item.id}
           avatar={item.avatar}
           name={item.name}
           followers={item.followers}

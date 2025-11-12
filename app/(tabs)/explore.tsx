@@ -1,5 +1,5 @@
 import { FlashList } from '@shopify/flash-list';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -13,7 +13,7 @@ import {
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 // Hooks
-import { useCategories, useToggleSubscription, useTrendingNews } from '@/hooks';
+import { useCategories, useIsSubscribed, useTrendingNews } from '@/hooks';
 
 // Types
 import { Category, News } from '@/types';
@@ -48,35 +48,9 @@ const ExploreScreen = () => {
     isRefetching: newsRefetching,
   } = useTrendingNews(10);
 
-  // Toggle subscription mutation
-  const { mutate: toggleSubscription } = useToggleSubscription();
-
-  const [subscribedTopics, setSubscribedTopics] = useState<Set<string>>(
-    new Set(),
-  );
-
   const handleSeeAllTopicsPress = () => {
     // TODO: Navigate to see all topics screen
   };
-
-  const handleTopicSave = useCallback(
-    (categoryId: string) => {
-      toggleSubscription(categoryId, {
-        onSuccess: data => {
-          setSubscribedTopics(prev => {
-            const newSet = new Set(prev);
-            if (data.subscribed) {
-              newSet.add(categoryId);
-            } else {
-              newSet.delete(categoryId);
-            }
-            return newSet;
-          });
-        },
-      });
-    },
-    [toggleSubscription],
-  );
 
   const handleTopicPress = useCallback((categoryId: string) => {
     // TODO: Navigate to topic detail screen or filter by topic
@@ -87,21 +61,42 @@ const ExploreScreen = () => {
   };
 
   // Combine data into a single list
-  const listData: ListItem[] = [];
+  const listData: ListItem[] = useMemo(() => {
+    const items: ListItem[] = [];
 
-  if (!categoriesLoading && categories) {
-    listData.push({ type: 'topic-header', data: null });
-    categories.forEach(category => {
-      listData.push({ type: 'topic', data: category });
-    });
-  }
+    if (!categoriesLoading && categories) {
+      items.push({ type: 'topic-header', data: null });
+      categories.forEach(category => {
+        items.push({ type: 'topic', data: category });
+      });
+    }
 
-  if (!newsLoading && trendingNews) {
-    listData.push({ type: 'popular-header', data: null });
-    trendingNews.forEach(news => {
-      listData.push({ type: 'news', data: news });
-    });
-  }
+    if (!newsLoading && trendingNews) {
+      items.push({ type: 'popular-header', data: null });
+      trendingNews.forEach(news => {
+        items.push({ type: 'news', data: news });
+      });
+    }
+
+    return items;
+  }, [categories, categoriesLoading, trendingNews, newsLoading]);
+
+  const TopicItem = ({ category }: { category: Category }) => {
+    const { data: isSubscribed } = useIsSubscribed(category.id);
+
+    return (
+      <View style={styles.topicItem}>
+        <TopicCard
+          image={category.iconUrl || 'https://picsum.photos/100/100?random=10'}
+          title={category.name}
+          description={category.description || ''}
+          saved={isSubscribed}
+          categoryId={category.id}
+          onPress={() => handleTopicPress(category.id)}
+        />
+      </View>
+    );
+  };
 
   const renderItem = useCallback(
     ({ item }: { item: ListItem }) => {
@@ -127,20 +122,7 @@ const ExploreScreen = () => {
           );
 
         case 'topic':
-          return (
-            <View style={styles.topicItem}>
-              <TopicCard
-                image={
-                  item.data.iconUrl || 'https://picsum.photos/100/100?random=10'
-                }
-                title={item.data.name}
-                description={item.data.description || ''}
-                saved={subscribedTopics.has(item.data.id)}
-                onSavePress={() => handleTopicSave(item.data.id)}
-                onPress={() => handleTopicPress(item.data.id)}
-              />
-            </View>
-          );
+          return <TopicItem category={item.data} />;
 
         case 'popular-header':
           return (
@@ -166,7 +148,7 @@ const ExploreScreen = () => {
           return null;
       }
     },
-    [subscribedTopics, handleTopicSave, handleTopicPress],
+    [handleTopicPress],
   );
 
   const keyExtractor = useCallback((item: ListItem, index: number) => {

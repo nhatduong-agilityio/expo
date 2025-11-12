@@ -7,6 +7,9 @@ import {
 } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
+// Hooks
+import { useOptimisticSubscription } from '@/hooks';
+
 // Components
 import { Avatar, Button, Text } from './ui';
 
@@ -15,6 +18,7 @@ export type TopicCardProps = Omit<PressableProps, 'children'> & {
   title: string;
   description: string;
   saved?: boolean;
+  categoryId: string;
   onSavePress?: (saved: boolean) => void;
 };
 
@@ -24,11 +28,22 @@ export const TopicCard = memo(
     title,
     description,
     saved = false,
+    categoryId,
     onSavePress,
     ...rest
   }: TopicCardProps) => {
+    // Use optimistic subscription if categoryId is provided
+    const optimisticSubscription = useOptimisticSubscription(categoryId, saved);
+
+    const isSubscribed = optimisticSubscription?.isSubscribed ?? saved;
+    const isPending = optimisticSubscription?.isPending ?? false;
+
     const handleSavePress = () => {
-      onSavePress?.(!saved);
+      if (optimisticSubscription) {
+        optimisticSubscription.toggleSubscription();
+      } else {
+        onSavePress?.(!isSubscribed);
+      }
     };
 
     return (
@@ -43,11 +58,13 @@ export const TopicCard = memo(
           </Text>
         </View>
         <Button
-          variant={saved ? 'primary' : 'outline'}
+          variant={isSubscribed ? 'primary' : 'outline'}
           size="sm"
           onPress={handleSavePress}
+          loading={isPending}
+          disabled={isPending}
         >
-          {saved ? 'Saved' : 'Save'}
+          {isSubscribed ? 'Saved' : 'Save'}
         </Button>
       </Pressable>
     );

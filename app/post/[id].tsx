@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image } from 'expo-image';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
@@ -12,11 +12,9 @@ import { BLUR_HASH, ROUTES } from '@/constants';
 // Hooks
 import {
   useIncrementViewCount,
-  useIsBookmarked,
-  useIsLiked,
   useNewsDetail,
-  useToggleBookmark,
-  useToggleLike,
+  useOptimisticBookmark,
+  useOptimisticLike,
 } from '@/hooks';
 
 // Utils
@@ -34,38 +32,29 @@ const PostDetailScreen = () => {
   // Fetch post data
   const { data: post, isLoading } = useNewsDetail(id!);
 
-  // Check if liked/bookmarked
-  const { data: isLikedData } = useIsLiked(id!);
-  const { data: isBookmarkedData } = useIsBookmarked(id!);
-
   // Mutations
-  const { mutate: toggleLike } = useToggleLike();
-  const { mutate: toggleBookmark } = useToggleBookmark();
   const { mutate: incrementView } = useIncrementViewCount();
 
-  const [isLiked, setIsLiked] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
-  const [likesCount, setLikesCount] = useState(0);
+  // Optimistic updates
+  const {
+    isBookmarked,
+    isPending: isBookmarkPending,
+    toggleBookmark,
+  } = useOptimisticBookmark(id!, post?.isBookmarked);
+
+  const {
+    isLiked,
+    likesCount,
+    isPending: isLikePending,
+    toggleLike,
+  } = useOptimisticLike(id!, post?.isLiked, post?.likesCount || 0);
 
   useEffect(() => {
-    if (isLikedData !== undefined) {
-      setIsLiked(isLikedData);
-    }
-  }, [isLikedData]);
-
-  useEffect(() => {
-    if (isBookmarkedData !== undefined) {
-      setIsBookmarked(isBookmarkedData);
-    }
-  }, [isBookmarkedData]);
-
-  useEffect(() => {
-    if (post) {
-      setLikesCount(post.likesCount);
+    if (id) {
       // Increment view count when post is loaded
-      incrementView(post.id);
+      incrementView(id);
     }
-  }, [post, incrementView]);
+  }, [id, incrementView]);
 
   const handleBackPress = () => {
     router.back();
@@ -80,9 +69,7 @@ const PostDetailScreen = () => {
   };
 
   const handleLikePress = () => {
-    setIsLiked(!isLiked);
-    setLikesCount(prev => (isLiked ? prev - 1 : prev + 1));
-    toggleLike(id!);
+    toggleLike();
   };
 
   const handleCommentPress = () => {
@@ -90,8 +77,7 @@ const PostDetailScreen = () => {
   };
 
   const handleBookmarkPress = () => {
-    setIsBookmarked(!isBookmarked);
-    toggleBookmark(id!);
+    toggleBookmark();
   };
 
   const handleAuthorPress = (authorId: string) => {
@@ -172,6 +158,7 @@ const PostDetailScreen = () => {
             name={post.author?.fullName || 'Anonymous'}
             followers={getTimeAgo(post.publishedAt || post.createdAt)}
             following={false}
+            authorId={post.authorId}
             onPress={() => handleAuthorPress(post.authorId)}
           />
         </View>
@@ -212,6 +199,7 @@ const PostDetailScreen = () => {
               onPress={handleLikePress}
               style={styles.engagementButton}
               hitSlop={8}
+              disabled={isLikePending}
               accessibilityRole="button"
               accessibilityLabel={isLiked ? 'Unlike post' : 'Like post'}
               accessibilityHint={
@@ -222,6 +210,7 @@ const PostDetailScreen = () => {
                 name={isLiked ? 'heart' : 'heart-outline'}
                 size={24}
                 color={isLiked ? theme.colors.error : theme.colors.iconPrimary}
+                style={[isLikePending && { opacity: theme.opacity.disabled }]}
               />
               <Text variant="body" style={styles.engagementText}>
                 {formatNumber(likesCount)}
@@ -251,6 +240,7 @@ const PostDetailScreen = () => {
             onPress={handleBookmarkPress}
             style={styles.bookmarkButton}
             hitSlop={8}
+            disabled={isBookmarkPending}
             accessibilityRole="button"
             accessibilityLabel={
               isBookmarked ? 'Remove bookmark' : 'Bookmark post'
@@ -267,6 +257,7 @@ const PostDetailScreen = () => {
               color={
                 isBookmarked ? theme.colors.primary : theme.colors.iconPrimary
               }
+              style={[isBookmarkPending && { opacity: theme.opacity.disabled }]}
             />
           </Pressable>
         </View>
