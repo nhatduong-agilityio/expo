@@ -5,10 +5,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-// Services
 import { newsService } from '@/services';
-
-// Types
 import {
   CreateNewsInput,
   NewsFilters,
