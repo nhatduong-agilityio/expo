@@ -45,17 +45,9 @@ const AuthorProfileScreen = () => {
   }, [authorId]);
 
   // Check if following
-  const { data: isFollowingData } = useIsFollowing(authorId!);
-  const [isFollowing, setIsFollowing] = useState(false);
-
-  useEffect(() => {
-    if (isFollowingData !== undefined) {
-      setIsFollowing(isFollowingData);
-    }
-  }, [isFollowingData]);
-
-  // Toggle follow mutation
-  const { mutate: toggleFollow } = useToggleFollow();
+  const { data: isFollowing = false } = useIsFollowing(authorId!);
+  const { mutate: toggleFollow, isPending: isFollowPending } =
+    useToggleFollow();
 
   // Fetch author's news
   const { data, isLoading, refetch, isRefetching } = useNews(
@@ -74,7 +66,6 @@ const AuthorProfileScreen = () => {
   };
 
   const handleFollowPress = () => {
-    setIsFollowing(!isFollowing);
     toggleFollow(authorId!);
   };
 
@@ -151,6 +142,8 @@ const AuthorProfileScreen = () => {
             size="md"
             onPress={handleFollowPress}
             style={styles.button}
+            loading={isFollowPending}
+            disabled={isFollowPending}
           >
             {isFollowing ? 'Following' : 'Follow'}
           </Button>

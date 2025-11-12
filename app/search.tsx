@@ -107,12 +107,7 @@ const SearchScreen = () => {
   const renderTopicItem = useCallback(
     ({ item }: { item: TopicItem }) => (
       <View style={styles.topicItem}>
-        <TopicCard
-          image={item.iconUrl || 'https://picsum.photos/100/100'}
-          title={item.name}
-          description={item.description || ''}
-          saved={false}
-        />
+        <TopicCard category={item} />
       </View>
     ),
     [],
@@ -122,6 +117,7 @@ const SearchScreen = () => {
     ({ item }: { item: AuthorItem }) => (
       <View style={styles.authorItem}>
         <AuthorCard
+          authorId={item.id}
           avatar={item.avatar}
           name={item.name}
           followers={item.followers}

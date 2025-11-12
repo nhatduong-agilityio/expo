@@ -1,53 +1,58 @@
 import { memo } from 'react';
-import {
-  ImageSourcePropType,
-  Pressable,
-  PressableProps,
-  View,
-} from 'react-native';
+import { Pressable, PressableProps, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
+
+// Hooks
+import { useIsSubscribed, useToggleSubscription } from '@/hooks';
+
+// Types
+import { Category } from '@/types';
 
 // Components
 import { Avatar, Button, Text } from './ui';
 
 export type TopicCardProps = Omit<PressableProps, 'children'> & {
-  image: ImageSourcePropType | string;
-  title: string;
-  description: string;
-  saved?: boolean;
+  category: Category;
   onSavePress?: (saved: boolean) => void;
 };
 
 export const TopicCard = memo(
-  ({
-    image,
-    title,
-    description,
-    saved = false,
-    onSavePress,
-    ...rest
-  }: TopicCardProps) => {
+  ({ category, onSavePress, ...rest }: TopicCardProps) => {
+    // Check subscription status
+    const { data: isSubscribed } = useIsSubscribed(category.id);
+    const { mutate: toggleSubscription, isPending } = useToggleSubscription();
+
     const handleSavePress = () => {
-      onSavePress?.(!saved);
+      if (onSavePress) {
+        onSavePress(!isSubscribed);
+      } else {
+        toggleSubscription(category.id);
+      }
     };
 
     return (
       <Pressable style={styles.container} {...rest}>
-        <Avatar source={image} size="lg" editable={false} rounded={false} />
+        <Avatar
+          source={category.iconUrl || 'https://picsum.photos/100/100?random=10'}
+          size="lg"
+          editable={false}
+          rounded={false}
+        />
         <View style={styles.content}>
           <Text style={styles.title} numberOfLines={1}>
-            {title}
+            {category.name}
           </Text>
           <Text style={styles.description} numberOfLines={2}>
-            {description}
+            {category.description}
           </Text>
         </View>
         <Button
-          variant={saved ? 'primary' : 'outline'}
+          variant={isSubscribed ? 'primary' : 'outline'}
           size="sm"
           onPress={handleSavePress}
+          loading={isPending}
         >
-          {saved ? 'Saved' : 'Save'}
+          {isSubscribed ? 'Saved' : 'Save'}
         </Button>
       </Pressable>
     );

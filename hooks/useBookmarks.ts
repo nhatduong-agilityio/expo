@@ -1,13 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+// Services
 import { bookmarkService } from '@/services';
-import { useAuthStore, useBookmarkStore } from '@/stores';
-import { PaginationParams } from '@/types';
+
+// Stores
+import { useAuthStore } from '@/stores';
+
+// Types
+import { News, PaginationParams } from '@/types';
+
+// Hooks
+import { NEWS_QUERY_KEYS } from './useNews';
 
 export const BOOKMARK_QUERY_KEYS = {
   all: ['bookmarks'] as const,
   lists: () => [...BOOKMARK_QUERY_KEYS.all, 'list'] as const,
   list: (userId: string) => [...BOOKMARK_QUERY_KEYS.lists(), userId] as const,
+  check: (newsId: string) =>
+    [...BOOKMARK_QUERY_KEYS.all, 'check', newsId] as const,
 };
 
 // Get user bookmarks
@@ -28,32 +38,148 @@ export const useIsBookmarked = (newsId: string) => {
   const { user } = useAuthStore();
 
   return useQuery({
-    queryKey: [...BOOKMARK_QUERY_KEYS.all, 'check', newsId],
+    queryKey: BOOKMARK_QUERY_KEYS.check(newsId),
     queryFn: () => bookmarkService.isBookmarked(user!.id, newsId),
     enabled: !!user && !!newsId,
   });
 };
 
-// Toggle bookmark
+// Toggle bookmark with optimistic update
 export const useToggleBookmark = () => {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
-  const { addBookmark, removeBookmark } = useBookmarkStore();
 
   return useMutation({
     mutationFn: (newsId: string) =>
       bookmarkService.toggleBookmark(user!.id, newsId),
+
+    // Optimistic update
     onMutate: async newsId => {
-      // Optimistic update
-      const isBookmarked = useBookmarkStore.getState().isBookmarked(newsId);
-      if (isBookmarked) {
-        removeBookmark(newsId);
-      } else {
-        addBookmark(newsId);
+      // Cancel outgoing refetches
+      await queryClient.cancelQueries({
+        queryKey: BOOKMARK_QUERY_KEYS.check(newsId),
+      });
+      await queryClient.cancelQueries({
+        queryKey: BOOKMARK_QUERY_KEYS.lists(),
+      });
+      await queryClient.cancelQueries({
+        queryKey: NEWS_QUERY_KEYS.all,
+      });
+
+      // Snapshot previous values
+      const previousIsBookmarked = queryClient.getQueryData<boolean>(
+        BOOKMARK_QUERY_KEYS.check(newsId),
+      );
+
+      // Optimistically update check status
+      queryClient.setQueryData<boolean>(
+        BOOKMARK_QUERY_KEYS.check(newsId),
+        old => !old,
+      );
+
+      // Optimistically update news detail
+      queryClient.setQueriesData<News>(
+        { queryKey: NEWS_QUERY_KEYS.details() },
+        old => {
+          if (old && old.id === newsId) {
+            return {
+              ...old,
+              isBookmarked: !old.isBookmarked,
+              bookmarksCount: old.isBookmarked
+                ? Math.max(0, old.bookmarksCount - 1)
+                : old.bookmarksCount + 1,
+            };
+          }
+          return old;
+        },
+      );
+
+      // Optimistically update infinite news lists
+      queryClient.setQueriesData<{
+        pages: {
+          data: News[];
+          count: number;
+          page: number;
+          limit: number;
+          totalPages: number;
+        }[];
+        pageParams: unknown[];
+      }>({ queryKey: NEWS_QUERY_KEYS.infiniteLists() }, old => {
+        if (!old) return old;
+        return {
+          ...old,
+          pages: old.pages.map(page => ({
+            ...page,
+            data: page.data.map(news =>
+              news.id === newsId
+                ? {
+                    ...news,
+                    isBookmarked: !news.isBookmarked,
+                    bookmarksCount: news.isBookmarked
+                      ? Math.max(0, news.bookmarksCount - 1)
+                      : news.bookmarksCount + 1,
+                  }
+                : news,
+            ),
+          })),
+        };
+      });
+
+      // Optimistically update regular news lists
+      queryClient.setQueriesData<{
+        data: News[];
+        count: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+      }>({ queryKey: NEWS_QUERY_KEYS.lists() }, old => {
+        if (!old) return old;
+        return {
+          ...old,
+          data: old.data.map(news =>
+            news.id === newsId
+              ? {
+                  ...news,
+                  isBookmarked: !news.isBookmarked,
+                  bookmarksCount: news.isBookmarked
+                    ? Math.max(0, news.bookmarksCount - 1)
+                    : news.bookmarksCount + 1,
+                }
+              : news,
+          ),
+        };
+      });
+
+      return { previousIsBookmarked };
+    },
+
+    // On error, rollback
+    onError: (_err, newsId, context) => {
+      if (context?.previousIsBookmarked !== undefined) {
+        queryClient.setQueryData(
+          BOOKMARK_QUERY_KEYS.check(newsId),
+          context.previousIsBookmarked,
+        );
       }
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: BOOKMARK_QUERY_KEYS.lists() });
+
+    // Always refetch after error or success
+    onSettled: (_data, _error, newsId) => {
+      queryClient.invalidateQueries({
+        queryKey: BOOKMARK_QUERY_KEYS.check(newsId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: BOOKMARK_QUERY_KEYS.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: NEWS_QUERY_KEYS.detail(newsId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: NEWS_QUERY_KEYS.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: NEWS_QUERY_KEYS.infiniteLists(),
+      });
     },
   });
 };

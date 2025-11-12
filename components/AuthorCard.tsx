@@ -7,6 +7,9 @@ import {
 } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
+// Hooks
+import { useIsFollowing, useToggleFollow } from '@/hooks';
+
 // Components
 import { Avatar, Button, Text } from './ui';
 
@@ -16,6 +19,7 @@ export type AuthorCardProps = Omit<PressableProps, 'children'> & {
   size?: 'xs' | 'lg';
   followers?: string;
   following?: boolean;
+  authorId: string;
   onFollowPress?: (following: boolean) => void;
 };
 
@@ -26,11 +30,20 @@ export const AuthorCard = memo(
     size = 'lg',
     followers,
     following = false,
+    authorId,
     onFollowPress,
     ...rest
   }: AuthorCardProps) => {
+    // Check follow status
+    const { data: isFollowing = following } = useIsFollowing(authorId);
+    const { mutate: toggleFollow, isPending } = useToggleFollow();
+
     const handleFollowPress = () => {
-      onFollowPress?.(!following);
+      if (onFollowPress) {
+        onFollowPress(!isFollowing);
+      } else {
+        toggleFollow(authorId);
+      }
     };
 
     return (
@@ -52,12 +65,14 @@ export const AuthorCard = memo(
         </View>
         {size !== 'xs' && (
           <Button
-            leftIcon={!following ? 'add' : undefined}
-            variant={following ? 'primary' : 'outline'}
+            leftIcon={!isFollowing ? 'add' : undefined}
+            variant={isFollowing ? 'primary' : 'outline'}
             size="xs"
             onPress={handleFollowPress}
+            loading={isPending}
+            disabled={isPending}
           >
-            {following ? 'Following' : 'Follow'}
+            {isFollowing ? 'Following' : 'Follow'}
           </Button>
         )}
       </Pressable>
