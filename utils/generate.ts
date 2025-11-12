@@ -6,8 +6,8 @@ export const categoriesTabs = (categories?: Category[]) => {
   return [
     { id: 'all', label: 'All' },
     ...categories
-      .filter(cat => cat.is_active)
-      .sort((a, b) => a.display_order - b.display_order)
+      .filter(cat => cat.isActive)
+      .sort((a, b) => a.displayOrder - b.displayOrder)
       .map(cat => ({
         id: cat.id,
         label: cat.name,
