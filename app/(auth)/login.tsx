@@ -8,15 +8,11 @@ import { useAuth } from '@/hooks';
 import { AccessLayout, LoginForm } from '@/components';
 
 const LoginScreen = () => {
-  const { signIn, isSigningIn, signInError } = useAuth();
+  const { signIn, isSigningIn } = useAuth();
 
   const handleSubmit = (data: SignInData) => {
     signIn(data);
   };
-
-  if (signInError) {
-    console.error(signInError);
-  }
 
   return (
     <AccessLayout mode="login" loading={isSigningIn}>

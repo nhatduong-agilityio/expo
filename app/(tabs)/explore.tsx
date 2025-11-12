@@ -1,50 +1,82 @@
 import { FlashList } from '@shopify/flash-list';
-import { useCallback, useMemo, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import {
+  ActivityIndicator,
+  Pressable,
+  RefreshControl,
+  View,
+} from 'react-native';
 import {
   SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
-// Mocks
-import { mockPopularNews, mockTopics } from '@/mocks';
+// Hooks
+import { useCategories, useToggleSubscription, useTrendingNews } from '@/hooks';
+
+// Types
+import { Category, News } from '@/types';
 
 // Components
 import { PostCard, TopicCard } from '@/components';
 import { Text } from '@/components/ui';
+import { getTimeAgo } from '@/utils';
 
-type TopicItem = (typeof mockTopics)[0];
-type NewsItem = (typeof mockPopularNews)[0];
-
-// Define list item types for two separate sections
 type ListItem =
   | { type: 'topic-header'; data: null }
-  | { type: 'topic'; data: TopicItem }
+  | { type: 'topic'; data: Category }
   | { type: 'popular-header'; data: null }
-  | { type: 'news'; data: NewsItem };
+  | { type: 'news'; data: News };
 
 const ExploreScreen = () => {
   const insets = useSafeAreaInsets();
-  const { rt } = useUnistyles();
+  const { theme, rt } = useUnistyles();
 
-  const [topics, setTopics] = useState(mockTopics);
-  const [popularNews] = useState(mockPopularNews);
+  // Fetch categories
+  const {
+    data: categories,
+    isLoading: categoriesLoading,
+    refetch: refetchCategories,
+    isRefetching: categoriesRefetching,
+  } = useCategories();
+
+  // Fetch trending news
+  const {
+    data: trendingNews,
+    isLoading: newsLoading,
+    refetch: refetchNews,
+    isRefetching: newsRefetching,
+  } = useTrendingNews(10);
+
+  // Toggle subscription mutation
+  const { mutate: toggleSubscription } = useToggleSubscription();
+
+  const [subscribedTopics, setSubscribedTopics] = useState<Set<string>>(
+    new Set(),
+  );
 
   const handleSeeAllTopicsPress = () => {
     // TODO: Navigate to see all topics screen
   };
 
-  const handleTopicSave = (topicId: string, saved: boolean) => {
-    setTopics(prevTopics =>
-      prevTopics.map(topic =>
-        topic.id === topicId ? { ...topic, saved } : topic,
-      ),
-    );
-    // TODO: Call API to save/unsave topic
+  const handleTopicSave = (categoryId: string) => {
+    toggleSubscription(categoryId, {
+      onSuccess: data => {
+        setSubscribedTopics(prev => {
+          const newSet = new Set(prev);
+          if (data.subscribed) {
+            newSet.add(categoryId);
+          } else {
+            newSet.delete(categoryId);
+          }
+          return newSet;
+        });
+      },
+    });
   };
 
-  const handleTopicPress = (topicId: string) => {
+  const handleTopicPress = (categoryId: string) => {
     // TODO: Navigate to topic detail screen or filter by topic
   };
 
@@ -52,115 +84,137 @@ const ExploreScreen = () => {
     // TODO: Navigate to news detail screen
   };
 
-  // Combine data into a single list with type indicators
-  const listData = useMemo<ListItem[]>(() => {
-    const items: ListItem[] = [];
+  // Combine data into a single list
+  const listData: ListItem[] = [];
 
-    // Add topic section header
-    items.push({ type: 'topic-header', data: null });
-
-    // Add all topics (categories)
-    topics.forEach(topic => {
-      items.push({ type: 'topic', data: topic });
+  if (!categoriesLoading && categories) {
+    listData.push({ type: 'topic-header', data: null });
+    categories.forEach(category => {
+      listData.push({ type: 'topic', data: category });
     });
+  }
 
-    // Add popular topic section header
-    items.push({ type: 'popular-header', data: null });
-
-    // Add popular news items
-    popularNews.forEach(news => {
-      items.push({ type: 'news', data: news });
+  if (!newsLoading && trendingNews) {
+    listData.push({ type: 'popular-header', data: null });
+    trendingNews.forEach(news => {
+      listData.push({ type: 'news', data: news });
     });
+  }
 
-    return items;
-  }, [topics, popularNews]);
-
-  const renderItem = useCallback(({ item }: { item: ListItem }) => {
-    switch (item.type) {
-      case 'topic-header':
-        return (
-          <View style={styles.sectionHeader}>
-            <Text variant="h3" style={styles.sectionTitle}>
-              Topic
-            </Text>
-            <Pressable
-              onPress={handleSeeAllTopicsPress}
-              hitSlop={8}
-              accessibilityRole="button"
-              accessibilityLabel="See all topics"
-              accessibilityHint="Navigates to a screen with all topics"
-            >
-              <Text variant="body" color="link">
-                See all
+  const renderItem = useCallback(
+    ({ item }: { item: ListItem }) => {
+      switch (item.type) {
+        case 'topic-header':
+          return (
+            <View style={styles.sectionHeader}>
+              <Text variant="h3" style={styles.sectionTitle}>
+                Topic
               </Text>
-            </Pressable>
-          </View>
-        );
+              <Pressable
+                onPress={handleSeeAllTopicsPress}
+                hitSlop={8}
+                accessibilityRole="button"
+                accessibilityLabel="See all topics"
+                accessibilityHint="Navigates to a screen with all topics"
+              >
+                <Text variant="body" color="link">
+                  See all
+                </Text>
+              </Pressable>
+            </View>
+          );
 
-      case 'topic':
-        return (
-          <View style={styles.topicItem}>
-            <TopicCard
-              image={item.data.image}
-              title={item.data.title}
-              description={item.data.description}
-              saved={item.data.saved}
-              onSavePress={saved => handleTopicSave(item.data.id, saved)}
-              onPress={() => handleTopicPress(item.data.id)}
-            />
-          </View>
-        );
+        case 'topic':
+          return (
+            <View style={styles.topicItem}>
+              <TopicCard
+                image={
+                  item.data.icon_url ||
+                  'https://picsum.photos/100/100?random=10'
+                }
+                title={item.data.name}
+                description={item.data.description || ''}
+                saved={subscribedTopics.has(item.data.id)}
+                onSavePress={() => handleTopicSave(item.data.id)}
+                onPress={() => handleTopicPress(item.data.id)}
+              />
+            </View>
+          );
 
-      case 'popular-header':
-        return (
-          <View style={styles.sectionHeader}>
-            <Text variant="h3" style={styles.sectionTitle}>
-              Popular Topic
-            </Text>
-          </View>
-        );
+        case 'popular-header':
+          return (
+            <View style={styles.sectionHeader}>
+              <Text variant="h3" style={styles.sectionTitle}>
+                Popular Topic
+              </Text>
+            </View>
+          );
 
-      case 'news':
-        return (
-          <View style={styles.newsItem}>
-            <PostCard
-              variant="vertical"
-              image={item.data.image}
-              category={item.data.category}
-              title={item.data.title}
-              authorAvatar={item.data.authorAvatar}
-              authorName={item.data.authorName}
-              authorId={item.data.authorId}
-              timeAgo={item.data.timeAgo}
-              onPress={() => handleNewsPress(item.data.id)}
-            />
-          </View>
-        );
+        case 'news':
+          return (
+            <View style={styles.newsItem}>
+              <PostCard
+                id={item.data.id}
+                variant="vertical"
+                image={
+                  item.data.featured_image_url ||
+                  'https://picsum.photos/400/300'
+                }
+                category={item.data.category?.name || 'Uncategorized'}
+                title={item.data.title}
+                authorAvatar={
+                  item.data.author?.avatar_url ||
+                  'https://picsum.photos/100/100'
+                }
+                authorName={item.data.author?.full_name || 'Anonymous'}
+                authorId={item.data.author_id}
+                timeAgo={getTimeAgo(
+                  item.data.published_at || item.data.created_at,
+                )}
+                onPress={() => handleNewsPress(item.data.id)}
+              />
+            </View>
+          );
 
-      default:
-        return null;
-    }
-  }, []);
+        default:
+          return null;
+      }
+    },
+    [subscribedTopics],
+  );
 
   const keyExtractor = useCallback((item: ListItem, index: number) => {
-    if (item.type === 'topic-header') {
-      return 'topic-header';
-    }
-    if (item.type === 'popular-header') {
-      return 'popular-header';
-    }
-    if (item.type === 'topic') {
-      return `topic-${item.data.id}`;
-    }
-    if (item.type === 'news') {
-      return `news-${item.data.id}`;
-    }
+    if (item.type === 'topic-header') return 'topic-header';
+    if (item.type === 'popular-header') return 'popular-header';
+    if (item.type === 'topic') return `topic-${item.data.id}`;
+    if (item.type === 'news') return `news-${item.data.id}`;
     return `item-${index}`;
   }, []);
 
-  const getItemType = useCallback((item: ListItem) => {
-    return item.type;
-  }, []);
+  const getItemType = useCallback((item: ListItem) => item.type, []);
+
+  const isRefreshing = categoriesRefetching || newsRefetching;
+  const isLoading = categoriesLoading || newsLoading;
+
+  const handleRefresh = () => {
+    refetchCategories();
+    refetchNews();
+  };
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={styles.container} edges={['top']} key={rt.themeName}>
+        <View style={styles.header}>
+          <Text variant="h1" style={styles.title}>
+            Explore
+          </Text>
+        </View>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={theme.colors.primary} />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container} edges={['top']} key={rt.themeName}>
@@ -176,9 +230,16 @@ const ExploreScreen = () => {
         getItemType={getItemType}
         contentContainerStyle={[
           styles.listContent,
-          { paddingBottom: insets.bottom },
+          { paddingBottom: insets.bottom + 80 },
         ]}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            tintColor={theme.colors.primary}
+          />
+        }
       />
     </SafeAreaView>
   );
@@ -218,6 +279,11 @@ const styles = StyleSheet.create(theme => ({
   newsItem: {
     paddingHorizontal: theme.spacing.xl,
     marginBottom: theme.spacing.lg,
+  },
+  loadingContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }));
 

@@ -10,6 +10,8 @@ import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { Fragment, useEffect } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 // Constants
 import { ROUTES, SCREENS } from '@/constants';
@@ -33,7 +35,7 @@ const queryClient = new QueryClient({
 });
 
 const RootLayout = () => {
-  const { isAuthenticated, setSession, setProfile, setLoading } =
+  const { isAuthenticated, setSession, setProfile, isLoading, setLoading } =
     useAuthStore();
   const segments = useSegments();
   const router = useRouter();
@@ -49,32 +51,55 @@ const RootLayout = () => {
     if (error) throw error;
   }, [error]);
 
+  // Initialize auth
   useEffect(() => {
-    // Check for existing session
-    authService.getSession().then(session => {
-      setSession(session);
-      if (session?.user) {
-        authService.getProfile(session.user.id).then(setProfile);
+    const initializeAuth = async () => {
+      try {
+        // Check for existing session
+        const session = await authService.getSession();
+        setSession(session);
+
+        if (session?.user) {
+          try {
+            const profile = await authService.getProfile(session.user.id);
+            setProfile(profile);
+          } catch (profileError) {
+            console.error('Failed to fetch profile:', profileError);
+          }
+        }
+      } catch (error) {
+        console.error('Auth initialization error:', error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    });
+    };
+
+    initializeAuth();
 
     // Listen for auth changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
+
       if (session?.user) {
-        const profile = await authService.getProfile(session.user.id);
-        setProfile(profile);
+        try {
+          const profile = await authService.getProfile(session.user.id);
+          setProfile(profile);
+        } catch (error) {
+          console.error('Failed to fetch profile:', error);
+        }
+      } else {
+        setProfile(null);
       }
     });
 
     return () => subscription.unsubscribe();
   }, [setLoading, setProfile, setSession]);
 
+  // Perform navigation
   useEffect(() => {
-    if (!loaded) {
+    if (isLoading) {
       return;
     }
 
@@ -86,18 +111,28 @@ const RootLayout = () => {
       router.replace(ROUTES.LOGIN);
     }
 
-    // Hide splash screen after fonts are loaded and navigation is ready
+    // Hide splash screen
     SplashScreen.hideAsync();
-  }, [loaded, isAuthenticated, segments, router]);
+  }, [isLoading, isAuthenticated, segments, router]);
 
   if (!loaded) {
     return null;
+  }
+
+  // Show loading indicator while checking auth
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
 
   return (
     <Fragment>
       <QueryClientProvider client={queryClient}>
         <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name={SCREENS.AUTH.LAYOUT} />
           <Stack.Screen name={SCREENS.TABS.LAYOUT} />
           <Stack.Screen
             name={SCREENS.SEARCH}
@@ -147,5 +182,14 @@ const RootLayout = () => {
     </Fragment>
   );
 };
+
+const styles = StyleSheet.create(theme => ({
+  loadingContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.background,
+  },
+}));
 
 export default RootLayout;

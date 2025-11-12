@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { FlashList } from '@shopify/flash-list';
 import { useCallback, useMemo, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, View } from 'react-native';
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -9,17 +9,15 @@ import {
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 // Hooks
-import { useDebounce } from '@/hooks';
+import { useBookmarks, useDebounce } from '@/hooks';
 
-// Mocks
-import { mockNews } from '@/mocks';
+// Types
+import { Bookmark } from '@/types';
 
 // Components
 import { PostCard } from '@/components';
 import { SearchBar, Text } from '@/components/ui';
-
-// TODO: Replace with real API data for bookmarked news
-type NewsItem = (typeof mockNews)[0];
+import { getTimeAgo } from '@/utils';
 
 const BookmarkScreen = () => {
   const { theme, rt } = useUnistyles();
@@ -27,35 +25,62 @@ const BookmarkScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearch = useDebounce(searchQuery, 300);
 
-  // TODO: Fetch bookmarked news from API
-  const bookmarkedNews = mockNews;
+  // Fetch bookmarks
+  const { data, isLoading, refetch, isRefetching } = useBookmarks({
+    page: 1,
+    limit: 100,
+  });
 
-  // Filter bookmarked news based on search query
-  const filteredNews = useMemo(
+  const bookmarks = data?.data || [];
+
+  // Filter bookmarks based on search query
+  const filteredBookmarks = useMemo(
     () =>
-      bookmarkedNews.filter(
-        item =>
-          item.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-          item.category.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-          item.authorName.toLowerCase().includes(debouncedSearch.toLowerCase()),
-      ),
-    [debouncedSearch, bookmarkedNews],
+      bookmarks.filter(bookmark => {
+        if (!bookmark.news) return false;
+        const news = bookmark.news;
+        return (
+          news.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+          news.category?.name
+            .toLowerCase()
+            .includes(debouncedSearch.toLowerCase()) ||
+          news.author?.full_name
+            ?.toLowerCase()
+            .includes(debouncedSearch.toLowerCase())
+        );
+      }),
+    [debouncedSearch, bookmarks],
   );
 
   const handleFilterPress = () => {
     // TODO: Open filter modal/sheet
   };
 
-  const renderNewsItem = useCallback(
-    ({ item }: { item: NewsItem }) => (
-      <View style={styles.newsItem}>
-        <PostCard variant="horizontal" {...item} />
-      </View>
-    ),
-    [],
-  );
+  const renderBookmarkItem = useCallback(({ item }: { item: Bookmark }) => {
+    if (!item.news) return null;
 
-  const newsKeyExtractor = useCallback((item: NewsItem) => item.id, []);
+    return (
+      <View style={styles.newsItem}>
+        <PostCard
+          id={item.news.id}
+          variant="horizontal"
+          image={
+            item.news.featured_image_url || 'https://picsum.photos/400/300'
+          }
+          category={item.news.category?.name || 'Uncategorized'}
+          title={item.news.title}
+          authorAvatar={
+            item.news.author?.avatar_url || 'https://picsum.photos/100/100'
+          }
+          authorName={item.news.author?.full_name || 'Anonymous'}
+          authorId={item.news.author_id}
+          timeAgo={getTimeAgo(item.created_at)}
+        />
+      </View>
+    );
+  }, []);
+
+  const bookmarkKeyExtractor = useCallback((item: Bookmark) => item.id, []);
 
   const renderEmptyState = useCallback(
     () => (
@@ -78,6 +103,12 @@ const BookmarkScreen = () => {
     [debouncedSearch, theme],
   );
 
+  const renderLoader = () => (
+    <View style={styles.loadingContainer}>
+      <ActivityIndicator size="large" color={theme.colors.primary} />
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles.container} edges={['top']} key={rt.themeName}>
       {/* Page Title */}
@@ -89,39 +120,36 @@ const BookmarkScreen = () => {
 
       {/* Search Bar with Filter */}
       <View style={styles.searchContainer}>
-        <View style={styles.searchWrapper}>
-          <SearchBar
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            placeholder="Search"
-          />
-        </View>
-        <Pressable
-          onPress={handleFilterPress}
-          style={styles.filterButton}
-          hitSlop={8}
-          accessibilityRole="button"
-          accessibilityLabel="Filter bookmarks"
-          accessibilityHint="Opens a modal to filter your bookmarked articles"
-        >
-          <Ionicons
-            name="options-outline"
-            size={24}
-            color={theme.colors.iconPrimary}
-          />
-        </Pressable>
+        <SearchBar
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          placeholder="Search"
+          rightIcon="options-outline"
+        />
       </View>
-      <FlashList
-        data={filteredNews}
-        renderItem={renderNewsItem}
-        keyExtractor={newsKeyExtractor}
-        ListEmptyComponent={renderEmptyState}
-        contentContainerStyle={[
-          styles.listContent,
-          { paddingBottom: insets.bottom + 80 },
-        ]}
-        showsVerticalScrollIndicator={false}
-      />
+
+      {isLoading ? (
+        renderLoader()
+      ) : (
+        <FlashList
+          data={filteredBookmarks}
+          renderItem={renderBookmarkItem}
+          keyExtractor={bookmarkKeyExtractor}
+          ListEmptyComponent={renderEmptyState}
+          contentContainerStyle={[
+            styles.listContent,
+            { paddingBottom: insets.bottom + 80 },
+          ]}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefetching}
+              onRefresh={refetch}
+              tintColor={theme.colors.primary}
+            />
+          }
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -145,9 +173,6 @@ const styles = StyleSheet.create(theme => ({
     paddingHorizontal: theme.spacing.xl,
     paddingBottom: theme.spacing.lg,
     gap: theme.spacing.sm,
-  },
-  searchWrapper: {
-    flex: 1,
   },
   filterButton: {
     padding: theme.spacing.xs,
@@ -176,6 +201,11 @@ const styles = StyleSheet.create(theme => ({
   },
   emptyTitle: {
     color: theme.colors.textPrimary,
+  },
+  loadingContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }));
 

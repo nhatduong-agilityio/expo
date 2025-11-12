@@ -1,5 +1,9 @@
 import { Profile, SignInData, SignUpData } from '@/types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from './supabase';
+
+const REMEMBER_ME_KEY = '@news_app_remember_me';
+const REMEMBERED_EMAIL_KEY = '@news_app_remembered_email';
 
 export const authService = {
   signUp: async ({ email, password }: SignUpData) => {
@@ -11,18 +15,32 @@ export const authService = {
     return data;
   },
 
-  signIn: async ({ email, password }: SignInData) => {
+  signIn: async ({ email, password, rememberMe }: SignInData) => {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     if (error) throw error;
+
+    // Store remember me preference
+    if (rememberMe) {
+      await AsyncStorage.setItem(REMEMBER_ME_KEY, 'true');
+      await AsyncStorage.setItem(REMEMBERED_EMAIL_KEY, email);
+    } else {
+      await AsyncStorage.removeItem(REMEMBER_ME_KEY);
+      await AsyncStorage.removeItem(REMEMBERED_EMAIL_KEY);
+    }
+
     return data;
   },
 
   signOut: async () => {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
+
+    // Clear remember me data on sign out
+    await AsyncStorage.removeItem(REMEMBER_ME_KEY);
+    await AsyncStorage.removeItem(REMEMBERED_EMAIL_KEY);
   },
 
   getSession: async () => {
@@ -52,5 +70,19 @@ export const authService = {
 
     if (error) throw error;
     return data;
+  },
+
+  // Remember me helpers
+  getRememberedEmail: async (): Promise<string | null> => {
+    const rememberMe = await AsyncStorage.getItem(REMEMBER_ME_KEY);
+    if (rememberMe === 'true') {
+      return await AsyncStorage.getItem(REMEMBERED_EMAIL_KEY);
+    }
+    return null;
+  },
+
+  isRememberMeEnabled: async (): Promise<boolean> => {
+    const rememberMe = await AsyncStorage.getItem(REMEMBER_ME_KEY);
+    return rememberMe === 'true';
   },
 };

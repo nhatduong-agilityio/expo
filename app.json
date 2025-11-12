@@ -25,9 +25,7 @@
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.anonymous.newsapp",
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ]
+      "permissions": ["android.permission.RECORD_AUDIO"]
     },
     "web": {
       "output": "static",
@@ -53,6 +51,12 @@
         {
           "photosPermission": "Allow $(PRODUCT_NAME) to access your photos to select images for your profile.",
           "cameraPermission": "Allow $(PRODUCT_NAME) to open the camera"
+        }
+      ],
+      [
+        "expo-web-browser",
+        {
+          "experimentalLauncherActivity": true
         }
       ]
     ],
