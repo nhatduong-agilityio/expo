@@ -36,7 +36,9 @@ export const SignupForm = memo(
         confirmPassword: '',
         rememberMe: false,
       },
+      mode: 'onBlur',
     });
+
     const isLoading = loading || isSubmitting;
 
     return (
@@ -48,7 +50,7 @@ export const SignupForm = memo(
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               label="Email*"
-              placeholder="Input text"
+              placeholder="Enter your email"
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -69,7 +71,7 @@ export const SignupForm = memo(
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               label="Password*"
-              placeholder="••••••••"
+              placeholder="Enter your password"
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -91,7 +93,7 @@ export const SignupForm = memo(
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               label="Confirm Password*"
-              placeholder="••••••••"
+              placeholder="Confirm your password"
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -135,7 +137,7 @@ export const SignupForm = memo(
           loading={isLoading}
           disabled={isLoading}
         >
-          Signup
+          {isLoading ? 'Creating Account...' : 'Sign Up'}
         </Button>
       </View>
     );

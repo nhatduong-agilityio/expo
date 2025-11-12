@@ -1,6 +1,6 @@
 import { Link, LinkProps } from 'expo-router';
 import { memo, ReactNode, useMemo } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
@@ -15,7 +15,7 @@ type AccessLayoutProps = {
 
 export const AccessLayout = memo(
   ({ loading = false, mode = 'login', children }: AccessLayoutProps) => {
-    const { rt } = useUnistyles();
+    const { rt, theme } = useUnistyles();
     const isLogin = mode === 'login';
 
     const content = useMemo(
@@ -76,6 +76,18 @@ export const AccessLayout = memo(
             </View>
           </View>
         </ScrollView>
+
+        {/* Loading Overlay */}
+        {loading && (
+          <View style={styles.loadingOverlay}>
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color={theme.colors.primary} />
+              <Text variant="body" style={styles.loadingText}>
+                {isLogin ? 'Logging you in...' : 'Creating your account...'}
+              </Text>
+            </View>
+          </View>
+        )}
       </SafeAreaView>
     );
   },
@@ -115,5 +127,26 @@ const styles = StyleSheet.create(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: theme.spacing.sm,
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: theme.colors.overlay,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadingContainer: {
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.borderRadius.lg,
+    padding: theme.spacing['2xl'],
+    alignItems: 'center',
+    gap: theme.spacing.md,
+    ...theme.shadow.xl,
+  },
+  loadingText: {
+    color: theme.colors.textPrimary,
   },
 }));

@@ -218,6 +218,8 @@ const styles = StyleSheet.create(theme => ({
   },
   contentHorizontal: {
     flex: 1,
+    height: '100%',
+    justifyContent: 'space-between',
   },
   category: {
     fontSize: theme.fontSize.xs,

@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 
@@ -13,13 +14,26 @@ import { authService } from '@/services';
 // Stores
 import { useAuthStore } from '@/stores';
 
+const REMEMBER_ME_KEY = '@news_app_remember_me';
+const REMEMBERED_EMAIL_KEY = '@news_app_remembered_email';
+
 export const useAuth = () => {
   const { setSession, setProfile } = useAuthStore();
   const queryClient = useQueryClient();
   const router = useRouter();
 
   const signUpMutation = useMutation({
-    mutationFn: (data: SignUpData) => authService.signUp(data),
+    mutationFn: async (data: SignUpData) => {
+      const result = await authService.signUp(data);
+
+      // Store remember me preference for signup
+      if (data.rememberMe) {
+        await AsyncStorage.setItem(REMEMBER_ME_KEY, 'true');
+        await AsyncStorage.setItem(REMEMBERED_EMAIL_KEY, data.email);
+      }
+
+      return result;
+    },
     onSuccess: () => {
       router.replace(ROUTES.LOGIN);
     },

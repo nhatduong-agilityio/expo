@@ -104,7 +104,7 @@ export const CustomTabBar = ({
 const styles = StyleSheet.create(theme => ({
   tabBar: {
     flexDirection: 'row',
-    backgroundColor: theme.colors.surface,
+    backgroundColor: theme.colors.background,
     borderTopWidth: 1,
     borderTopColor: theme.colors.border,
     paddingVertical: theme.spacing.xs,

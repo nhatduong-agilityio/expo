@@ -1,8 +1,23 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Controller, useForm } from 'react-hook-form';
+import { Alert, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+
+// Constants
+import { ProfileFormData, profileSchema } from '@/constants';
+
+// Hooks
+import { useUpdateProfile } from '@/hooks';
+
+// Services
+import { storageService } from '@/services';
+
+// Stores
+import { useAuthStore } from '@/stores';
 
 // Components
 import { ScreenHeader } from '@/components';
@@ -11,28 +26,124 @@ import { Avatar, Input } from '@/components/ui';
 const EditProfileScreen = () => {
   const router = useRouter();
   const { rt } = useUnistyles();
+  const { profile } = useAuthStore();
+  const [isUploading, setIsUploading] = useState(false);
 
-  const [username, setUsername] = useState('wilsonfranci');
-  const [fullName, setFullName] = useState('Wilson Franci');
-  const [email, setEmail] = useState('example@youremail.com');
-  const [phone, setPhone] = useState('+62-8421-4512-2531');
-  const [bio, setBio] = useState(
-    'Lorem Ipsum is simply dummy text of the printing',
-  );
-  const [website, setWebsite] = useState('https://yourwebsite.com');
+  const { mutate: updateProfile, isPending } = useUpdateProfile();
+
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors, isDirty },
+  } = useForm<ProfileFormData>({
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      username: profile?.username || '',
+      full_name: profile?.full_name || '',
+      email: profile?.email || '',
+      phone_number: profile?.phone_number || '',
+      bio: profile?.bio || '',
+      website: profile?.website || '',
+      avatar_url: profile?.avatar_url || '',
+    },
+  });
 
   const handleBackPress = () => {
-    router.back();
+    if (isDirty) {
+      Alert.alert(
+        'Discard changes?',
+        'You have unsaved changes. Are you sure you want to leave?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'Discard',
+            style: 'destructive',
+            onPress: () => router.back(),
+          },
+        ],
+      );
+    } else {
+      router.back();
+    }
   };
 
-  const handleSavePress = () => {
-    // Handle save logic
-    router.back();
+  const handleSavePress = handleSubmit(data => {
+    updateProfile(data, {
+      onSuccess: () => {
+        Alert.alert('Success', 'Profile updated successfully!', [
+          {
+            text: 'OK',
+            onPress: () => router.back(),
+          },
+        ]);
+      },
+      onError: error => {
+        console.error('Update profile error:', error);
+        Alert.alert('Error', 'Failed to update profile. Please try again.');
+      },
+    });
+  });
+
+  const handleAvatarChange = async (uri: string) => {
+    try {
+      setIsUploading(true);
+
+      // Upload image to Supabase Storage
+      const publicUrl = await storageService.uploadImage(
+        {
+          uri,
+          type: 'image/jpeg',
+        },
+        'avatars',
+      );
+
+      // Update form value
+      setValue('avatar_url', publicUrl, { shouldDirty: true });
+
+      Alert.alert('Success', 'Avatar uploaded successfully!');
+    } catch (error) {
+      console.error('Upload error:', error);
+      Alert.alert(
+        'Upload Failed',
+        'Failed to upload avatar. Please try again.',
+      );
+    } finally {
+      setIsUploading(false);
+    }
   };
 
-  const handleAvatarChange = (uri: string) => {
-    // TODO : Handle avatar change
+  const handlePickImage = async () => {
+    try {
+      // Request permissions
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+      if (status !== 'granted') {
+        Alert.alert(
+          'Permission Required',
+          'Please grant permission to access your photo library.',
+        );
+        return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+      });
+
+      if (!result.canceled && result.assets?.[0]?.uri) {
+        await handleAvatarChange(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.error('Image picker error:', error);
+      Alert.alert('Error', 'Failed to pick image. Please try again.');
+    }
   };
+
+  const isLoading = isPending || isUploading;
 
   return (
     <SafeAreaView style={styles.container} edges={['top']} key={rt.themeName}>
@@ -55,64 +166,123 @@ const EditProfileScreen = () => {
       >
         {/* Avatar */}
         <View style={styles.avatarContainer}>
-          <Avatar
-            source="https://picsum.photos/200/200?random=1"
-            size="xl"
-            editable
-            onChangeImage={handleAvatarChange}
+          <Controller
+            control={control}
+            name="avatar_url"
+            render={({ field: { value } }) => (
+              <Avatar
+                source={value || null}
+                size="xl"
+                editable
+                onChangeImage={handlePickImage}
+                fallbackLabel={profile?.full_name?.charAt(0) || 'U'}
+              />
+            )}
           />
         </View>
 
         {/* Form Fields */}
         <View style={styles.form}>
-          <Input
-            label="Username"
-            value={username}
-            onChangeText={setUsername}
-            placeholder="Username"
-            autoCapitalize="none"
+          <Controller
+            control={control}
+            name="username"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                label="Username"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                error={errors.username?.message}
+                placeholder="Username"
+                autoCapitalize="none"
+                disabled={isLoading}
+              />
+            )}
           />
 
-          <Input
-            label="Full Name"
-            value={fullName}
-            onChangeText={setFullName}
-            placeholder="Full Name"
+          <Controller
+            control={control}
+            name="full_name"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                label="Full Name"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                error={errors.full_name?.message}
+                placeholder="Full Name"
+                disabled={isLoading}
+              />
+            )}
           />
 
-          <Input
-            label="Email Address*"
-            value={email}
-            onChangeText={setEmail}
-            placeholder="Email Address"
-            keyboardType="email-address"
-            autoCapitalize="none"
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { value } }) => (
+              <Input
+                label="Email Address*"
+                value={value}
+                placeholder="Email Address"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                disabled
+                editable={false}
+              />
+            )}
           />
 
-          <Input
-            label="Phone Number*"
-            value={phone}
-            onChangeText={setPhone}
-            placeholder="Phone Number"
-            keyboardType="phone-pad"
+          <Controller
+            control={control}
+            name="phone_number"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                label="Phone Number"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                error={errors.phone_number?.message}
+                placeholder="+1234567890"
+                keyboardType="phone-pad"
+                disabled={isLoading}
+              />
+            )}
           />
 
-          <Input
-            label="Bio"
-            value={bio}
-            onChangeText={setBio}
-            placeholder="Bio"
-            multiline
-            numberOfLines={3}
+          <Controller
+            control={control}
+            name="bio"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                label="Bio"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                error={errors.bio?.message}
+                placeholder="Tell us about yourself"
+                multiline
+                numberOfLines={3}
+                disabled={isLoading}
+              />
+            )}
           />
 
-          <Input
-            label="Website"
-            value={website}
-            onChangeText={setWebsite}
-            placeholder="Website"
-            keyboardType="url"
-            autoCapitalize="none"
+          <Controller
+            control={control}
+            name="website"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                label="Website"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                error={errors.website?.message}
+                placeholder="https://yourwebsite.com"
+                keyboardType="url"
+                autoCapitalize="none"
+                disabled={isLoading}
+              />
+            )}
           />
         </View>
       </ScrollView>

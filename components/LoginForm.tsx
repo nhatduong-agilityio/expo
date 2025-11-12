@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
@@ -7,6 +7,9 @@ import { z } from 'zod';
 
 // Constants
 import { loginSchema } from '@/constants';
+
+// Services
+import { authService } from '@/services';
 
 // Components
 import { Button, Checkbox, Input } from './ui';
@@ -26,6 +29,7 @@ export const LoginForm = memo(
     const {
       control,
       handleSubmit,
+      setValue,
       formState: { errors, isSubmitting },
     } = useForm<LoginFormData>({
       resolver: zodResolver(loginSchema),
@@ -34,9 +38,25 @@ export const LoginForm = memo(
         password: '',
         rememberMe: false,
       },
+      mode: 'onBlur',
     });
 
     const isLoading = isSubmitting || loading;
+
+    // Load remembered email on mount
+    useEffect(() => {
+      const loadRememberedData = async () => {
+        const rememberedEmail = await authService.getRememberedEmail();
+        const isRememberMe = await authService.isRememberMeEnabled();
+
+        if (rememberedEmail) {
+          setValue('email', rememberedEmail);
+          setValue('rememberMe', isRememberMe);
+        }
+      };
+
+      loadRememberedData();
+    }, [setValue]);
 
     return (
       <View style={styles.container}>
@@ -47,7 +67,7 @@ export const LoginForm = memo(
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               label="Email*"
-              placeholder="Input text"
+              placeholder="Enter your email"
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -68,7 +88,7 @@ export const LoginForm = memo(
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               label="Password*"
-              placeholder="••••••••"
+              placeholder="Enter your password"
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -83,7 +103,7 @@ export const LoginForm = memo(
           )}
         />
 
-        {/* Remember Me & Forgot Password */}
+        {/* Remember Me */}
         <View style={styles.row}>
           <Controller
             control={control}
@@ -108,7 +128,7 @@ export const LoginForm = memo(
           loading={isLoading}
           disabled={isLoading}
         >
-          Login
+          {isLoading ? 'Logging in...' : 'Login'}
         </Button>
       </View>
     );

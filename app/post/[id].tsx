@@ -1,71 +1,126 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image } from 'expo-image';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 // Constants
 import { BLUR_HASH, ROUTES } from '@/constants';
 
-// Mock data
-import { mockNews } from '@/mocks';
+// Hooks
+import {
+  useIncrementViewCount,
+  useIsBookmarked,
+  useIsLiked,
+  useNewsDetail,
+  useToggleBookmark,
+  useToggleLike,
+} from '@/hooks';
 
 // Utils
-import { formatNumber } from '@/utils';
+import { formatNumber, getTimeAgo } from '@/utils';
 
 // Components
 import { AuthorCard, ScreenHeader } from '@/components';
 import { Text } from '@/components/ui';
 
 const PostDetailScreen = () => {
-  const { theme } = useUnistyles();
+  const { theme, rt } = useUnistyles();
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
+
+  // Fetch post data
+  const { data: post, isLoading } = useNewsDetail(id!);
+
+  // Check if liked/bookmarked
+  const { data: isLikedData } = useIsLiked(id!);
+  const { data: isBookmarkedData } = useIsBookmarked(id!);
+
+  // Mutations
+  const { mutate: toggleLike } = useToggleLike();
+  const { mutate: toggleBookmark } = useToggleBookmark();
+  const { mutate: incrementView } = useIncrementViewCount();
+
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const [likesCount, setLikesCount] = useState(24500);
+  const [likesCount, setLikesCount] = useState(0);
 
-  // Get post data from id
-  const post = mockNews.find(p => p.id === id) || mockNews[0];
+  useEffect(() => {
+    if (isLikedData !== undefined) {
+      setIsLiked(isLikedData);
+    }
+  }, [isLikedData]);
+
+  useEffect(() => {
+    if (isBookmarkedData !== undefined) {
+      setIsBookmarked(isBookmarkedData);
+    }
+  }, [isBookmarkedData]);
+
+  useEffect(() => {
+    if (post) {
+      setLikesCount(post.likes_count);
+      // Increment view count when post is loaded
+      incrementView(post.id);
+    }
+  }, [post]);
 
   const handleBackPress = () => {
     router.back();
   };
 
   const handleSharePress = () => {
-    // TODO: Handle share press
+    // TODO: Implement share functionality
   };
 
   const handleMenuPress = () => {
-    //  TODO: Handle menu press
+    // TODO: Implement menu
   };
 
   const handleLikePress = () => {
     setIsLiked(!isLiked);
     setLikesCount(prev => (isLiked ? prev - 1 : prev + 1));
+    toggleLike(id!);
   };
 
   const handleCommentPress = () => {
-    // TODO: Handle comment press
+    // TODO: Navigate to comments
   };
 
   const handleBookmarkPress = () => {
     setIsBookmarked(!isBookmarked);
+    toggleBookmark(id!);
   };
 
   const handleAuthorPress = (authorId: string) => {
     router.push(ROUTES.AUTHOR_PROFILE(authorId));
   };
 
-  const imageSource =
-    typeof post.image === 'string' ? { uri: post.image } : post.image;
+  if (isLoading || !post) {
+    return (
+      <SafeAreaView style={styles.container} edges={['top']} key={rt.themeName}>
+        <ScreenHeader
+          title=""
+          leftIcon="arrow-back"
+          onLeftPress={handleBackPress}
+          showLeftIcon
+        />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={theme.colors.primary} />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  const imageSource = post.featured_image_url
+    ? { uri: post.featured_image_url }
+    : require('@/assets/images/react-logo.png');
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={['top']} key={rt.themeName}>
       {/* Header */}
-
       <ScreenHeader
         title=""
         leftIcon="arrow-back"
@@ -104,7 +159,6 @@ const PostDetailScreen = () => {
         onLeftPress={handleBackPress}
         showLeftIcon
       />
-      <View style={styles.header}></View>
 
       <ScrollView
         style={styles.content}
@@ -114,11 +168,11 @@ const PostDetailScreen = () => {
         {/* Author Info */}
         <View style={styles.authorSection}>
           <AuthorCard
-            avatar={post.authorAvatar}
-            name={post.authorName}
-            followers={post.timeAgo}
-            following={true}
-            onPress={() => handleAuthorPress(post.authorId)}
+            avatar={post.author?.avatar_url || 'https://picsum.photos/100/100'}
+            name={post.author?.full_name || 'Anonymous'}
+            followers={getTimeAgo(post.published_at || post.created_at)}
+            following={false}
+            onPress={() => handleAuthorPress(post.author_id)}
           />
         </View>
 
@@ -134,7 +188,9 @@ const PostDetailScreen = () => {
 
         {/* Category */}
         <View style={styles.categoryContainer}>
-          <Text style={styles.category}>{post.category}</Text>
+          <Text style={styles.category}>
+            {post.category?.name || 'Uncategorized'}
+          </Text>
         </View>
 
         {/* Title */}
@@ -145,20 +201,7 @@ const PostDetailScreen = () => {
         {/* Content */}
         <View style={styles.contentSection}>
           <Text variant="body" style={styles.paragraph}>
-            Ukrainian President Volodymyr Zelensky has accused European
-            countries that continue to buy Russian oil of &quot;earning their
-            money in other people&apos;s blood&quot;.
-          </Text>
-          <Text variant="body" style={styles.paragraph}>
-            In an interview with the BBC, President Zelensky singled out Germany
-            and Hungary, accusing them of blocking efforts to embargo energy
-            sales, from which Russia stands to make up to £250bn ($326bn) this
-            year.
-          </Text>
-          <Text variant="body" style={styles.paragraph}>
-            He said he was shocked by the response of some Western leaders, who
-            he said were more interested in &quot;business as usual&quot; than
-            in stopping the war.
+            {post.content}
           </Text>
         </View>
 
@@ -199,7 +242,7 @@ const PostDetailScreen = () => {
                 color={theme.colors.iconPrimary}
               />
               <Text variant="body" style={styles.engagementText}>
-                1K
+                {formatNumber(post.comments_count)}
               </Text>
             </Pressable>
           </View>
@@ -236,13 +279,6 @@ const styles = StyleSheet.create(theme => ({
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: theme.spacing.xl,
-    paddingVertical: theme.spacing.md,
   },
   headerButton: {
     padding: theme.spacing.xs,
@@ -311,6 +347,11 @@ const styles = StyleSheet.create(theme => ({
   },
   bookmarkButton: {
     padding: theme.spacing.xs,
+  },
+  loadingContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }));
 

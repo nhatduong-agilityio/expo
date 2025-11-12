@@ -64,7 +64,7 @@ const styles = StyleSheet.create(theme => ({
     justifyContent: 'space-between',
     paddingVertical: theme.spacing.lg,
     paddingHorizontal: theme.spacing.xl,
-    backgroundColor: theme.colors.surface,
+    backgroundColor: theme.colors.background,
   },
   pressed: {
     opacity: theme.opacity.pressed,
