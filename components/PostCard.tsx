@@ -3,10 +3,13 @@ import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { memo } from 'react';
 import { Pressable, PressableProps, View } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 // Constants
 import { BLUR_HASH, DEFAULT_AVATAR, ROUTES } from '@/constants';
+
+// Hooks
+import { useOptimisticBookmark, useOptimisticLike } from '@/hooks';
 
 // Utils
 import { getTimeAgo } from '@/utils';
@@ -36,6 +39,22 @@ export const PostCard = memo(
     ...rest
   }: PostCardProps) => {
     const router = useRouter();
+    const { theme } = useUnistyles();
+
+    // Optimistic bookmark
+    const {
+      isBookmarked,
+      isPending: isBookmarkPending,
+      toggleBookmark,
+    } = useOptimisticBookmark(post.id, post.isBookmarked);
+
+    // Optimistic like
+    const {
+      isLiked,
+      likesCount,
+      isPending: isLikePending,
+      toggleLike,
+    } = useOptimisticLike(post.id, post.isLiked, post.likesCount);
 
     styles.useVariants({
       variant,
@@ -50,6 +69,62 @@ export const PostCard = memo(
     const handleAuthorPress = () => {
       router.push(ROUTES.AUTHOR_PROFILE(post.authorId));
     };
+
+    const handleBookmarkPress = (e: any) => {
+      e.stopPropagation();
+      toggleBookmark();
+    };
+
+    const handleLikePress = (e: any) => {
+      e.stopPropagation();
+      toggleLike();
+    };
+
+    const renderActions = () => (
+      <View style={styles.actions}>
+        <Pressable
+          onPress={handleLikePress}
+          style={styles.actionButton}
+          hitSlop={8}
+          disabled={isLikePending}
+          accessibilityRole="button"
+          accessibilityLabel={isLiked ? 'Unlike post' : 'Like post'}
+          accessibilityHint={isLiked ? 'Unlikes the post' : 'Likes the post'}
+        >
+          <Ionicons
+            name={isLiked ? 'heart' : 'heart-outline'}
+            size={20}
+            color={isLiked ? theme.colors.error : theme.colors.iconSecondary}
+            style={[isLikePending && { opacity: theme.opacity.disabled }]}
+          />
+        </Pressable>
+
+        <Pressable
+          onPress={handleBookmarkPress}
+          style={styles.actionButton}
+          hitSlop={8}
+          disabled={isBookmarkPending}
+          accessibilityRole="button"
+          accessibilityLabel={
+            isBookmarked ? 'Remove bookmark' : 'Bookmark post'
+          }
+          accessibilityHint={
+            isBookmarked
+              ? 'Removes the post from bookmarks'
+              : 'Bookmarks the post'
+          }
+        >
+          <Ionicons
+            name={isBookmarked ? 'bookmark' : 'bookmark-outline'}
+            size={20}
+            color={
+              isBookmarked ? theme.colors.primary : theme.colors.iconSecondary
+            }
+            style={[isBookmarkPending && { opacity: theme.opacity.disabled }]}
+          />
+        </Pressable>
+      </View>
+    );
 
     const renderMenuButton = () => (
       <Pressable
@@ -93,15 +168,19 @@ export const PostCard = memo(
             accessibilityIgnoresInvertColors
           />
           <View style={styles.contentHorizontal}>
-            <Text style={styles.category} numberOfLines={1}>
-              {post.category?.name}
-            </Text>
+            <View style={styles.headerRow}>
+              <Text style={styles.category} numberOfLines={1}>
+                {post.category?.name}
+              </Text>
+              {renderActions()}
+            </View>
             <Text variant="body" style={styles.title} numberOfLines={2}>
               {post.title}
             </Text>
             <View style={styles.footer}>
               <View style={styles.authorInfo}>
                 <AuthorCard
+                  authorId={post.authorId}
                   avatar={post.author?.avatarUrl || DEFAULT_AVATAR}
                   name={post.author?.fullName || 'Unknown'}
                   size="xs"
@@ -110,10 +189,14 @@ export const PostCard = memo(
                   onPress={handleAuthorPress}
                 />
               </View>
-              <View style={styles.timeContainer}>
-                <Text style={styles.timeAgo} numberOfLines={1}>
-                  {getTimeAgo(post.createdAt)}
-                </Text>
+              <View style={styles.footerRight}>
+                <View style={styles.timeContainer}>
+                  <Ionicons name="time-outline" size={14} />
+                  <Text style={styles.timeAgo} numberOfLines={1}>
+                    {getTimeAgo(post.createdAt)}
+                  </Text>
+                </View>
+
                 {renderMenuButton()}
               </View>
             </View>
@@ -137,15 +220,19 @@ export const PostCard = memo(
           accessibilityIgnoresInvertColors
         />
         <View style={styles.contentVertical}>
-          <Text style={styles.category} numberOfLines={1}>
-            {post.category?.name}
-          </Text>
+          <View style={styles.headerRow}>
+            <Text style={styles.category} numberOfLines={1}>
+              {post.category?.name}
+            </Text>
+            {renderActions()}
+          </View>
           <Text style={styles.title} numberOfLines={2}>
             {post.title}
           </Text>
           <View style={styles.footer}>
             <View style={styles.authorInfo}>
               <AuthorCard
+                authorId={post.authorId}
                 avatar={post.author?.avatarUrl || DEFAULT_AVATAR}
                 name={post.author?.fullName || 'Unknown'}
                 size="xs"
@@ -154,10 +241,13 @@ export const PostCard = memo(
                 onPress={handleAuthorPress}
               />
             </View>
-            <View style={styles.timeContainer}>
-              <Text style={styles.timeAgo} numberOfLines={1}>
-                {getTimeAgo(post.createdAt)}
-              </Text>
+            <View style={styles.footerRight}>
+              <View style={styles.timeContainer}>
+                <Ionicons name="time-outline" size={14} />
+                <Text style={styles.timeAgo} numberOfLines={1}>
+                  {getTimeAgo(post.createdAt)}
+                </Text>
+              </View>
               {renderMenuButton()}
             </View>
           </View>
@@ -201,7 +291,7 @@ const styles = StyleSheet.create(theme => ({
     backgroundColor: theme.colors.backgroundSecondary,
   },
   contentVertical: {
-    padding: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
     gap: theme.spacing.xs,
   },
   contentHorizontal: {
@@ -209,10 +299,24 @@ const styles = StyleSheet.create(theme => ({
     height: '100%',
     justifyContent: 'space-between',
   },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   category: {
     fontSize: theme.fontSize.xs,
     color: theme.colors.textSecondary,
     textTransform: 'capitalize',
+    flex: 1,
+  },
+  actions: {
+    flexDirection: 'row',
+    gap: theme.spacing.sm,
+    alignItems: 'center',
+  },
+  actionButton: {
+    padding: theme.spacing.xs,
   },
   title: {
     color: theme.colors.textPrimary,
@@ -227,11 +331,16 @@ const styles = StyleSheet.create(theme => ({
     flex: 1,
     alignItems: 'center',
   },
-  timeContainer: {
+  footerRight: {
     flex: 2,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+  },
+  timeContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.xs,
   },
   timeAgo: {
     fontSize: theme.fontSize.xs,
