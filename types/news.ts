@@ -1,18 +1,18 @@
 export interface Profile {
   id: string;
   username: string | null;
-  full_name: string | null;
+  fullName: string | null;
   email: string;
-  phone_number: string | null;
-  avatar_url: string | null;
+  phoneNumber: string | null;
+  avatarUrl: string | null;
   bio: string | null;
   website: string | null;
-  followers_count: number;
-  following_count: number;
-  news_count: number;
-  profile_completed: boolean;
-  created_at: string;
-  updated_at: string;
+  followersCount: number;
+  followingCount: number;
+  newsCount: number;
+  profileCompleted: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Category {
@@ -20,91 +20,91 @@ export interface Category {
   name: string;
   slug: string;
   description: string | null;
-  icon_url: string | null;
-  display_order: number;
-  is_active: boolean;
-  created_at: string;
+  iconUrl: string | null;
+  displayOrder: number;
+  isActive: boolean;
+  createdAt: string;
 }
 
 export interface News {
   id: string;
-  author_id: string;
-  category_id: string | null;
+  authorId: string;
+  categoryId: string | null;
   title: string;
   slug: string;
   content: string;
   excerpt: string | null;
-  featured_image_url: string | null;
+  featuredImageUrl: string | null;
   status: 'draft' | 'published' | 'archived';
-  is_trending: boolean;
-  views_count: number;
-  likes_count: number;
-  bookmarks_count: number;
-  comments_count: number;
-  published_at: string | null;
-  created_at: string;
-  updated_at: string;
+  isTrending: boolean;
+  viewsCount: number;
+  likesCount: number;
+  bookmarksCount: number;
+  commentsCount: number;
+  publishedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
   // Relations
   author?: Profile;
   category?: Category;
-  is_bookmarked?: boolean;
-  is_liked?: boolean;
+  isBookmarked?: boolean;
+  isLiked?: boolean;
 }
 
 export interface Bookmark {
   id: string;
-  user_id: string;
-  news_id: string;
-  created_at: string;
+  userId: string;
+  newsId: string;
+  createdAt: string;
   news?: News;
 }
 
 export interface Like {
   id: string;
-  user_id: string;
-  news_id: string;
-  created_at: string;
+  userId: string;
+  newsId: string;
+  createdAt: string;
 }
 
 export interface Follow {
   id: string;
-  follower_id: string;
-  following_id: string;
-  created_at: string;
+  followerId: string;
+  followingId: string;
+  createdAt: string;
   follower?: Profile;
   following?: Profile;
 }
 
 export interface Comment {
   id: string;
-  news_id: string;
-  user_id: string;
-  parent_id: string | null;
+  newsId: string;
+  userId: string;
+  parentId: string | null;
   content: string;
-  is_edited: boolean;
-  created_at: string;
-  updated_at: string;
+  isEdited: boolean;
+  createdAt: string;
+  updatedAt: string;
   user?: Profile;
   replies?: Comment[];
 }
 
 export interface TopicSubscription {
   id: string;
-  user_id: string;
-  category_id: string;
-  created_at: string;
+  userId: string;
+  categoryId: string;
+  createdAt: string;
   category?: Category;
 }
 
 export interface Notification {
   id: string;
-  user_id: string;
+  userId: string;
   type: 'like' | 'comment' | 'follow' | 'mention' | 'news_published';
   title: string;
   message: string;
   data: Record<string, any> | null;
-  is_read: boolean;
-  created_at: string;
+  isRead: boolean;
+  createdAt: string;
 }
 
 // Request/Response types
@@ -112,8 +112,8 @@ export interface NewsFilters {
   category?: string;
   search?: string;
   status?: 'draft' | 'published' | 'archived';
-  is_trending?: boolean;
-  author_id?: string;
+  isTrending?: boolean;
+  authorId?: string;
 }
 
 export interface PaginationParams {
@@ -133,8 +133,8 @@ export interface CreateNewsInput {
   title: string;
   content: string;
   excerpt?: string;
-  category_id?: string;
-  featured_image_url?: string;
+  categoryId?: string;
+  featuredImageUrl?: string;
   status?: 'draft' | 'published';
 }
 
@@ -144,9 +144,9 @@ export interface UpdateNewsInput extends Partial<CreateNewsInput> {
 
 export interface UpdateProfileInput {
   username?: string;
-  full_name?: string;
-  phone_number?: string;
-  avatar_url?: string;
+  fullName?: string;
+  phoneNumber?: string;
+  avatarUrl?: string;
   bio?: string;
   website?: string;
 }

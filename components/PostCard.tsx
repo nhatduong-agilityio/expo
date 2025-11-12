@@ -2,31 +2,25 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { memo } from 'react';
-import {
-  ImageSourcePropType,
-  Pressable,
-  PressableProps,
-  View,
-} from 'react-native';
+import { Pressable, PressableProps, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 // Constants
-import { BLUR_HASH, ROUTES } from '@/constants';
+import { BLUR_HASH, DEFAULT_AVATAR, ROUTES } from '@/constants';
+
+// Utils
+import { getTimeAgo } from '@/utils';
+
+// Types
+import { News } from '@/types';
 
 // Components
 import { AuthorCard } from './AuthorCard';
 import { Text } from './ui';
 
 export type PostCardProps = Omit<PressableProps, 'children'> & {
-  id?: string;
+  post: News;
   variant?: 'vertical' | 'horizontal';
-  image: ImageSourcePropType | string;
-  category: string;
-  title: string;
-  authorAvatar: ImageSourcePropType | string;
-  authorName: string;
-  authorId: string;
-  timeAgo: string;
   following?: boolean;
   onFollowPress?: (following: boolean) => void;
   onMenuPress?: () => void;
@@ -34,15 +28,8 @@ export type PostCardProps = Omit<PressableProps, 'children'> & {
 
 export const PostCard = memo(
   ({
-    id,
+    post,
     variant = 'vertical',
-    image,
-    category,
-    title,
-    authorAvatar,
-    authorName,
-    authorId,
-    timeAgo,
     following = false,
     onFollowPress,
     onMenuPress,
@@ -55,13 +42,13 @@ export const PostCard = memo(
     });
 
     const handlePress = () => {
-      if (id) {
-        router.push(ROUTES.POST_DETAIL(id));
+      if (post.id) {
+        router.push(ROUTES.POST_DETAIL(post.id));
       }
     };
 
     const handleAuthorPress = () => {
-      router.push(ROUTES.AUTHOR_PROFILE(authorId));
+      router.push(ROUTES.AUTHOR_PROFILE(post.authorId));
     };
 
     const renderMenuButton = () => (
@@ -80,10 +67,13 @@ export const PostCard = memo(
       </Pressable>
     );
 
-    const imageSource = typeof image === 'string' ? { uri: image } : image;
+    const imageSource =
+      typeof post.featuredImageUrl === 'string'
+        ? { uri: post.featuredImageUrl }
+        : DEFAULT_AVATAR;
     const accessibilityProps = {
       accessibilityRole: 'button' as const,
-      accessibilityLabel: `${title} by ${authorName}`,
+      accessibilityLabel: `${post.title} by ${post.author?.fullName}`,
       accessibilityHint: 'Opens the post details',
     };
 
@@ -99,22 +89,21 @@ export const PostCard = memo(
             source={imageSource}
             style={styles.imageHorizontal}
             contentFit="cover"
-            transition={200}
             placeholder={{ blurhash: BLUR_HASH }}
             accessibilityIgnoresInvertColors
           />
           <View style={styles.contentHorizontal}>
             <Text style={styles.category} numberOfLines={1}>
-              {category}
+              {post.category?.name}
             </Text>
             <Text variant="body" style={styles.title} numberOfLines={2}>
-              {title}
+              {post.title}
             </Text>
             <View style={styles.footer}>
               <View style={styles.authorInfo}>
                 <AuthorCard
-                  avatar={authorAvatar}
-                  name={authorName}
+                  avatar={post.author?.avatarUrl || DEFAULT_AVATAR}
+                  name={post.author?.fullName || 'Unknown'}
                   size="xs"
                   following={following}
                   onFollowPress={onFollowPress}
@@ -123,7 +112,7 @@ export const PostCard = memo(
               </View>
               <View style={styles.timeContainer}>
                 <Text style={styles.timeAgo} numberOfLines={1}>
-                  {timeAgo}
+                  {getTimeAgo(post.createdAt)}
                 </Text>
                 {renderMenuButton()}
               </View>
@@ -144,22 +133,21 @@ export const PostCard = memo(
           source={imageSource}
           style={styles.imageVertical}
           contentFit="cover"
-          transition={200}
           placeholder={{ blurhash: BLUR_HASH }}
           accessibilityIgnoresInvertColors
         />
         <View style={styles.contentVertical}>
           <Text style={styles.category} numberOfLines={1}>
-            {category}
+            {post.category?.name}
           </Text>
           <Text style={styles.title} numberOfLines={2}>
-            {title}
+            {post.title}
           </Text>
           <View style={styles.footer}>
             <View style={styles.authorInfo}>
               <AuthorCard
-                avatar={authorAvatar}
-                name={authorName}
+                avatar={post.author?.avatarUrl || DEFAULT_AVATAR}
+                name={post.author?.fullName || 'Unknown'}
                 size="xs"
                 following={following}
                 onFollowPress={onFollowPress}
@@ -168,7 +156,7 @@ export const PostCard = memo(
             </View>
             <View style={styles.timeContainer}>
               <Text style={styles.timeAgo} numberOfLines={1}>
-                {timeAgo}
+                {getTimeAgo(post.createdAt)}
               </Text>
               {renderMenuButton()}
             </View>

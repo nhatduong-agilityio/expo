@@ -1,4 +1,5 @@
 import { Like } from '@/types';
+import { snakeToCamel } from '@/utils';
 import { supabase } from './supabase';
 
 export const likeService = {
@@ -24,7 +25,7 @@ export const likeService = {
       .single();
 
     if (error) throw error;
-    return data;
+    return snakeToCamel(data);
   },
 
   // Remove like

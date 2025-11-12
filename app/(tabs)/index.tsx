@@ -23,10 +23,12 @@ import { useCategories, useInfiniteNews } from '@/hooks';
 // Types
 import { News } from '@/types';
 
+// Utils
+import { categoriesTabs } from '@/utils';
+
 // Components
 import { PostCard } from '@/components';
 import { SearchBar, Tabs, Text } from '@/components/ui';
-import { categoriesTabs, getTimeAgo } from '@/utils';
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -79,19 +81,7 @@ const HomeScreen = () => {
   const renderNewsItem = useCallback(
     ({ item }: { item: News }) => (
       <View style={styles.newsItem}>
-        <PostCard
-          id={item.id}
-          variant="horizontal"
-          image={item.featured_image_url || 'https://picsum.photos/400/300'}
-          category={item.category?.name || 'Uncategorized'}
-          title={item.title}
-          authorAvatar={
-            item.author?.avatar_url || 'https://picsum.photos/100/100'
-          }
-          authorName={item.author?.full_name || 'Anonymous'}
-          authorId={item.author_id}
-          timeAgo={getTimeAgo(item.published_at || item.created_at)}
-        />
+        <PostCard post={item} variant="horizontal" />
       </View>
     ),
     [],
@@ -134,7 +124,6 @@ const HomeScreen = () => {
           source={require('@/assets/images/logo.png')}
           style={styles.logo}
           contentFit="cover"
-          transition={200}
           placeholder={{ blurhash: BLUR_HASH }}
           accessibilityIgnoresInvertColors
         />

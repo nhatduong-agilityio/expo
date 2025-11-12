@@ -1,5 +1,6 @@
-import { supabase } from './supabase';
 import { Bookmark, PaginatedResponse, PaginationParams } from '@/types';
+import { snakeToCamel } from '@/utils';
+import { supabase } from './supabase';
 
 export const bookmarkService = {
   // Get user's bookmarks
@@ -30,7 +31,7 @@ export const bookmarkService = {
     if (error) throw error;
 
     return {
-      data: data || [],
+      data: snakeToCamel(data) || [],
       count: count || 0,
       page: pagination.page,
       limit: pagination.limit,
@@ -60,7 +61,7 @@ export const bookmarkService = {
       .single();
 
     if (error) throw error;
-    return data;
+    return snakeToCamel(data);
   },
 
   // Remove bookmark

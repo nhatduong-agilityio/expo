@@ -1,4 +1,5 @@
 import { Profile, SignInData, SignUpData } from '@/types';
+import { snakeToCamel } from '@/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from './supabase';
 
@@ -57,7 +58,7 @@ export const authService = {
       .single();
 
     if (error) throw error;
-    return data;
+    return snakeToCamel(data);
   },
 
   updateProfile: async (userId: string, updates: never): Promise<Profile> => {
@@ -69,7 +70,7 @@ export const authService = {
       .single();
 
     if (error) throw error;
-    return data;
+    return snakeToCamel(data);
   },
 
   // Remember me helpers
