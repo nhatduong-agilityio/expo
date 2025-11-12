@@ -34,8 +34,13 @@ const AuthorProfileScreen = () => {
 
   // Fetch author profile
   useEffect(() => {
+    const fetchAuthor = async () => {
+      const author = await authService.getProfile(authorId);
+      setAuthor(author);
+    };
+
     if (authorId) {
-      authService.getProfile(authorId).then(setAuthor);
+      fetchAuthor();
     }
   }, [authorId]);
 
@@ -54,7 +59,7 @@ const AuthorProfileScreen = () => {
 
   // Fetch author's news
   const { data, isLoading, refetch, isRefetching } = useNews(
-    { author_id: authorId },
+    { authorId: authorId },
     { page: 1, limit: 50 },
   );
 
@@ -92,20 +97,10 @@ const AuthorProfileScreen = () => {
   const renderNewsItem = useCallback(
     ({ item }: { item: News }) => (
       <View style={styles.newsItem}>
-        <PostCard
-          variant="horizontal"
-          id={item.id}
-          image={item.featured_image_url || 'https://picsum.photos/400/300'}
-          category={item.category?.name || 'Uncategorized'}
-          title={item.title}
-          authorAvatar={author?.avatar_url || 'https://picsum.photos/100/100'}
-          authorName={author?.full_name || 'Anonymous'}
-          authorId={item.author_id}
-          timeAgo={getTimeAgo(item.published_at || item.created_at)}
-        />
+        <PostCard post={item} variant="horizontal" />
       </View>
     ),
-    [author],
+    [],
   );
 
   const newsKeyExtractor = useCallback((item: News) => item.id, []);
@@ -119,18 +114,18 @@ const AuthorProfileScreen = () => {
         <View style={styles.topSection}>
           <View style={styles.avatarContainer}>
             <Avatar
-              source={author.avatar_url || null}
+              source={author.avatarUrl || null}
               size="xl"
               editable={false}
-              fallbackLabel={author.full_name?.charAt(0) || 'A'}
+              fallbackLabel={author.fullName?.charAt(0) || 'A'}
             />
           </View>
 
           {/* Profile Stats */}
           <ProfileStats
-            followers={author.followers_count}
-            following={author.following_count}
-            news={author.news_count}
+            followers={author.followersCount}
+            following={author.followingCount}
+            news={author.newsCount}
             onFollowersPress={handleFollowersPress}
             onFollowingPress={handleFollowingPress}
             onNewsPress={handleNewsPress}
@@ -140,7 +135,7 @@ const AuthorProfileScreen = () => {
         {/* Author Info */}
         <View style={styles.authorInfo}>
           <Text variant="h3" style={styles.authorName}>
-            {author.full_name || 'Anonymous'}
+            {author.fullName || 'Anonymous'}
           </Text>
           {author.bio && (
             <Text variant="body" color="secondary" style={styles.authorBio}>
@@ -246,24 +241,6 @@ const AuthorProfileScreen = () => {
       />
     </SafeAreaView>
   );
-};
-
-const getTimeAgo = (dateString: string): string => {
-  const date = new Date(dateString);
-  const now = new Date();
-  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-  if (seconds < 60) return `${seconds}s ago`;
-  const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  if (days < 7) return `${days}d ago`;
-  const weeks = Math.floor(days / 7);
-  if (weeks < 4) return `${weeks}w ago`;
-  const months = Math.floor(days / 30);
-  return `${months}mo ago`;
 };
 
 const styles = StyleSheet.create(theme => ({

@@ -6,6 +6,7 @@ import {
   PaginationParams,
   UpdateNewsInput,
 } from '@/types';
+import { snakeToCamel } from '@/utils';
 import { supabase } from './supabase';
 
 export const newsService = {
@@ -38,12 +39,12 @@ export const newsService = {
       );
     }
 
-    if (filters.is_trending !== undefined) {
-      query = query.eq('is_trending', filters.is_trending);
+    if (filters.isTrending !== undefined) {
+      query = query.eq('is_trending', filters.isTrending);
     }
 
-    if (filters.author_id) {
-      query = query.eq('author_id', filters.author_id);
+    if (filters.authorId) {
+      query = query.eq('author_id', filters.authorId);
     }
 
     // Apply pagination
@@ -56,7 +57,7 @@ export const newsService = {
     if (error) throw error;
 
     return {
-      data: data || [],
+      data: snakeToCamel(data) || [],
       count: count || 0,
       page: pagination.page,
       limit: pagination.limit,
@@ -79,7 +80,7 @@ export const newsService = {
       .single();
 
     if (error) throw error;
-    return data;
+    return snakeToCamel(data);
   },
 
   // Get news by slug
@@ -97,7 +98,7 @@ export const newsService = {
       .single();
 
     if (error) throw error;
-    return data;
+    return snakeToCamel(data);
   },
 
   // Create news
@@ -131,12 +132,12 @@ export const newsService = {
       .single();
 
     if (error) throw error;
-    return data;
+    return snakeToCamel(data);
   },
 
   // Update news
   updateNews: async ({ id, ...input }: UpdateNewsInput): Promise<News> => {
-    const updateData: any = { ...input };
+    const updateData = { ...input };
 
     // Update published_at if status changes to published
     if (input.status === 'published') {
@@ -165,7 +166,8 @@ export const newsService = {
       .single();
 
     if (error) throw error;
-    return data;
+
+    return snakeToCamel(data);
   },
 
   // Delete news
@@ -204,6 +206,6 @@ export const newsService = {
       .limit(limit);
 
     if (error) throw error;
-    return data || [];
+    return snakeToCamel(data) || [];
   },
 };

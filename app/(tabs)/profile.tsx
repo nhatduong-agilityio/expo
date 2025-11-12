@@ -23,7 +23,6 @@ import { News } from '@/types';
 // Components
 import { PostCard, ProfileStats, ScreenHeader } from '@/components';
 import { Avatar, Button, FloatButton, Tabs, Text } from '@/components/ui';
-import { getTimeAgo } from '@/utils';
 
 const ProfileScreen = () => {
   const router = useRouter();
@@ -36,7 +35,7 @@ const ProfileScreen = () => {
 
   // Fetch user's news
   const { data, isLoading, refetch, isRefetching } = useNews(
-    { author_id: user?.id },
+    { authorId: user?.id },
     { page: 1, limit: 50 },
   );
 
@@ -73,20 +72,10 @@ const ProfileScreen = () => {
   const renderNewsItem = useCallback(
     ({ item }: { item: News }) => (
       <View style={styles.newsItem}>
-        <PostCard
-          id={item.id}
-          variant="horizontal"
-          image={item.featured_image_url || 'https://picsum.photos/400/300'}
-          category={item.category?.name || 'Uncategorized'}
-          title={item.title}
-          authorAvatar={profile?.avatar_url || 'https://picsum.photos/100/100'}
-          authorName={profile?.full_name || 'Anonymous'}
-          authorId={item.author_id}
-          timeAgo={getTimeAgo(item.published_at || item.created_at)}
-        />
+        <PostCard post={item} variant="horizontal" />
       </View>
     ),
-    [profile],
+    [],
   );
 
   const newsKeyExtractor = useCallback((item: News) => item.id, []);
@@ -97,18 +86,18 @@ const ProfileScreen = () => {
       <View style={styles.topSection}>
         <View style={styles.avatarContainer}>
           <Avatar
-            source={profile?.avatar_url || null}
+            source={profile?.avatarUrl || null}
             size="xl"
             editable={false}
-            fallbackLabel={profile?.full_name?.charAt(0) || 'U'}
+            fallbackLabel={profile?.fullName?.charAt(0) || 'U'}
           />
         </View>
 
         {/* Profile Stats */}
         <ProfileStats
-          followers={profile?.followers_count || 0}
-          following={profile?.following_count || 0}
-          news={profile?.news_count || 0}
+          followers={profile?.followersCount || 0}
+          following={profile?.followingCount || 0}
+          news={profile?.newsCount || 0}
           onFollowersPress={handleFollowersPress}
           onFollowingPress={handleFollowingPress}
           onNewsPress={handleNewsPress}
@@ -118,7 +107,7 @@ const ProfileScreen = () => {
       {/* User Info */}
       <View style={styles.userInfo}>
         <Text variant="h3" style={styles.userName}>
-          {profile?.full_name || 'Anonymous User'}
+          {profile?.fullName || 'Anonymous User'}
         </Text>
         {profile?.bio && (
           <Text variant="body" color="secondary" style={styles.userBio}>

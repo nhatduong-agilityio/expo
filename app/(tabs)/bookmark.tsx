@@ -17,7 +17,6 @@ import { Bookmark } from '@/types';
 // Components
 import { PostCard } from '@/components';
 import { SearchBar, Text } from '@/components/ui';
-import { getTimeAgo } from '@/utils';
 
 const BookmarkScreen = () => {
   const { theme, rt } = useUnistyles();
@@ -31,7 +30,7 @@ const BookmarkScreen = () => {
     limit: 100,
   });
 
-  const bookmarks = data?.data || [];
+  const bookmarks = useMemo(() => data?.data || [], [data]);
 
   // Filter bookmarks based on search query
   const filteredBookmarks = useMemo(
@@ -44,7 +43,7 @@ const BookmarkScreen = () => {
           news.category?.name
             .toLowerCase()
             .includes(debouncedSearch.toLowerCase()) ||
-          news.author?.full_name
+          news.author?.fullName
             ?.toLowerCase()
             .includes(debouncedSearch.toLowerCase())
         );
@@ -52,30 +51,12 @@ const BookmarkScreen = () => {
     [debouncedSearch, bookmarks],
   );
 
-  const handleFilterPress = () => {
-    // TODO: Open filter modal/sheet
-  };
-
   const renderBookmarkItem = useCallback(({ item }: { item: Bookmark }) => {
     if (!item.news) return null;
 
     return (
       <View style={styles.newsItem}>
-        <PostCard
-          id={item.news.id}
-          variant="horizontal"
-          image={
-            item.news.featured_image_url || 'https://picsum.photos/400/300'
-          }
-          category={item.news.category?.name || 'Uncategorized'}
-          title={item.news.title}
-          authorAvatar={
-            item.news.author?.avatar_url || 'https://picsum.photos/100/100'
-          }
-          authorName={item.news.author?.full_name || 'Anonymous'}
-          authorId={item.news.author_id}
-          timeAgo={getTimeAgo(item.created_at)}
-        />
+        <PostCard post={item.news} variant="horizontal" />
       </View>
     );
   }, []);

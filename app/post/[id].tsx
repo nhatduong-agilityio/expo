@@ -61,11 +61,11 @@ const PostDetailScreen = () => {
 
   useEffect(() => {
     if (post) {
-      setLikesCount(post.likes_count);
+      setLikesCount(post.likesCount);
       // Increment view count when post is loaded
       incrementView(post.id);
     }
-  }, [post]);
+  }, [post, incrementView]);
 
   const handleBackPress = () => {
     router.back();
@@ -114,8 +114,8 @@ const PostDetailScreen = () => {
     );
   }
 
-  const imageSource = post.featured_image_url
-    ? { uri: post.featured_image_url }
+  const imageSource = post.featuredImageUrl
+    ? { uri: post.featuredImageUrl }
     : require('@/assets/images/react-logo.png');
 
   return (
@@ -168,11 +168,11 @@ const PostDetailScreen = () => {
         {/* Author Info */}
         <View style={styles.authorSection}>
           <AuthorCard
-            avatar={post.author?.avatar_url || 'https://picsum.photos/100/100'}
-            name={post.author?.full_name || 'Anonymous'}
-            followers={getTimeAgo(post.published_at || post.created_at)}
+            avatar={post.author?.avatarUrl || 'https://picsum.photos/100/100'}
+            name={post.author?.fullName || 'Anonymous'}
+            followers={getTimeAgo(post.publishedAt || post.createdAt)}
             following={false}
-            onPress={() => handleAuthorPress(post.author_id)}
+            onPress={() => handleAuthorPress(post.authorId)}
           />
         </View>
 
@@ -242,7 +242,7 @@ const PostDetailScreen = () => {
                 color={theme.colors.iconPrimary}
               />
               <Text variant="body" style={styles.engagementText}>
-                {formatNumber(post.comments_count)}
+                {formatNumber(post.commentsCount)}
               </Text>
             </Pressable>
           </View>

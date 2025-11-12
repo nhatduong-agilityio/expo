@@ -55,7 +55,7 @@ const SearchScreen = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const filteredNews = newsData?.data || [];
+  const filteredNews = useMemo(() => newsData?.data || [], [newsData]);
 
   const filteredTopics = useMemo(
     () =>
@@ -78,9 +78,9 @@ const SearchScreen = () => {
       if (news.author && !authorsMap.has(news.author.id)) {
         authorsMap.set(news.author.id, {
           id: news.author.id,
-          name: news.author.full_name || 'Anonymous',
-          avatar: news.author.avatar_url || 'https://picsum.photos/100/100',
-          followers: `${news.author.followers_count} Followers`,
+          name: news.author.fullName || 'Anonymous',
+          avatar: news.author.avatarUrl || 'https://picsum.photos/100/100',
+          followers: `${news.author.followersCount} Followers`,
           following: false,
         });
       }
@@ -88,26 +88,17 @@ const SearchScreen = () => {
     return Array.from(authorsMap.values());
   }, [debouncedSearch, filteredNews]);
 
-  const handleAuthorPress = (authorId: string) => {
-    router.push(ROUTES.AUTHOR_PROFILE(authorId));
-  };
+  const handleAuthorPress = useCallback(
+    (authorId: string) => {
+      router.push(ROUTES.AUTHOR_PROFILE(authorId));
+    },
+    [router],
+  );
 
   const renderNewsItem = useCallback(
     ({ item }: { item: NewsItem }) => (
       <View style={styles.newsItem}>
-        <PostCard
-          id={item.id}
-          variant="horizontal"
-          image={item.featured_image_url || 'https://picsum.photos/400/300'}
-          category={item.category?.name || 'Uncategorized'}
-          title={item.title}
-          authorAvatar={
-            item.author?.avatar_url || 'https://picsum.photos/100/100'
-          }
-          authorName={item.author?.full_name || 'Anonymous'}
-          authorId={item.author_id}
-          timeAgo={getTimeAgo(item.published_at || item.created_at)}
-        />
+        <PostCard post={item} variant="horizontal" />
       </View>
     ),
     [],
@@ -117,7 +108,7 @@ const SearchScreen = () => {
     ({ item }: { item: TopicItem }) => (
       <View style={styles.topicItem}>
         <TopicCard
-          image={item.icon_url || 'https://picsum.photos/100/100'}
+          image={item.iconUrl || 'https://picsum.photos/100/100'}
           title={item.name}
           description={item.description || ''}
           saved={false}
@@ -139,7 +130,7 @@ const SearchScreen = () => {
         />
       </View>
     ),
-    [],
+    [handleAuthorPress],
   );
 
   const newsKeyExtractor = useCallback((item: NewsItem) => item.id, []);
@@ -242,24 +233,6 @@ const SearchScreen = () => {
       <View style={styles.content}>{renderContent()}</View>
     </SafeAreaView>
   );
-};
-
-const getTimeAgo = (dateString: string): string => {
-  const date = new Date(dateString);
-  const now = new Date();
-  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-  if (seconds < 60) return `${seconds}s ago`;
-  const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  if (days < 7) return `${days}d ago`;
-  const weeks = Math.floor(days / 7);
-  if (weeks < 4) return `${weeks}w ago`;
-  const months = Math.floor(days / 30);
-  return `${months}mo ago`;
 };
 
 const styles = StyleSheet.create(theme => ({

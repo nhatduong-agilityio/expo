@@ -40,12 +40,12 @@ const EditProfileScreen = () => {
     resolver: zodResolver(profileSchema),
     defaultValues: {
       username: profile?.username || '',
-      full_name: profile?.full_name || '',
+      full_name: profile?.fullName || '',
       email: profile?.email || '',
-      phone_number: profile?.phone_number || '',
+      phone_number: profile?.phoneNumber || '',
       bio: profile?.bio || '',
       website: profile?.website || '',
-      avatar_url: profile?.avatar_url || '',
+      avatar_url: profile?.avatarUrl || '',
     },
   });
 
@@ -175,7 +175,7 @@ const EditProfileScreen = () => {
                 size="xl"
                 editable
                 onChangeImage={handlePickImage}
-                fallbackLabel={profile?.full_name?.charAt(0) || 'U'}
+                fallbackLabel={profile?.fullName?.charAt(0) || 'U'}
               />
             )}
           />

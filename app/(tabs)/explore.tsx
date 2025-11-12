@@ -21,7 +21,6 @@ import { Category, News } from '@/types';
 // Components
 import { PostCard, TopicCard } from '@/components';
 import { Text } from '@/components/ui';
-import { getTimeAgo } from '@/utils';
 
 type ListItem =
   | { type: 'topic-header'; data: null }
@@ -60,25 +59,28 @@ const ExploreScreen = () => {
     // TODO: Navigate to see all topics screen
   };
 
-  const handleTopicSave = (categoryId: string) => {
-    toggleSubscription(categoryId, {
-      onSuccess: data => {
-        setSubscribedTopics(prev => {
-          const newSet = new Set(prev);
-          if (data.subscribed) {
-            newSet.add(categoryId);
-          } else {
-            newSet.delete(categoryId);
-          }
-          return newSet;
-        });
-      },
-    });
-  };
+  const handleTopicSave = useCallback(
+    (categoryId: string) => {
+      toggleSubscription(categoryId, {
+        onSuccess: data => {
+          setSubscribedTopics(prev => {
+            const newSet = new Set(prev);
+            if (data.subscribed) {
+              newSet.add(categoryId);
+            } else {
+              newSet.delete(categoryId);
+            }
+            return newSet;
+          });
+        },
+      });
+    },
+    [toggleSubscription],
+  );
 
-  const handleTopicPress = (categoryId: string) => {
+  const handleTopicPress = useCallback((categoryId: string) => {
     // TODO: Navigate to topic detail screen or filter by topic
-  };
+  }, []);
 
   const handleNewsPress = (newsId: string) => {
     // TODO: Navigate to news detail screen
@@ -129,8 +131,7 @@ const ExploreScreen = () => {
             <View style={styles.topicItem}>
               <TopicCard
                 image={
-                  item.data.icon_url ||
-                  'https://picsum.photos/100/100?random=10'
+                  item.data.iconUrl || 'https://picsum.photos/100/100?random=10'
                 }
                 title={item.data.name}
                 description={item.data.description || ''}
@@ -154,23 +155,8 @@ const ExploreScreen = () => {
           return (
             <View style={styles.newsItem}>
               <PostCard
-                id={item.data.id}
+                post={item.data}
                 variant="vertical"
-                image={
-                  item.data.featured_image_url ||
-                  'https://picsum.photos/400/300'
-                }
-                category={item.data.category?.name || 'Uncategorized'}
-                title={item.data.title}
-                authorAvatar={
-                  item.data.author?.avatar_url ||
-                  'https://picsum.photos/100/100'
-                }
-                authorName={item.data.author?.full_name || 'Anonymous'}
-                authorId={item.data.author_id}
-                timeAgo={getTimeAgo(
-                  item.data.published_at || item.data.created_at,
-                )}
                 onPress={() => handleNewsPress(item.data.id)}
               />
             </View>
@@ -180,7 +166,7 @@ const ExploreScreen = () => {
           return null;
       }
     },
-    [subscribedTopics],
+    [subscribedTopics, handleTopicSave, handleTopicPress],
   );
 
   const keyExtractor = useCallback((item: ListItem, index: number) => {

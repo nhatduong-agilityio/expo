@@ -1,4 +1,5 @@
 import { Follow, Profile } from '@/types';
+import { snakeToCamel } from '@/utils';
 import { supabase } from './supabase';
 
 export const followService = {
@@ -30,7 +31,7 @@ export const followService = {
       .single();
 
     if (error) throw error;
-    return data;
+    return snakeToCamel(data);
   },
 
   // Unfollow user
@@ -74,7 +75,10 @@ export const followService = {
       .eq('following_id', userId);
 
     if (error) throw error;
-    return data?.map(item => item.follower) || [];
+
+    const followers = data?.map(item => item.follower) || [];
+
+    return snakeToCamel(followers);
   },
 
   // Get following
@@ -85,6 +89,9 @@ export const followService = {
       .eq('follower_id', userId);
 
     if (error) throw error;
-    return data?.map(item => item.following) || [];
+
+    const following = data?.map(item => item.following) || [];
+
+    return snakeToCamel(following);
   },
 };

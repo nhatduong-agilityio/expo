@@ -1,4 +1,5 @@
 import { Category, TopicSubscription } from '@/types';
+import { snakeToCamel } from '@/utils';
 import { supabase } from './supabase';
 
 export const categoryService = {
@@ -11,7 +12,7 @@ export const categoryService = {
       .order('display_order', { ascending: true });
 
     if (error) throw error;
-    return data || [];
+    return snakeToCamel(data) || [];
   },
 
   // Get category by slug
@@ -23,7 +24,7 @@ export const categoryService = {
       .single();
 
     if (error) throw error;
-    return data;
+    return snakeToCamel(data);
   },
 
   // Get user's subscribed topics
@@ -34,7 +35,7 @@ export const categoryService = {
       .eq('user_id', userId);
 
     if (error) throw error;
-    return data || [];
+    return snakeToCamel(data) || [];
   },
 
   // Check if subscribed to topic
@@ -65,7 +66,7 @@ export const categoryService = {
       .single();
 
     if (error) throw error;
-    return data;
+    return snakeToCamel(data);
   },
 
   // Unsubscribe from topic
