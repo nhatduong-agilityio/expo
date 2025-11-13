@@ -35,6 +35,7 @@ export const Checkbox = memo(
 
     return (
       <Pressable
+        testID="checkbox-pressable"
         style={({ pressed }) => [
           styles.container,
           pressed && !disabled && styles.pressed,
@@ -43,7 +44,7 @@ export const Checkbox = memo(
         disabled={disabled}
         {...rest}
       >
-        <View style={styles.checkboxContainer}>
+        <View testID="checkbox-container" style={styles.checkboxContainer}>
           <View style={styles.checkbox}>
             {checked && (
               <View style={styles.checkmark}>
