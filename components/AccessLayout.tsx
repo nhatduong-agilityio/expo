@@ -1,6 +1,12 @@
 import { Link, LinkProps } from 'expo-router';
 import { memo, ReactNode, useMemo } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Platform,
+  Pressable,
+  ScrollView,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
@@ -144,7 +150,7 @@ const styles = StyleSheet.create(theme => ({
     padding: theme.spacing['2xl'],
     alignItems: 'center',
     gap: theme.spacing.md,
-    ...theme.shadow.xl,
+    ...(Platform.OS === 'ios' && theme.shadow.xl),
   },
   loadingText: {
     color: theme.colors.textPrimary,

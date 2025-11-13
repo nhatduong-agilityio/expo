@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import {
   ImageSourcePropType,
+  Platform,
   Pressable,
   PressableProps,
   View,
@@ -88,7 +89,7 @@ const styles = StyleSheet.create(theme => ({
     alignItems: 'center',
     gap: theme.spacing.md,
     backgroundColor: 'transparent',
-    ...theme.shadow.sm,
+    ...(Platform.OS === 'ios' && theme.shadow.sm),
   },
 
   avatarWrapper: {

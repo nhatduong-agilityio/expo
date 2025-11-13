@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { memo } from 'react';
 import {
   GestureResponderEvent,
+  Platform,
   Pressable,
   PressableProps,
   View,
@@ -270,7 +271,7 @@ const styles = StyleSheet.create(theme => ({
     backgroundColor: 'transparent',
     borderRadius: theme.borderRadius.sm,
     overflow: 'hidden',
-    ...theme.shadow.sm,
+    ...(Platform.OS === 'ios' && theme.shadow.sm),
     variants: {
       variant: {
         vertical: {

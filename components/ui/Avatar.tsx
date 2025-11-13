@@ -2,7 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { memo, useState } from 'react';
-import { ImageSourcePropType, Pressable, View } from 'react-native';
+import { ImageSourcePropType, Platform, Pressable, View } from 'react-native';
 import {
   StyleSheet,
   UnistylesVariants,
@@ -225,6 +225,6 @@ const styles = StyleSheet.create(theme => ({
     backgroundColor: theme.colors.primary,
     borderRadius: theme.borderRadius.full,
     padding: 6,
-    ...theme.shadow.sm,
+    ...(Platform.OS === 'ios' && theme.shadow.sm),
   },
 }));
