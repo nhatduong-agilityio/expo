@@ -8,7 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Pressable, ScrollView, View } from 'react-native';
+import { Alert, Platform, Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
@@ -505,7 +505,7 @@ const styles = StyleSheet.create(theme => ({
     backgroundColor: theme.colors.primary,
     borderRadius: theme.borderRadius.full,
     padding: theme.spacing.sm,
-    ...theme.shadow.md,
+    ...(Platform.OS === 'ios' && theme.shadow.md),
   },
   categoryBadge: {
     flexDirection: 'row',
@@ -546,7 +546,7 @@ const styles = StyleSheet.create(theme => ({
     borderWidth: 1,
     borderColor: theme.colors.border,
     borderRadius: theme.borderRadius.sm,
-    ...theme.shadow.md,
+    ...(Platform.OS === 'ios' && theme.shadow.md),
   },
   toolbarButton: {
     padding: theme.spacing.xs,

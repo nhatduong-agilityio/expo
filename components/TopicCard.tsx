@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Pressable, PressableProps, View } from 'react-native';
+import { Platform, Pressable, PressableProps, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 // Hooks
@@ -69,7 +69,7 @@ const styles = StyleSheet.create(theme => ({
     paddingVertical: theme.spacing.sm,
     paddingHorizontal: theme.spacing.xs,
     backgroundColor: 'transparent',
-    ...theme.shadow.sm,
+    ...(Platform.OS === 'ios' && theme.shadow.sm),
   },
   content: {
     flex: 1,

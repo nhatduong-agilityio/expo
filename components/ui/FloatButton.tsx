@@ -2,6 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { ComponentProps, memo } from 'react';
 import {
   ActivityIndicator,
+  Platform,
   Pressable,
   PressableProps,
   View,
@@ -80,7 +81,7 @@ const styles = StyleSheet.create(theme => ({
     borderRadius: theme.borderRadius.full,
     alignItems: 'center',
     justifyContent: 'center',
-    ...theme.shadow.lg,
+    ...(Platform.OS === 'ios' && theme.shadow.lg),
     variants: {
       size: {
         sm: {

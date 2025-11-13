@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { ComponentProps } from 'react';
-import { Pressable, View } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 // Constants
@@ -109,7 +109,7 @@ const styles = StyleSheet.create(theme => ({
     borderTopColor: theme.colors.border,
     paddingVertical: theme.spacing.xs,
     paddingHorizontal: theme.spacing.xl,
-    ...theme.shadow.sm,
+    ...(Platform.OS === 'ios' && theme.shadow.sm),
   },
   tabButton: {
     flex: 1,
