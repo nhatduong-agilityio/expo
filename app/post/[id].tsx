@@ -97,9 +97,9 @@ const PostDetailScreen = () => {
     );
   }
 
-  const imageSource = post.featuredImageUrl
-    ? { uri: post.featuredImageUrl }
-    : require('@/assets/images/react-logo.png');
+  const imageSource = {
+    uri: post.featuredImageUrl ?? 'https://picsum.photos/100/100',
+  };
 
   return (
     <SafeAreaView style={styles.container} edges={['top']} key={rt.themeName}>
