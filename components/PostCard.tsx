@@ -2,7 +2,12 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { memo } from 'react';
-import { Pressable, PressableProps, View } from 'react-native';
+import {
+  GestureResponderEvent,
+  Pressable,
+  PressableProps,
+  View,
+} from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 // Constants
@@ -71,13 +76,13 @@ export const PostCard = memo(
       router.push(ROUTES.AUTHOR_PROFILE(post.authorId));
     };
 
-    const handleBookmarkPress = (e: any) => {
-      e.stopPropagation();
+    const handleBookmarkPress = (event: GestureResponderEvent) => {
+      event.stopPropagation();
       toggleBookmark(post.id);
     };
 
-    const handleLikePress = (e: any) => {
-      e.stopPropagation();
+    const handleLikePress = (event: GestureResponderEvent) => {
+      event.stopPropagation();
       toggleLike(post.id);
     };
 

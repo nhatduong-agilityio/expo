@@ -150,3 +150,11 @@ export interface UpdateProfileInput {
   bio?: string;
   website?: string;
 }
+
+export interface Author extends Profile {
+  following: boolean;
+}
+
+export interface Topic extends Category {
+  saved: boolean;
+}

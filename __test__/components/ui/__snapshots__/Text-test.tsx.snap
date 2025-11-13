@@ -1,0 +1,190 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Text should match to snapshot 1`] = `
+<Text
+  style={
+    [
+      {
+        "variants": {
+          "align": {
+            "center": {
+              "textAlign": "center",
+            },
+            "justify": {
+              "textAlign": "justify",
+            },
+            "left": {
+              "textAlign": "left",
+            },
+            "right": {
+              "textAlign": "right",
+            },
+          },
+          "color": {
+            "accent": {
+              "color": "#1877F2",
+            },
+            "disabled": {
+              "color": "#B0B3B8",
+            },
+            "error": {
+              "color": "#ED2E7E",
+            },
+            "errorHover": {
+              "color": "#C30052",
+            },
+            "link": {
+              "color": "#1877F2",
+            },
+            "onPrimary": {
+              "color": "#FFFFFF",
+            },
+            "placeholder": {
+              "color": "#B0B3B8",
+            },
+            "primary": {
+              "color": "#050505",
+            },
+            "secondary": {
+              "color": "#4E4B66",
+            },
+            "success": {
+              "color": "#00BA88",
+            },
+            "successHover": {
+              "color": "#00966D",
+            },
+            "tertiary": {
+              "color": "#667080",
+            },
+            "warning": {
+              "color": "#F4B740",
+            },
+            "warningHover": {
+              "color": "#946200",
+            },
+          },
+          "decoration": {
+            "lineThrough": {
+              "textDecorationLine": "line-through",
+            },
+            "none": {
+              "textDecorationLine": "none",
+            },
+            "underline": {
+              "textDecorationLine": "underline",
+            },
+            "underlineLineThrough": {
+              "textDecorationLine": "underline line-through",
+            },
+          },
+          "textTransform": {
+            "capitalize": {
+              "textTransform": "capitalize",
+            },
+            "lowercase": {
+              "textTransform": "lowercase",
+            },
+            "none": {
+              "textTransform": "none",
+            },
+            "uppercase": {
+              "textTransform": "uppercase",
+            },
+          },
+          "variant": {
+            "body": {
+              "color": "#050505",
+              "fontFamily": "Poppins-Regular",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 24,
+            },
+            "bodyLg": {
+              "color": "#050505",
+              "fontFamily": "Poppins-Regular",
+              "fontSize": 18,
+              "fontWeight": "400",
+              "lineHeight": 28,
+            },
+            "bodySm": {
+              "color": "#050505",
+              "fontFamily": "Poppins-Regular",
+              "fontSize": 14,
+              "fontWeight": "400",
+              "lineHeight": 20,
+            },
+            "button": {
+              "color": "#050505",
+              "fontFamily": "Poppins-SemiBold",
+              "fontSize": 16,
+              "fontWeight": "600",
+              "letterSpacing": 0.12,
+              "lineHeight": 24,
+            },
+            "caption": {
+              "color": "#4E4B66",
+              "fontFamily": "Poppins-Regular",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "lineHeight": 16,
+            },
+            "display": {
+              "color": "#050505",
+              "fontFamily": "Poppins-Bold",
+              "fontSize": 48,
+              "fontWeight": "700",
+              "lineHeight": 56,
+            },
+            "h1": {
+              "color": "#050505",
+              "fontFamily": "Poppins-Bold",
+              "fontSize": 32,
+              "fontWeight": "700",
+              "lineHeight": 40,
+            },
+            "h2": {
+              "color": "#050505",
+              "fontFamily": "Poppins-Bold",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "lineHeight": 32,
+            },
+            "h3": {
+              "color": "#050505",
+              "fontFamily": "Poppins-SemiBold",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "lineHeight": 28,
+            },
+            "h4": {
+              "color": "#050505",
+              "fontFamily": "Poppins-SemiBold",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "lineHeight": 28,
+            },
+            "label": {
+              "color": "#050505",
+              "fontFamily": "Poppins-SemiBold",
+              "fontSize": 14,
+              "fontWeight": "600",
+              "lineHeight": 20,
+            },
+            "placeholder": {
+              "color": "#B0B3B8",
+              "fontFamily": "Poppins-Regular",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 24,
+            },
+          },
+        },
+      },
+      undefined,
+    ]
+  }
+>
+  This screen does not exist.
+</Text>
+`;

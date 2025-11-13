@@ -24,7 +24,7 @@ export const Tabs = memo(
     });
 
     return (
-      <View style={styles.container}>
+      <View testID="tabs" style={styles.container}>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}

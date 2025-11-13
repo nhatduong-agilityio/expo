@@ -1,0 +1,287 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FloatButton should match to snapshot 1`] = `
+<View
+  accessibilityHint="Open"
+  accessibilityLabel="Open"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  role="button"
+  style={
+    [
+      {
+        "alignItems": "center",
+        "borderRadius": 9999,
+        "elevation": 4,
+        "justifyContent": "center",
+        "position": "absolute",
+        "shadowColor": "#000",
+        "shadowOffset": {
+          "height": 4,
+          "width": 0,
+        },
+        "shadowOpacity": 0.15,
+        "shadowRadius": 8,
+        "variants": {
+          "disabled": {
+            "true": {
+              "backgroundColor": "#EEF1F4",
+              "opacity": 0.5,
+            },
+          },
+          "position": {
+            "bottom-left": {
+              "bottom": 24,
+              "left": 24,
+            },
+            "bottom-right": {
+              "bottom": 24,
+              "right": 24,
+            },
+            "top-left": {
+              "left": 24,
+              "top": 24,
+            },
+            "top-right": {
+              "right": 24,
+              "top": 24,
+            },
+          },
+          "size": {
+            "lg": {
+              "height": 64,
+              "width": 64,
+            },
+            "md": {
+              "height": 54,
+              "width": 54,
+            },
+            "sm": {
+              "height": 44,
+              "width": 44,
+            },
+          },
+          "variant": {
+            "destructive": {
+              "backgroundColor": "#ED2E7E",
+            },
+            "primary": {
+              "backgroundColor": "#1877F2",
+            },
+            "secondary": {
+              "backgroundColor": "#EEF1F4",
+            },
+          },
+        },
+      },
+      false,
+    ]
+  }
+  testID="float-button-pressable"
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "justifyContent": "center",
+        "variants": {
+          "variant": {
+            "destructive": {
+              "color": "#FFFFFF",
+            },
+            "primary": {
+              "color": "#FFFFFF",
+            },
+            "secondary": {
+              "color": "#050505",
+            },
+          },
+        },
+      }
+    }
+  >
+    <Text />
+  </View>
+</View>
+`;
+
+exports[`FloatButton should render with a specific icon 1`] = `
+<View
+  accessibilityHint="Open"
+  accessibilityLabel="Open"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  role="button"
+  style={
+    [
+      {
+        "alignItems": "center",
+        "borderRadius": 9999,
+        "elevation": 4,
+        "justifyContent": "center",
+        "position": "absolute",
+        "shadowColor": "#000",
+        "shadowOffset": {
+          "height": 4,
+          "width": 0,
+        },
+        "shadowOpacity": 0.15,
+        "shadowRadius": 8,
+        "variants": {
+          "disabled": {
+            "true": {
+              "backgroundColor": "#EEF1F4",
+              "opacity": 0.5,
+            },
+          },
+          "position": {
+            "bottom-left": {
+              "bottom": 24,
+              "left": 24,
+            },
+            "bottom-right": {
+              "bottom": 24,
+              "right": 24,
+            },
+            "top-left": {
+              "left": 24,
+              "top": 24,
+            },
+            "top-right": {
+              "right": 24,
+              "top": 24,
+            },
+          },
+          "size": {
+            "lg": {
+              "height": 64,
+              "width": 64,
+            },
+            "md": {
+              "height": 54,
+              "width": 54,
+            },
+            "sm": {
+              "height": 44,
+              "width": 44,
+            },
+          },
+          "variant": {
+            "destructive": {
+              "backgroundColor": "#ED2E7E",
+            },
+            "primary": {
+              "backgroundColor": "#1877F2",
+            },
+            "secondary": {
+              "backgroundColor": "#EEF1F4",
+            },
+          },
+        },
+      },
+      false,
+    ]
+  }
+  testID="float-button-pressable"
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "justifyContent": "center",
+        "variants": {
+          "variant": {
+            "destructive": {
+              "color": "#FFFFFF",
+            },
+            "primary": {
+              "color": "#FFFFFF",
+            },
+            "secondary": {
+              "color": "#050505",
+            },
+          },
+        },
+      }
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "white",
+            "fontSize": 24,
+          },
+          undefined,
+          {
+            "fontFamily": "ionicons",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
+</View>
+`;

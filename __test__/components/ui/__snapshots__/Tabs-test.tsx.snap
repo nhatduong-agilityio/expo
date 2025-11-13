@@ -1,0 +1,814 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tabs should match to snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "transparent",
+      "variants": {
+        "variant": {
+          "default": {
+            "alignItems": "flex-start",
+          },
+          "secondary": {
+            "alignItems": "center",
+            "justifyContent": "center",
+          },
+        },
+      },
+    }
+  }
+  testID="tabs"
+>
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "gap": 24,
+        "paddingHorizontal": 16,
+      }
+    }
+    horizontal={true}
+    showsHorizontalScrollIndicator={false}
+  >
+    <View>
+      <View
+        accessibilityHint="Switch to the Home tab"
+        accessibilityLabel="Home"
+        accessibilityRole="tab"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": true,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+              "paddingBottom": 8,
+              "position": "relative",
+            },
+            false,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "variants": {
+                  "align": {
+                    "center": {
+                      "textAlign": "center",
+                    },
+                    "justify": {
+                      "textAlign": "justify",
+                    },
+                    "left": {
+                      "textAlign": "left",
+                    },
+                    "right": {
+                      "textAlign": "right",
+                    },
+                  },
+                  "color": {
+                    "accent": {
+                      "color": "#1877F2",
+                    },
+                    "disabled": {
+                      "color": "#B0B3B8",
+                    },
+                    "error": {
+                      "color": "#ED2E7E",
+                    },
+                    "errorHover": {
+                      "color": "#C30052",
+                    },
+                    "link": {
+                      "color": "#1877F2",
+                    },
+                    "onPrimary": {
+                      "color": "#FFFFFF",
+                    },
+                    "placeholder": {
+                      "color": "#B0B3B8",
+                    },
+                    "primary": {
+                      "color": "#050505",
+                    },
+                    "secondary": {
+                      "color": "#4E4B66",
+                    },
+                    "success": {
+                      "color": "#00BA88",
+                    },
+                    "successHover": {
+                      "color": "#00966D",
+                    },
+                    "tertiary": {
+                      "color": "#667080",
+                    },
+                    "warning": {
+                      "color": "#F4B740",
+                    },
+                    "warningHover": {
+                      "color": "#946200",
+                    },
+                  },
+                  "decoration": {
+                    "lineThrough": {
+                      "textDecorationLine": "line-through",
+                    },
+                    "none": {
+                      "textDecorationLine": "none",
+                    },
+                    "underline": {
+                      "textDecorationLine": "underline",
+                    },
+                    "underlineLineThrough": {
+                      "textDecorationLine": "underline line-through",
+                    },
+                  },
+                  "textTransform": {
+                    "capitalize": {
+                      "textTransform": "capitalize",
+                    },
+                    "lowercase": {
+                      "textTransform": "lowercase",
+                    },
+                    "none": {
+                      "textTransform": "none",
+                    },
+                    "uppercase": {
+                      "textTransform": "uppercase",
+                    },
+                  },
+                  "variant": {
+                    "body": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Regular",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "lineHeight": 24,
+                    },
+                    "bodyLg": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Regular",
+                      "fontSize": 18,
+                      "fontWeight": "400",
+                      "lineHeight": 28,
+                    },
+                    "bodySm": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Regular",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "lineHeight": 20,
+                    },
+                    "button": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-SemiBold",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "letterSpacing": 0.12,
+                      "lineHeight": 24,
+                    },
+                    "caption": {
+                      "color": "#4E4B66",
+                      "fontFamily": "Poppins-Regular",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "lineHeight": 16,
+                    },
+                    "display": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Bold",
+                      "fontSize": 48,
+                      "fontWeight": "700",
+                      "lineHeight": 56,
+                    },
+                    "h1": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Bold",
+                      "fontSize": 32,
+                      "fontWeight": "700",
+                      "lineHeight": 40,
+                    },
+                    "h2": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Bold",
+                      "fontSize": 24,
+                      "fontWeight": "700",
+                      "lineHeight": 32,
+                    },
+                    "h3": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-SemiBold",
+                      "fontSize": 20,
+                      "fontWeight": "600",
+                      "lineHeight": 28,
+                    },
+                    "h4": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-SemiBold",
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "lineHeight": 28,
+                    },
+                    "label": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-SemiBold",
+                      "fontSize": 14,
+                      "fontWeight": "600",
+                      "lineHeight": 20,
+                    },
+                    "placeholder": {
+                      "color": "#B0B3B8",
+                      "fontFamily": "Poppins-Regular",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "lineHeight": 24,
+                    },
+                  },
+                },
+              },
+              {
+                "variants": {
+                  "active": {
+                    "true": {
+                      "color": "#050505",
+                    },
+                  },
+                  "variant": {
+                    "default": {
+                      "color": "#667080",
+                    },
+                    "primary": {
+                      "color": "#667080",
+                    },
+                    "secondary": {
+                      "color": "#667080",
+                    },
+                  },
+                },
+              },
+            ]
+          }
+        >
+          Home
+        </Text>
+        <View
+          style={
+            {
+              "bottom": 0,
+              "height": 2,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "variants": {
+                "variant": {
+                  "default": {
+                    "backgroundColor": "#1877F2",
+                  },
+                  "primary": {
+                    "backgroundColor": "#1877F2",
+                  },
+                  "secondary": {
+                    "backgroundColor": "#1877F2",
+                  },
+                },
+              },
+            }
+          }
+        />
+      </View>
+      <View
+        accessibilityHint="Switch to the Profile tab"
+        accessibilityLabel="Profile"
+        accessibilityRole="tab"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": false,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+              "paddingBottom": 8,
+              "position": "relative",
+            },
+            false,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "variants": {
+                  "align": {
+                    "center": {
+                      "textAlign": "center",
+                    },
+                    "justify": {
+                      "textAlign": "justify",
+                    },
+                    "left": {
+                      "textAlign": "left",
+                    },
+                    "right": {
+                      "textAlign": "right",
+                    },
+                  },
+                  "color": {
+                    "accent": {
+                      "color": "#1877F2",
+                    },
+                    "disabled": {
+                      "color": "#B0B3B8",
+                    },
+                    "error": {
+                      "color": "#ED2E7E",
+                    },
+                    "errorHover": {
+                      "color": "#C30052",
+                    },
+                    "link": {
+                      "color": "#1877F2",
+                    },
+                    "onPrimary": {
+                      "color": "#FFFFFF",
+                    },
+                    "placeholder": {
+                      "color": "#B0B3B8",
+                    },
+                    "primary": {
+                      "color": "#050505",
+                    },
+                    "secondary": {
+                      "color": "#4E4B66",
+                    },
+                    "success": {
+                      "color": "#00BA88",
+                    },
+                    "successHover": {
+                      "color": "#00966D",
+                    },
+                    "tertiary": {
+                      "color": "#667080",
+                    },
+                    "warning": {
+                      "color": "#F4B740",
+                    },
+                    "warningHover": {
+                      "color": "#946200",
+                    },
+                  },
+                  "decoration": {
+                    "lineThrough": {
+                      "textDecorationLine": "line-through",
+                    },
+                    "none": {
+                      "textDecorationLine": "none",
+                    },
+                    "underline": {
+                      "textDecorationLine": "underline",
+                    },
+                    "underlineLineThrough": {
+                      "textDecorationLine": "underline line-through",
+                    },
+                  },
+                  "textTransform": {
+                    "capitalize": {
+                      "textTransform": "capitalize",
+                    },
+                    "lowercase": {
+                      "textTransform": "lowercase",
+                    },
+                    "none": {
+                      "textTransform": "none",
+                    },
+                    "uppercase": {
+                      "textTransform": "uppercase",
+                    },
+                  },
+                  "variant": {
+                    "body": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Regular",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "lineHeight": 24,
+                    },
+                    "bodyLg": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Regular",
+                      "fontSize": 18,
+                      "fontWeight": "400",
+                      "lineHeight": 28,
+                    },
+                    "bodySm": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Regular",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "lineHeight": 20,
+                    },
+                    "button": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-SemiBold",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "letterSpacing": 0.12,
+                      "lineHeight": 24,
+                    },
+                    "caption": {
+                      "color": "#4E4B66",
+                      "fontFamily": "Poppins-Regular",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "lineHeight": 16,
+                    },
+                    "display": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Bold",
+                      "fontSize": 48,
+                      "fontWeight": "700",
+                      "lineHeight": 56,
+                    },
+                    "h1": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Bold",
+                      "fontSize": 32,
+                      "fontWeight": "700",
+                      "lineHeight": 40,
+                    },
+                    "h2": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Bold",
+                      "fontSize": 24,
+                      "fontWeight": "700",
+                      "lineHeight": 32,
+                    },
+                    "h3": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-SemiBold",
+                      "fontSize": 20,
+                      "fontWeight": "600",
+                      "lineHeight": 28,
+                    },
+                    "h4": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-SemiBold",
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "lineHeight": 28,
+                    },
+                    "label": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-SemiBold",
+                      "fontSize": 14,
+                      "fontWeight": "600",
+                      "lineHeight": 20,
+                    },
+                    "placeholder": {
+                      "color": "#B0B3B8",
+                      "fontFamily": "Poppins-Regular",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "lineHeight": 24,
+                    },
+                  },
+                },
+              },
+              {
+                "variants": {
+                  "active": {
+                    "true": {
+                      "color": "#050505",
+                    },
+                  },
+                  "variant": {
+                    "default": {
+                      "color": "#667080",
+                    },
+                    "primary": {
+                      "color": "#667080",
+                    },
+                    "secondary": {
+                      "color": "#667080",
+                    },
+                  },
+                },
+              },
+            ]
+          }
+        >
+          Profile
+        </Text>
+      </View>
+      <View
+        accessibilityHint="Switch to the Settings tab"
+        accessibilityLabel="Settings"
+        accessibilityRole="tab"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": false,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+              "paddingBottom": 8,
+              "position": "relative",
+            },
+            false,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "variants": {
+                  "align": {
+                    "center": {
+                      "textAlign": "center",
+                    },
+                    "justify": {
+                      "textAlign": "justify",
+                    },
+                    "left": {
+                      "textAlign": "left",
+                    },
+                    "right": {
+                      "textAlign": "right",
+                    },
+                  },
+                  "color": {
+                    "accent": {
+                      "color": "#1877F2",
+                    },
+                    "disabled": {
+                      "color": "#B0B3B8",
+                    },
+                    "error": {
+                      "color": "#ED2E7E",
+                    },
+                    "errorHover": {
+                      "color": "#C30052",
+                    },
+                    "link": {
+                      "color": "#1877F2",
+                    },
+                    "onPrimary": {
+                      "color": "#FFFFFF",
+                    },
+                    "placeholder": {
+                      "color": "#B0B3B8",
+                    },
+                    "primary": {
+                      "color": "#050505",
+                    },
+                    "secondary": {
+                      "color": "#4E4B66",
+                    },
+                    "success": {
+                      "color": "#00BA88",
+                    },
+                    "successHover": {
+                      "color": "#00966D",
+                    },
+                    "tertiary": {
+                      "color": "#667080",
+                    },
+                    "warning": {
+                      "color": "#F4B740",
+                    },
+                    "warningHover": {
+                      "color": "#946200",
+                    },
+                  },
+                  "decoration": {
+                    "lineThrough": {
+                      "textDecorationLine": "line-through",
+                    },
+                    "none": {
+                      "textDecorationLine": "none",
+                    },
+                    "underline": {
+                      "textDecorationLine": "underline",
+                    },
+                    "underlineLineThrough": {
+                      "textDecorationLine": "underline line-through",
+                    },
+                  },
+                  "textTransform": {
+                    "capitalize": {
+                      "textTransform": "capitalize",
+                    },
+                    "lowercase": {
+                      "textTransform": "lowercase",
+                    },
+                    "none": {
+                      "textTransform": "none",
+                    },
+                    "uppercase": {
+                      "textTransform": "uppercase",
+                    },
+                  },
+                  "variant": {
+                    "body": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Regular",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "lineHeight": 24,
+                    },
+                    "bodyLg": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Regular",
+                      "fontSize": 18,
+                      "fontWeight": "400",
+                      "lineHeight": 28,
+                    },
+                    "bodySm": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Regular",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "lineHeight": 20,
+                    },
+                    "button": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-SemiBold",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "letterSpacing": 0.12,
+                      "lineHeight": 24,
+                    },
+                    "caption": {
+                      "color": "#4E4B66",
+                      "fontFamily": "Poppins-Regular",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "lineHeight": 16,
+                    },
+                    "display": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Bold",
+                      "fontSize": 48,
+                      "fontWeight": "700",
+                      "lineHeight": 56,
+                    },
+                    "h1": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Bold",
+                      "fontSize": 32,
+                      "fontWeight": "700",
+                      "lineHeight": 40,
+                    },
+                    "h2": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-Bold",
+                      "fontSize": 24,
+                      "fontWeight": "700",
+                      "lineHeight": 32,
+                    },
+                    "h3": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-SemiBold",
+                      "fontSize": 20,
+                      "fontWeight": "600",
+                      "lineHeight": 28,
+                    },
+                    "h4": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-SemiBold",
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "lineHeight": 28,
+                    },
+                    "label": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-SemiBold",
+                      "fontSize": 14,
+                      "fontWeight": "600",
+                      "lineHeight": 20,
+                    },
+                    "placeholder": {
+                      "color": "#B0B3B8",
+                      "fontFamily": "Poppins-Regular",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "lineHeight": 24,
+                    },
+                  },
+                },
+              },
+              {
+                "variants": {
+                  "active": {
+                    "true": {
+                      "color": "#050505",
+                    },
+                  },
+                  "variant": {
+                    "default": {
+                      "color": "#667080",
+                    },
+                    "primary": {
+                      "color": "#667080",
+                    },
+                    "secondary": {
+                      "color": "#667080",
+                    },
+                  },
+                },
+              },
+            ]
+          }
+        >
+          Settings
+        </Text>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;

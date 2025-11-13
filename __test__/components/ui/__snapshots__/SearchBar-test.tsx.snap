@@ -1,0 +1,184 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchBar should match to snapshot 1`] = `
+<View
+  style={
+    {
+      "width": "100%",
+    }
+  }
+>
+  <View
+    style={
+      {
+        "width": "100%",
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "backgroundColor": "#FFFFFF",
+            "borderColor": "#4E4B66",
+            "borderRadius": 6,
+            "borderWidth": 1,
+            "compoundVariants": [
+              {
+                "focused": true,
+                "styles": {
+                  "borderColor": "#ED2E7E",
+                },
+                "variant": "error",
+              },
+            ],
+            "flexDirection": "row",
+            "overflow": "hidden",
+            "variants": {
+              "disabled": {
+                "true": {
+                  "backgroundColor": "#EEF1F4",
+                  "borderColor": "#EEF1F4",
+                  "opacity": 0.5,
+                },
+              },
+              "focused": {
+                "true": {
+                  "borderColor": "#4E4B66",
+                  "borderWidth": 1,
+                },
+              },
+              "hasLeftIcon": {
+                "true": {
+                  "paddingLeft": 4,
+                },
+              },
+              "hasRightIcon": {
+                "true": {
+                  "paddingRight": 4,
+                },
+              },
+              "size": {
+                "lg": {
+                  "minHeight": 56,
+                  "paddingHorizontal": 16,
+                },
+                "md": {
+                  "minHeight": 48,
+                  "paddingHorizontal": 12,
+                },
+                "sm": {
+                  "minHeight": 36,
+                  "paddingHorizontal": 8,
+                },
+              },
+              "variant": {
+                "error": {
+                  "backgroundColor": "#FFF3F8",
+                  "borderColor": "#ED2E7E",
+                },
+                "primary": {
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "#4E4B66",
+                },
+              },
+            },
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        accessibilityHint="Press to search"
+        accessibilityLabel="Press to search"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={8}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginHorizontal": 8,
+          }
+        }
+        testID="search"
+      >
+        <Text />
+      </View>
+      <TextInput
+        accessibilityHint="Input field"
+        editable={true}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        placeholder="Search"
+        placeholderTextColor="#B0B3B8"
+        style={
+          [
+            {
+              "color": "#050505",
+              "flex": 1,
+              "fontFamily": "Poppins-Regular",
+              "fontSize": 16,
+              "lineHeight": 24,
+              "paddingVertical": 8,
+              "variants": {
+                "disabled": {
+                  "true": {
+                    "backgroundColor": "#EEF1F4",
+                    "color": "#B0B3B8",
+                  },
+                },
+                "size": {
+                  "lg": {
+                    "fontSize": 18,
+                    "lineHeight": 28,
+                  },
+                  "md": {
+                    "fontSize": 16,
+                    "lineHeight": 24,
+                  },
+                  "sm": {
+                    "fontSize": 14,
+                    "lineHeight": 20,
+                  },
+                },
+              },
+            },
+            undefined,
+          ]
+        }
+        testID="input"
+      />
+    </View>
+  </View>
+</View>
+`;

@@ -113,7 +113,7 @@ export const Avatar = memo(
         };
 
     return (
-      <View style={styles.wrapper}>
+      <View testID="avatar-wrapper" style={styles.wrapper}>
         <Pressable
           style={({ pressed }) => [
             styles.container,

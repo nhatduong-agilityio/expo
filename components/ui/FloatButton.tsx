@@ -54,6 +54,11 @@ export const FloatButton = memo(
 
     return (
       <Pressable
+        role="button"
+        testID="float-button-pressable"
+        accessibilityRole="button"
+        accessibilityLabel={loading ? 'Loading' : 'Open'}
+        accessibilityHint={loading ? 'Loading' : 'Open'}
         style={({ pressed }) => [
           styles.container,
           pressed && !disabled && !loading && styles.pressed,

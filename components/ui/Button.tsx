@@ -46,7 +46,11 @@ export const Button = memo(
       if (loading) {
         return (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator color={styles.loading.color} size="small" />
+            <ActivityIndicator
+              testID="loading"
+              color={styles.loading.color}
+              size="small"
+            />
           </View>
         );
       }
@@ -72,6 +76,7 @@ export const Button = memo(
 
     return (
       <Pressable
+        testID="button"
         style={({ pressed, hovered }) => [
           styles.container,
           pressed && !disabled && !loading && styles.pressed,

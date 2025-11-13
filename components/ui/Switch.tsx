@@ -61,6 +61,7 @@ export const Switch = memo(
 
     return (
       <Pressable
+        testID="switch"
         style={({ pressed }) => [
           styles.container,
           pressed && !disabled && styles.pressed,

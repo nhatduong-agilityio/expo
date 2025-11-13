@@ -98,6 +98,7 @@ export const Input = memo(
           <View style={[styles.container, styleContainer]}>
             {leftIcon && (
               <Pressable
+                testID={leftIcon}
                 style={styles.leftIconContainer}
                 onPress={onLeftIconPress}
                 hitSlop={8}
@@ -114,6 +115,7 @@ export const Input = memo(
             )}
 
             <TextInput
+              testID="input"
               ref={ref}
               style={[styles.input, style]}
               placeholderTextColor={theme.colors.textPlaceholder}
@@ -128,6 +130,7 @@ export const Input = memo(
 
             {showClear && (
               <Pressable
+                testID="clear-button"
                 onPress={handleOnClear}
                 style={styles.clearButton}
                 hitSlop={8}
@@ -145,6 +148,7 @@ export const Input = memo(
 
             {rightIcon && !showClear && (
               <Pressable
+                testID={rightIcon}
                 style={styles.rightIconContainer}
                 onPress={onRightIconPress}
                 hitSlop={8}
