@@ -20,7 +20,7 @@ import {
 } from '@/hooks';
 
 // Utils
-import { formatNumber, getTimeAgo } from '@/utils';
+import { formatNumber } from '@/utils';
 
 // Components
 import { AuthorCard, ScreenHeader } from '@/components';
@@ -153,7 +153,7 @@ const PostDetailScreen = () => {
           <AuthorCard
             avatar={post.author?.avatarUrl || 'https://picsum.photos/100/100'}
             name={post.author?.fullName || 'Anonymous'}
-            followers={getTimeAgo(post.publishedAt || post.createdAt)}
+            followers={post.author?.followersCount || 0}
             following={false}
             authorId={post.authorId}
             onPress={() => handleAuthorPress(post.authorId)}

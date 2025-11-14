@@ -22,6 +22,7 @@ export const SCREENS = {
   AUTHOR_PROFILE: 'author/[id]',
   POST_DETAIL: 'post/[id]',
   CREATE_POST: 'post/create',
+  STORYBOOK: '(storybook)/index',
 } as const;
 
 export const TABS = {

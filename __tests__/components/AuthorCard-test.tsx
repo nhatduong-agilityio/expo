@@ -16,7 +16,7 @@ describe('AuthorCard', () => {
     authorId: '1',
     name: 'John Doe',
     avatar: 'https://example.com/avatar.png',
-    followers: '1.2M Followers',
+    followers: 12,
   };
 
   afterEach(() => {
@@ -78,7 +78,7 @@ describe('AuthorCard', () => {
   it('should render follower count', () => {
     (useIsFollowing as jest.Mock).mockReturnValue({ data: false });
     const { getByText } = render(<AuthorCard {...mockAuthor} />);
-    expect(getByText('1.2M Followers')).toBeTruthy();
+    expect(getByText('12 Followers')).toBeTruthy();
   });
 
   it('should not render follow button for size "xs"', async () => {

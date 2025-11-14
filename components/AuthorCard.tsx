@@ -11,15 +11,18 @@ import { StyleSheet } from 'react-native-unistyles';
 // Hooks
 import { useIsFollowing, useToggleFollow } from '@/hooks';
 
+// Utils
+import { formatNumber } from '@/utils';
+
 // Components
 import { Avatar, Button, Text } from './ui';
 
 export type AuthorCardProps = Omit<PressableProps, 'children'> & {
-  avatar: ImageSourcePropType | string;
-  name: string;
+  avatar?: ImageSourcePropType | string | null;
   size?: 'xs' | 'lg';
-  followers?: string;
+  followers?: number;
   following?: boolean;
+  name?: string | null;
   authorId: string;
   onFollowPress?: (following: boolean) => void;
 };
@@ -56,13 +59,13 @@ export const AuthorCard = memo(
             style={styles.name}
             numberOfLines={1}
           >
-            {name}
+            {name ?? 'Anonymous'}
           </Text>
-          {followers && (
+          {followers ? (
             <Text style={styles.followers} numberOfLines={1}>
-              {followers}
+              {formatNumber(followers ?? 0)} Followers
             </Text>
-          )}
+          ) : null}
         </View>
         {size !== 'xs' && (
           <Button
