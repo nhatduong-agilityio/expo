@@ -34,6 +34,12 @@ const queryClient = new QueryClient({
   },
 });
 
+const StorybookEnabled = process.env.EXPO_PUBLIC_STORYBOOK_ENABLED === 'true';
+
+export const unstable_settings = {
+  initialRouteName: StorybookEnabled ? SCREENS.STORYBOOK : SCREENS.AUTH.LAYOUT,
+};
+
 const RootLayout = () => {
   const { isAuthenticated, setSession, setProfile, isLoading, setLoading } =
     useAuthStore();
@@ -132,6 +138,9 @@ const RootLayout = () => {
     <Fragment>
       <QueryClientProvider client={queryClient}>
         <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Protected guard={StorybookEnabled}>
+            <Stack.Screen name={SCREENS.STORYBOOK} />
+          </Stack.Protected>
           <Stack.Screen name={SCREENS.AUTH.LAYOUT} />
           <Stack.Screen name={SCREENS.TABS.LAYOUT} />
           <Stack.Screen

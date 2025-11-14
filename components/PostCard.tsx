@@ -188,8 +188,8 @@ export const PostCard = memo(
               <View style={styles.authorInfo}>
                 <AuthorCard
                   authorId={post.authorId}
-                  avatar={post.author?.avatarUrl || DEFAULT_AVATAR}
-                  name={post.author?.fullName || 'Unknown'}
+                  avatar={post.author?.avatarUrl}
+                  name={post.author?.fullName}
                   size="xs"
                   following={following}
                   onFollowPress={onFollowPress}
@@ -240,8 +240,8 @@ export const PostCard = memo(
             <View style={styles.authorInfo}>
               <AuthorCard
                 authorId={post.authorId}
-                avatar={post.author?.avatarUrl || DEFAULT_AVATAR}
-                name={post.author?.fullName || 'Unknown'}
+                avatar={post.author?.avatarUrl}
+                name={post.author?.fullName}
                 size="xs"
                 following={following}
                 onFollowPress={onFollowPress}

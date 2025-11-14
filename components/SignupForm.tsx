@@ -19,7 +19,7 @@ export const SignupForm = memo(
     loading,
   }: {
     onSubmit: (data: SignupFormData) => void | Promise<void>;
-    loading: boolean;
+    loading?: boolean;
   }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);

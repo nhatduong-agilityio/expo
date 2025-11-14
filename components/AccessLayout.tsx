@@ -15,8 +15,8 @@ import { Text } from './ui';
 
 type AccessLayoutProps = {
   loading?: boolean;
+  children?: ReactNode;
   mode: 'login' | 'signup';
-  children: ReactNode;
 };
 
 export const AccessLayout = memo(

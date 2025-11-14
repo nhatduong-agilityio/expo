@@ -603,7 +603,8 @@ exports[`AuthorCard should match to snapshot 1`] = `
         ]
       }
     >
-      1.2M Followers
+      12
+       Followers
     </Text>
   </View>
   <View

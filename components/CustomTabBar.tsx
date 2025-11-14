@@ -10,11 +10,16 @@ import { TABS } from '@/constants';
 // Components
 import { Text } from '@/components/ui';
 
+type CustomTabBarProps = BottomTabBarProps & {
+  disabledRoutes?: string[];
+};
+
 export const CustomTabBar = ({
+  disabledRoutes,
   state,
   descriptors,
   navigation,
-}: BottomTabBarProps) => {
+}: CustomTabBarProps) => {
   const { theme } = useUnistyles();
 
   return (
@@ -25,6 +30,11 @@ export const CustomTabBar = ({
         const isFocused = state.index === index;
 
         const onPress = () => {
+          // Check if route is disabled
+          if (disabledRoutes?.includes(route.name)) {
+            return; // Don't navigate
+          }
+
           const event = navigation.emit({
             type: 'tabPress',
             target: route.key,
@@ -37,6 +47,11 @@ export const CustomTabBar = ({
         };
 
         const onLongPress = () => {
+          // Check if route is disabled
+          if (disabledRoutes?.includes(route.name)) {
+            return;
+          }
+
           navigation.emit({
             type: 'tabLongPress',
             target: route.key,

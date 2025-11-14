@@ -13,7 +13,7 @@ import { CONTENT_TABS, FILTER_CONTENT_TABS, ROUTES } from '@/constants';
 import { useCategories, useDebounce, useNews } from '@/hooks';
 
 // Types
-import { Category, News } from '@/types';
+import { Author, Category, News } from '@/types';
 
 // Components
 import { AuthorCard, PostCard, TopicCard } from '@/components';
@@ -21,13 +21,7 @@ import { SearchBar, Tabs, Text } from '@/components/ui';
 
 type NewsItem = News;
 type TopicItem = Category;
-type AuthorItem = {
-  id: string;
-  name: string;
-  avatar: string;
-  followers: string;
-  following: boolean;
-};
+type AuthorItem = Author;
 
 const SearchScreen = () => {
   const router = useRouter();
@@ -77,10 +71,7 @@ const SearchScreen = () => {
     filteredNews.forEach(news => {
       if (news.author && !authorsMap.has(news.author.id)) {
         authorsMap.set(news.author.id, {
-          id: news.author.id,
-          name: news.author.fullName || 'Anonymous',
-          avatar: news.author.avatarUrl || 'https://picsum.photos/100/100',
-          followers: `${news.author.followersCount} Followers`,
+          ...news.author,
           following: false,
         });
       }
@@ -118,9 +109,9 @@ const SearchScreen = () => {
       <View style={styles.authorItem}>
         <AuthorCard
           authorId={item.id}
-          avatar={item.avatar}
-          name={item.name}
-          followers={item.followers}
+          avatar={item.avatarUrl}
+          name={item.fullName}
+          followers={item.followersCount}
           following={item.following}
           onPress={() => handleAuthorPress(item.id)}
         />
