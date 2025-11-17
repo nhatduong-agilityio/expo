@@ -16,6 +16,7 @@ export type ScreenHeaderProps = {
   rightComponent?: ReactNode;
   showLeftIcon?: boolean;
   showRightIcon?: boolean;
+  centerTitle?: boolean;
 };
 
 export const ScreenHeader = memo(
@@ -29,11 +30,17 @@ export const ScreenHeader = memo(
     rightComponent,
     showLeftIcon = false,
     showRightIcon = false,
+    centerTitle = true,
   }: ScreenHeaderProps) => {
     const { theme } = useUnistyles();
 
+    const getIconAccessibilityLabel = (iconName?: string) => {
+      if (!iconName) return '';
+      return iconName.replace(/-/g, ' ');
+    };
+
     return (
-      <View style={styles.container}>
+      <View style={styles.container} accessibilityRole="header">
         {/* Left Side */}
         <View style={styles.side}>
           {leftComponent ? (
@@ -43,8 +50,8 @@ export const ScreenHeader = memo(
               onPress={onLeftPress}
               hitSlop={8}
               accessibilityRole="button"
-              accessibilityLabel={leftIcon.replace(/-/g, ' ')}
-              accessibilityHint={`Press to ${leftIcon.replace(/-/g, ' ')}`}
+              accessibilityLabel={getIconAccessibilityLabel(leftIcon)}
+              accessibilityHint={`Double tap to ${getIconAccessibilityLabel(leftIcon)}`}
             >
               <Ionicons
                 name={leftIcon}
@@ -53,13 +60,18 @@ export const ScreenHeader = memo(
               />
             </Pressable>
           ) : (
-            <View style={styles.placeholder} />
+            <View style={styles.placeholder} accessible={false} />
           )}
         </View>
 
         {/* Title */}
-        <View style={styles.titleContainer}>
-          <Text variant="h3" style={styles.title} numberOfLines={1}>
+        <View style={[styles.titleContainer, !centerTitle && styles.titleLeft]}>
+          <Text
+            variant="h3"
+            style={styles.title}
+            numberOfLines={1}
+            accessibilityRole="header"
+          >
             {title}
           </Text>
         </View>
@@ -73,8 +85,8 @@ export const ScreenHeader = memo(
               onPress={onRightPress}
               hitSlop={8}
               accessibilityRole="button"
-              accessibilityLabel={rightIcon.replace(/-/g, ' ')}
-              accessibilityHint={`Press to ${rightIcon.replace(/-/g, ' ')}`}
+              accessibilityLabel={getIconAccessibilityLabel(rightIcon)}
+              accessibilityHint={`Double tap to ${getIconAccessibilityLabel(rightIcon)}`}
             >
               <Ionicons
                 name={rightIcon}
@@ -83,7 +95,7 @@ export const ScreenHeader = memo(
               />
             </Pressable>
           ) : (
-            <View style={styles.placeholder} />
+            <View style={styles.placeholder} accessible={false} />
           )}
         </View>
       </View>
@@ -111,6 +123,9 @@ const styles = StyleSheet.create(theme => ({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  titleLeft: {
+    alignItems: 'flex-start',
   },
   title: {
     color: theme.colors.textPrimary,

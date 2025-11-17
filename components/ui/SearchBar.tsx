@@ -10,20 +10,37 @@ export type SearchBarProps = Omit<InputProps, 'leftIcon'> & {
 
 export const SearchBar = memo(
   forwardRef<TextInput, SearchBarProps>(
-    ({ onPress, editable = true, ...rest }, ref) => {
+    (
+      {
+        onPress,
+        editable = true,
+        accessibilityLabel,
+        accessibilityHint,
+        ...rest
+      },
+      ref,
+    ) => {
+      const defaultAccessibilityLabel = accessibilityLabel || 'Search';
+      const defaultAccessibilityHint =
+        accessibilityHint ||
+        (editable ? 'Type to search' : 'Double tap to open search');
+
       if (!editable && onPress) {
         return (
           <Pressable
             onPress={onPress}
             style={styles.pressableContainer}
             accessibilityRole="search"
-            accessibilityHint="Opens the search screen"
+            accessibilityLabel={defaultAccessibilityLabel}
+            accessibilityHint={defaultAccessibilityHint}
           >
             <Input
               leftIcon="search"
               placeholder="Search"
               editable={false}
               pointerEvents="none"
+              accessibilityLabel={defaultAccessibilityLabel}
+              accessibilityHint="Type to search"
               {...rest}
             />
           </Pressable>
@@ -37,6 +54,8 @@ export const SearchBar = memo(
             leftIcon="search"
             placeholder="Search"
             showClearButton
+            accessibilityLabel={defaultAccessibilityLabel}
+            accessibilityHint={defaultAccessibilityHint}
             {...rest}
           />
         </View>

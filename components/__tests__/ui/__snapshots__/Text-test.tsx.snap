@@ -2,6 +2,9 @@
 
 exports[`Text should match to snapshot 1`] = `
 <Text
+  accessibilityLabel="This screen does not exist."
+  accessibilityRole="text"
+  accessible={true}
   style={
     [
       {

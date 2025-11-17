@@ -2,9 +2,11 @@
 
 exports[`Button should match to snapshot 1`] = `
 <View
+  accessibilityLabel="Click me"
+  accessibilityRole="button"
   accessibilityState={
     {
-      "busy": undefined,
+      "busy": false,
       "checked": undefined,
       "disabled": false,
       "expanded": undefined,
@@ -112,6 +114,9 @@ exports[`Button should match to snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="Click me"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {

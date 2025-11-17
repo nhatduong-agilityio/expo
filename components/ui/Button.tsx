@@ -33,6 +33,8 @@ export const Button = memo(
     leftIcon,
     rightIcon,
     style,
+    accessibilityLabel,
+    accessibilityHint,
     ...rest
   }: ButtonProps) => {
     styles.useVariants({
@@ -41,6 +43,8 @@ export const Button = memo(
       fullWidth: fullWidth || undefined,
       disabled: disabled || loading || undefined,
     });
+
+    const isDisabled = disabled || loading;
 
     const renderContent = () => {
       if (loading) {
@@ -58,7 +62,7 @@ export const Button = memo(
       return (
         <View style={styles.contentContainer}>
           {leftIcon && (
-            <View>
+            <View accessible={false}>
               <Ionicons name={leftIcon} color={styles.text.color} size={24} />
             </View>
           )}
@@ -66,7 +70,7 @@ export const Button = memo(
             {children}
           </Text>
           {rightIcon && (
-            <View>
+            <View accessible={false}>
               <Ionicons name={rightIcon} color={styles.text.color} size={24} />
             </View>
           )}
@@ -79,10 +83,14 @@ export const Button = memo(
         testID="button"
         style={({ pressed, hovered }) => [
           styles.container,
-          pressed && !disabled && !loading && styles.pressed,
+          pressed && !isDisabled && styles.pressed,
           typeof style === 'function' ? style({ pressed, hovered }) : style,
         ]}
-        disabled={disabled || loading}
+        disabled={isDisabled}
+        accessibilityRole="button"
+        accessibilityLabel={accessibilityLabel || children}
+        accessibilityHint={accessibilityHint}
+        accessibilityState={{ disabled: isDisabled, busy: loading }}
         {...rest}
       >
         {renderContent()}

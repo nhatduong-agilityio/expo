@@ -37,10 +37,10 @@ describe('Tabs', () => {
     const { getByLabelText } = render(
       <Tabs tabs={mockTabs} activeTab="2" onTabChange={jest.fn()} />,
     );
-    const activeTab = getByLabelText('Profile');
+    const activeTab = getByLabelText('Profile tab');
     expect(activeTab.props.accessibilityState.selected).toBe(true);
 
-    const inactiveTab = getByLabelText('Home');
+    const inactiveTab = getByLabelText('Home tab');
     expect(inactiveTab.props.accessibilityState.selected).toBe(false);
   });
 

@@ -2,6 +2,7 @@
 
 exports[`ScreenHeader should match to snapshot with title only 1`] = `
 <View
+  accessibilityRole="header"
   style={
     {
       "alignItems": "center",
@@ -23,6 +24,7 @@ exports[`ScreenHeader should match to snapshot with title only 1`] = `
     }
   >
     <View
+      accessible={false}
       style={
         {
           "height": 24,
@@ -33,14 +35,20 @@ exports[`ScreenHeader should match to snapshot with title only 1`] = `
   </View>
   <View
     style={
-      {
-        "alignItems": "center",
-        "flex": 1,
-        "justifyContent": "center",
-      }
+      [
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+        },
+        false,
+      ]
     }
   >
     <Text
+      accessibilityLabel="My Screen"
+      accessibilityRole="header"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -240,6 +248,7 @@ exports[`ScreenHeader should match to snapshot with title only 1`] = `
     }
   >
     <View
+      accessible={false}
       style={
         {
           "height": 24,
@@ -253,6 +262,7 @@ exports[`ScreenHeader should match to snapshot with title only 1`] = `
 
 exports[`ScreenHeader should render placeholders when no icon or component is provided 1`] = `
 <View
+  accessibilityRole="header"
   style={
     {
       "alignItems": "center",
@@ -274,6 +284,7 @@ exports[`ScreenHeader should render placeholders when no icon or component is pr
     }
   >
     <View
+      accessible={false}
       style={
         {
           "height": 24,
@@ -284,14 +295,20 @@ exports[`ScreenHeader should render placeholders when no icon or component is pr
   </View>
   <View
     style={
-      {
-        "alignItems": "center",
-        "flex": 1,
-        "justifyContent": "center",
-      }
+      [
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+        },
+        false,
+      ]
     }
   >
     <Text
+      accessibilityLabel="Placeholder Test"
+      accessibilityRole="header"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -491,6 +508,7 @@ exports[`ScreenHeader should render placeholders when no icon or component is pr
     }
   >
     <View
+      accessible={false}
       style={
         {
           "height": 24,

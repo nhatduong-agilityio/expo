@@ -90,14 +90,13 @@ exports[`SearchBar should match to snapshot 1`] = `
       }
     >
       <View
-        accessibilityHint="Press to search"
-        accessibilityLabel="Press to search"
+        accessibilityLabel="search icon"
         accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
-            "disabled": undefined,
+            "disabled": false,
             "expanded": undefined,
             "selected": undefined,
           }
@@ -135,7 +134,13 @@ exports[`SearchBar should match to snapshot 1`] = `
         <Text />
       </View>
       <TextInput
-        accessibilityHint="Input field"
+        accessibilityHint="Type to search"
+        accessibilityLabel="Search"
+        accessibilityState={
+          {
+            "disabled": false,
+          }
+        }
         editable={true}
         onBlur={[Function]}
         onFocus={[Function]}

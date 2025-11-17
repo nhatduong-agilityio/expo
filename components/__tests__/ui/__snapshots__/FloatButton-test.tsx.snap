@@ -2,12 +2,12 @@
 
 exports[`FloatButton should match to snapshot 1`] = `
 <View
-  accessibilityHint="Open"
-  accessibilityLabel="Open"
+  accessibilityHint="Double tap to activate"
+  accessibilityLabel="add button"
   accessibilityRole="button"
   accessibilityState={
     {
-      "busy": undefined,
+      "busy": false,
       "checked": undefined,
       "disabled": false,
       "expanded": undefined,
@@ -135,12 +135,12 @@ exports[`FloatButton should match to snapshot 1`] = `
 
 exports[`FloatButton should render with a specific icon 1`] = `
 <View
-  accessibilityHint="Open"
-  accessibilityLabel="Open"
+  accessibilityHint="Double tap to activate"
+  accessibilityLabel="pencil button"
   accessibilityRole="button"
   accessibilityState={
     {
-      "busy": undefined,
+      "busy": false,
       "checked": undefined,
       "disabled": false,
       "expanded": undefined,

@@ -2,6 +2,9 @@
 
 exports[`SettingsItem should hide the chevron when showChevron is false 1`] = `
 <View
+  accessibilityHint="Double tap to open"
+  accessibilityLabel="Help"
+  accessibilityRole="button"
   accessibilityState={
     {
       "busy": undefined,
@@ -77,6 +80,9 @@ exports[`SettingsItem should hide the chevron when showChevron is false 1`] = `
       
     </Text>
     <Text
+      accessibilityLabel="Help"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -270,6 +276,9 @@ exports[`SettingsItem should hide the chevron when showChevron is false 1`] = `
 
 exports[`SettingsItem should match to snapshot 1`] = `
 <View
+  accessibilityHint="Double tap to open"
+  accessibilityLabel="Settings"
+  accessibilityRole="button"
   accessibilityState={
     {
       "busy": undefined,
@@ -325,6 +334,9 @@ exports[`SettingsItem should match to snapshot 1`] = `
   >
     <Text />
     <Text
+      accessibilityLabel="Settings"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -519,6 +531,9 @@ exports[`SettingsItem should match to snapshot 1`] = `
 
 exports[`SettingsItem should show a chevron by default 1`] = `
 <View
+  accessibilityHint="Double tap to open"
+  accessibilityLabel="Notifications"
+  accessibilityRole="button"
   accessibilityState={
     {
       "busy": undefined,
@@ -594,6 +609,9 @@ exports[`SettingsItem should show a chevron by default 1`] = `
       
     </Text>
     <Text
+      accessibilityLabel="Notifications"
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {

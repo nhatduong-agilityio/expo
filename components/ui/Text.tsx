@@ -10,6 +10,8 @@ export type TextProps = RNTextProps & {
   align?: TextVariants['align'];
   textTransform?: TextVariants['textTransform'];
   decoration?: TextVariants['decoration'];
+  accessibilityLabel?: string;
+  accessibilityHint?: string;
 };
 
 export const Text = memo(
@@ -20,6 +22,9 @@ export const Text = memo(
     textTransform,
     decoration,
     style,
+    accessibilityLabel,
+    accessibilityHint,
+    children,
     ...rest
   }: TextProps) => {
     styles.useVariants({
@@ -30,7 +35,21 @@ export const Text = memo(
       decoration,
     });
 
-    return <RNText style={[styles.container, style]} {...rest} />;
+    return (
+      <RNText
+        style={[styles.container, style]}
+        accessibilityRole="text"
+        accessibilityLabel={
+          accessibilityLabel ||
+          (typeof children === 'string' ? children : undefined)
+        }
+        accessibilityHint={accessibilityHint}
+        accessible={true}
+        {...rest}
+      >
+        {children}
+      </RNText>
+    );
   },
 );
 

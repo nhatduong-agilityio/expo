@@ -2,6 +2,9 @@
 
 exports[`Tabs should match to snapshot 1`] = `
 <View
+  accessibilityHint="Tab navigation. 3 tabs available. Currently on Home tab"
+  accessibilityLabel="Tab navigation. 3 tabs available. Currently on Home tab"
+  accessible={true}
   style={
     {
       "backgroundColor": "transparent",
@@ -32,8 +35,8 @@ exports[`Tabs should match to snapshot 1`] = `
   >
     <View>
       <View
-        accessibilityHint="Switch to the Home tab"
-        accessibilityLabel="Home"
+        accessibilityHint="Currently viewing Home"
+        accessibilityLabel="Home tab"
         accessibilityRole="tab"
         accessibilityState={
           {
@@ -77,6 +80,9 @@ exports[`Tabs should match to snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Home"
+          accessibilityRole="text"
+          accessible={true}
           style={
             [
               {
@@ -282,6 +288,7 @@ exports[`Tabs should match to snapshot 1`] = `
           Home
         </Text>
         <View
+          accessible={false}
           style={
             {
               "bottom": 0,
@@ -307,8 +314,8 @@ exports[`Tabs should match to snapshot 1`] = `
         />
       </View>
       <View
-        accessibilityHint="Switch to the Profile tab"
-        accessibilityLabel="Profile"
+        accessibilityHint="Double tap to switch to Profile tab"
+        accessibilityLabel="Profile tab"
         accessibilityRole="tab"
         accessibilityState={
           {
@@ -352,6 +359,9 @@ exports[`Tabs should match to snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Profile"
+          accessibilityRole="text"
+          accessible={true}
           style={
             [
               {
@@ -558,8 +568,8 @@ exports[`Tabs should match to snapshot 1`] = `
         </Text>
       </View>
       <View
-        accessibilityHint="Switch to the Settings tab"
-        accessibilityLabel="Settings"
+        accessibilityHint="Double tap to switch to Settings tab"
+        accessibilityLabel="Settings tab"
         accessibilityRole="tab"
         accessibilityState={
           {
@@ -603,6 +613,9 @@ exports[`Tabs should match to snapshot 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Settings"
+          accessibilityRole="text"
+          accessible={true}
           style={
             [
               {

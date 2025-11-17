@@ -2,10 +2,13 @@
 
 exports[`Checkbox should be in a checked state 1`] = `
 <View
+  accessibilityHint="Double tap to uncheck"
+  accessibilityLabel="Checkbox"
+  accessibilityRole="checkbox"
   accessibilityState={
     {
       "busy": undefined,
-      "checked": undefined,
+      "checked": true,
       "disabled": false,
       "expanded": undefined,
       "selected": undefined,
@@ -100,6 +103,7 @@ exports[`Checkbox should be in a checked state 1`] = `
       }
     >
       <View
+        accessible={false}
         style={
           {
             "alignItems": "center",
@@ -116,10 +120,13 @@ exports[`Checkbox should be in a checked state 1`] = `
 
 exports[`Checkbox should match to snapshot 1`] = `
 <View
+  accessibilityHint="Double tap to check"
+  accessibilityLabel="Checkbox"
+  accessibilityRole="checkbox"
   accessibilityState={
     {
       "busy": undefined,
-      "checked": undefined,
+      "checked": false,
       "disabled": false,
       "expanded": undefined,
       "selected": undefined,

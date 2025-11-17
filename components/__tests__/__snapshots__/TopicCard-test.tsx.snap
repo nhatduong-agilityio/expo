@@ -2,6 +2,9 @@
 
 exports[`TopicCard should match to snapshot 1`] = `
 <View
+  accessibilityHint="Double tap to view topic details"
+  accessibilityLabel="Health topic. View the latest health news and explore articles on..."
+  accessibilityRole="button"
   accessibilityState={
     {
       "busy": undefined,
@@ -92,7 +95,7 @@ exports[`TopicCard should match to snapshot 1`] = `
   >
     <View
       accessibilityHint=""
-      accessibilityLabel="Avatar"
+      accessibilityLabel="H"
       accessibilityRole="image"
       accessibilityState={
         {
@@ -228,6 +231,9 @@ exports[`TopicCard should match to snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="Health"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -419,6 +425,9 @@ exports[`TopicCard should match to snapshot 1`] = `
       Health
     </Text>
     <Text
+      accessibilityLabel="View the latest health news and explore articles on..."
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={2}
       style={
         [
@@ -611,9 +620,12 @@ exports[`TopicCard should match to snapshot 1`] = `
     </Text>
   </View>
   <View
+    accessibilityHint="Double tap to subscribe to this topic"
+    accessibilityLabel="Subscribe to topic"
+    accessibilityRole="button"
     accessibilityState={
       {
-        "busy": undefined,
+        "busy": false,
         "checked": undefined,
         "disabled": false,
         "expanded": undefined,
@@ -721,6 +733,9 @@ exports[`TopicCard should match to snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="Save"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {

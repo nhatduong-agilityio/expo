@@ -57,12 +57,12 @@ describe('Input', () => {
       />,
     );
 
-    fireEvent.press(getByLabelText('Press to person'));
+    fireEvent.press(getByLabelText('person icon'));
     await waitFor(() => {
       expect(onLeftIconPressMock).toHaveBeenCalledTimes(1);
     });
 
-    fireEvent.press(getByLabelText('Press to eye'));
+    fireEvent.press(getByLabelText('eye icon'));
     await waitFor(() => {
       expect(onRightIconPressMock).toHaveBeenCalledTimes(1);
     });

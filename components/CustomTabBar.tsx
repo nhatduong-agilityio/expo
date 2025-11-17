@@ -23,15 +23,20 @@ export const CustomTabBar = ({
   const { theme } = useUnistyles();
 
   return (
-    <View style={styles.tabBar}>
+    <View
+      style={styles.tabBar}
+      accessibilityLabel="Main navigation tabs"
+      accessibilityHint="Tap to select a tab"
+    >
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label = options.title || route.name;
         const isFocused = state.index === index;
+        const isDisabled = disabledRoutes?.includes(route.name);
 
         const onPress = () => {
           // Check if route is disabled
-          if (disabledRoutes?.includes(route.name)) {
+          if (isDisabled) {
             return; // Don't navigate
           }
 
@@ -48,7 +53,7 @@ export const CustomTabBar = ({
 
         const onLongPress = () => {
           // Check if route is disabled
-          if (disabledRoutes?.includes(route.name)) {
+          if (isDisabled) {
             return;
           }
 
@@ -84,20 +89,25 @@ export const CustomTabBar = ({
         return (
           <Pressable
             key={route.key}
-            accessibilityRole="button"
-            accessibilityState={isFocused ? { selected: true } : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: isFocused, disabled: isDisabled }}
+            accessibilityLabel={options.tabBarAccessibilityLabel || label}
             accessibilityHint={`Navigates to the ${label} screen`}
             testID={options.tabBarButtonTestID}
             onPress={onPress}
             onLongPress={onLongPress}
             style={styles.tabButton}
+            disabled={isDisabled}
           >
             <Ionicons
               name={isFocused ? iconNameFocused : iconName}
               size={24}
               color={
-                isFocused ? theme.colors.primary : theme.colors.iconSecondary
+                isDisabled
+                  ? theme.colors.iconDisabled
+                  : isFocused
+                    ? theme.colors.primary
+                    : theme.colors.iconSecondary
               }
             />
             <Text
@@ -105,6 +115,7 @@ export const CustomTabBar = ({
               style={[
                 styles.label,
                 isFocused && { color: theme.colors.primary },
+                isDisabled && { color: theme.colors.textDisabled },
               ]}
             >
               {label}

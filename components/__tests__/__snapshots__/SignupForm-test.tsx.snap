@@ -16,6 +16,8 @@ exports[`SignupForm should match to snapshot 1`] = `
     }
   >
     <Text
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -278,8 +280,12 @@ exports[`SignupForm should match to snapshot 1`] = `
       }
     >
       <TextInput
-        accessibilityHint="Input field"
         accessibilityLabel="Email*"
+        accessibilityState={
+          {
+            "disabled": false,
+          }
+        }
         autoCapitalize="none"
         autoComplete="email"
         editable={true}
@@ -337,6 +343,8 @@ exports[`SignupForm should match to snapshot 1`] = `
     }
   >
     <Text
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -599,8 +607,12 @@ exports[`SignupForm should match to snapshot 1`] = `
       }
     >
       <TextInput
-        accessibilityHint="Input field"
         accessibilityLabel="Password*"
+        accessibilityState={
+          {
+            "disabled": false,
+          }
+        }
         autoCapitalize="none"
         autoComplete="new-password"
         editable={true}
@@ -649,14 +661,14 @@ exports[`SignupForm should match to snapshot 1`] = `
         value=""
       />
       <View
-        accessibilityHint="Press to eye-off-outline"
-        accessibilityLabel="Press to eye-off-outline"
+        accessibilityHint="Double tap to eye off outline"
+        accessibilityLabel="eye off outline icon"
         accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
-            "disabled": undefined,
+            "disabled": false,
             "expanded": undefined,
             "selected": undefined,
           }
@@ -703,6 +715,8 @@ exports[`SignupForm should match to snapshot 1`] = `
     }
   >
     <Text
+      accessibilityRole="text"
+      accessible={true}
       style={
         [
           {
@@ -965,8 +979,12 @@ exports[`SignupForm should match to snapshot 1`] = `
       }
     >
       <TextInput
-        accessibilityHint="Input field"
         accessibilityLabel="Confirm Password*"
+        accessibilityState={
+          {
+            "disabled": false,
+          }
+        }
         autoCapitalize="none"
         autoComplete="new-password"
         editable={true}
@@ -1015,14 +1033,14 @@ exports[`SignupForm should match to snapshot 1`] = `
         value=""
       />
       <View
-        accessibilityHint="Press to eye-off-outline"
-        accessibilityLabel="Press to eye-off-outline"
+        accessibilityHint="Double tap to eye off outline"
+        accessibilityLabel="eye off outline icon"
         accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
-            "disabled": undefined,
+            "disabled": false,
             "expanded": undefined,
             "selected": undefined,
           }
@@ -1071,10 +1089,13 @@ exports[`SignupForm should match to snapshot 1`] = `
     }
   >
     <View
+      accessibilityHint="Double tap to check"
+      accessibilityLabel="Remember me checkbox"
+      accessibilityRole="checkbox"
       accessibilityState={
         {
           "busy": undefined,
-          "checked": undefined,
+          "checked": "",
           "disabled": false,
           "expanded": undefined,
           "selected": undefined,
@@ -1170,6 +1191,9 @@ exports[`SignupForm should match to snapshot 1`] = `
         />
       </View>
       <Text
+        accessibilityLabel="Remember me"
+        accessibilityRole="text"
+        accessible={true}
         numberOfLines={1}
         style={
           [
@@ -1371,9 +1395,11 @@ exports[`SignupForm should match to snapshot 1`] = `
     </View>
   </View>
   <View
+    accessibilityLabel="Sign Up"
+    accessibilityRole="button"
     accessibilityState={
       {
-        "busy": undefined,
+        "busy": false,
         "checked": undefined,
         "disabled": false,
         "expanded": undefined,
@@ -1481,6 +1507,9 @@ exports[`SignupForm should match to snapshot 1`] = `
       }
     >
       <Text
+        accessibilityLabel="Sign Up"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {

@@ -20,12 +20,19 @@ import { Avatar, Button, Text } from './ui';
 export type TopicCardProps = Omit<PressableProps, 'children'> & {
   category: Category;
   onSavePress?: (saved: boolean) => void;
+  showSaveButton?: boolean;
 };
 
 export const TopicCard = memo(
-  ({ category, onSavePress, ...rest }: TopicCardProps) => {
+  ({
+    category,
+    onSavePress,
+    showSaveButton = true,
+    ...rest
+  }: TopicCardProps) => {
     // Check subscription status
-    const { data: isSubscribed } = useIsSubscribed(category.id);
+    const { data: isSubscribed = false, isLoading: isCheckingSubscription } =
+      useIsSubscribed(category.id);
     const { mutate: toggleSubscription, isPending } = useToggleSubscription();
 
     const handleSavePress = () => {
@@ -36,30 +43,52 @@ export const TopicCard = memo(
       }
     };
 
+    const isLoading = isPending || isCheckingSubscription;
+
     return (
-      <Pressable style={styles.container} {...rest}>
+      <Pressable
+        style={styles.container}
+        {...rest}
+        accessibilityRole="button"
+        accessibilityLabel={`${category.name} topic. ${category.description || ''}`}
+        accessibilityHint="Double tap to view topic details"
+      >
         <Avatar
           source={category.iconUrl || 'https://picsum.photos/100/100?random=10'}
           size="lg"
           editable={false}
           rounded={false}
+          fallbackLabel={category.name.charAt(0)}
         />
         <View style={styles.content}>
           <Text style={styles.title} numberOfLines={1}>
             {category.name}
           </Text>
-          <Text style={styles.description} numberOfLines={2}>
-            {category.description}
-          </Text>
+          {category.description && (
+            <Text style={styles.description} numberOfLines={2}>
+              {category.description}
+            </Text>
+          )}
         </View>
-        <Button
-          variant={isSubscribed ? 'primary' : 'outline'}
-          size="sm"
-          onPress={handleSavePress}
-          loading={isPending}
-        >
-          {isSubscribed ? 'Saved' : 'Save'}
-        </Button>
+        {showSaveButton && (
+          <Button
+            variant={isSubscribed ? 'primary' : 'outline'}
+            size="sm"
+            onPress={handleSavePress}
+            loading={isLoading}
+            disabled={isLoading}
+            accessibilityLabel={
+              isSubscribed ? 'Unsubscribe from topic' : 'Subscribe to topic'
+            }
+            accessibilityHint={
+              isSubscribed
+                ? 'Double tap to unsubscribe from this topic'
+                : 'Double tap to subscribe to this topic'
+            }
+          >
+            {isLoading ? '' : isSubscribed ? 'Saved' : 'Save'}
+          </Button>
+        )}
       </Pressable>
     );
   },

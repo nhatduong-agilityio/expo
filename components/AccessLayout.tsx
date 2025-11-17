@@ -41,8 +41,16 @@ export const AccessLayout = memo(
     );
 
     return (
-      <SafeAreaView style={styles.container} key={rt.themeName}>
-        <ScrollView style={styles.scrollView}>
+      <SafeAreaView
+        style={styles.container}
+        key={rt.themeName}
+        accessibilityLabel={`${isLogin ? 'Login' : 'Sign up'} screen`}
+        accessibilityHint={`${isLogin ? 'Login' : 'Sign up'} screen`}
+      >
+        <ScrollView
+          style={styles.scrollView}
+          showsVerticalScrollIndicator={false}
+        >
           {/* Header */}
           <View style={styles.header}>
             {content.title && (
@@ -85,7 +93,15 @@ export const AccessLayout = memo(
 
         {/* Loading Overlay */}
         {loading && (
-          <View style={styles.loadingOverlay}>
+          <View
+            style={styles.loadingOverlay}
+            accessibilityLabel={
+              isLogin ? 'Logging you in' : 'Creating your account'
+            }
+            accessibilityHint={
+              isLogin ? 'Logging you in' : 'Creating your account'
+            }
+          >
             <View style={styles.loadingContainer}>
               <ActivityIndicator size="large" color={theme.colors.primary} />
               <Text variant="body" style={styles.loadingText}>
@@ -133,6 +149,7 @@ const styles = StyleSheet.create(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: theme.spacing.sm,
+    gap: theme.spacing.xs,
   },
   loadingOverlay: {
     position: 'absolute',
