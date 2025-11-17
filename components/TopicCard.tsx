@@ -28,8 +28,7 @@ export const TopicCard = memo(
     const { data: isSubscribed } = useIsSubscribed(category.id);
     const { mutate: toggleSubscription, isPending } = useToggleSubscription();
 
-    const handleSavePress = (event: GestureResponderEvent) => {
-      event.stopPropagation();
+    const handleSavePress = () => {
       if (onSavePress) {
         onSavePress(!isSubscribed);
       } else {

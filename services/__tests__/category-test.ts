@@ -1,6 +1,5 @@
-import { categoryService } from '@/services/category';
-import { supabase } from '@/services/supabase';
-import { mockCategories } from '@/mocks/data';
+import { mockCategories } from '@/mocks';
+import { categoryService, supabase } from '@/services';
 
 jest.mock('@/services/supabase', () => ({
   supabase: {

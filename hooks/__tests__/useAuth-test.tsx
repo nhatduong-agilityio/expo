@@ -1,19 +1,15 @@
 import { ROUTES } from '@/constants';
 import { useAuth } from '@/hooks/useAuth';
-import { authService } from '@/services';
+import { authService } from '@/services/auth';
+import { secureStorage } from '@/services/secureStorage';
 import { useAuthStore } from '@/stores';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react-native';
 import { useRouter } from 'expo-router';
 
-jest.mock('@/services');
+jest.mock('@/services/auth');
+jest.mock('@/services/secureStorage');
 jest.mock('@/stores');
-jest.mock('@react-native-async-storage/async-storage', () => ({
-  setItem: jest.fn(),
-  getItem: jest.fn(),
-  removeItem: jest.fn(),
-}));
 jest.mock('expo-router', () => ({
   useRouter: jest.fn(),
 }));
@@ -31,14 +27,14 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 describe('useAuth', () => {
-  const setSession = jest.fn();
+  const setUser = jest.fn();
   const setProfile = jest.fn();
   const replace = jest.fn();
   const clear = jest.fn();
 
   beforeEach(() => {
     (useAuthStore as unknown as jest.Mock).mockReturnValue({
-      setSession,
+      setUser,
       setProfile,
     });
     (useRouter as jest.Mock).mockReturnValue({ replace });
@@ -63,19 +59,15 @@ describe('useAuth', () => {
 
     await waitFor(() => {
       expect(authService.signUp).toHaveBeenCalledWith(signUpData);
-      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-        '@news_app_remember_me',
-        'true',
-      );
-      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-        '@news_app_remembered_email',
+      expect(secureStorage.setRememberMeEnabled).toHaveBeenCalledWith(true);
+      expect(secureStorage.setRememberMeEmail).toHaveBeenCalledWith(
         signUpData.email,
       );
       expect(replace).toHaveBeenCalledWith(ROUTES.LOGIN);
     });
   });
 
-  it('should call signIn, set session and profile, and redirect on success', async () => {
+  it('should call signIn, set user and profile, and redirect on success', async () => {
     const signInData = { email: 'test@test.com', password: 'password' };
     const session = { user: { id: '1' } };
     const profile = { id: '1', username: 'test' };
@@ -87,7 +79,7 @@ describe('useAuth', () => {
 
     await waitFor(() => {
       expect(authService.signIn).toHaveBeenCalledWith(signInData);
-      expect(setSession).toHaveBeenCalledWith(session);
+      expect(setUser).toHaveBeenCalledWith(session.user);
       expect(authService.getProfile).toHaveBeenCalledWith('1');
       expect(setProfile).toHaveBeenCalledWith(profile);
       expect(replace).toHaveBeenCalledWith(ROUTES.HOME);
@@ -103,7 +95,7 @@ describe('useAuth', () => {
     await waitFor(() => {
       expect(authService.signOut).toHaveBeenCalled();
       expect(clear).toHaveBeenCalled();
-      expect(setSession).toHaveBeenCalledWith(null);
+      expect(setUser).toHaveBeenCalledWith(null);
       expect(setProfile).toHaveBeenCalledWith(null);
     });
   });
