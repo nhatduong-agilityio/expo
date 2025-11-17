@@ -1,6 +1,5 @@
-import { followService } from '@/services/follow';
-import { supabase } from '@/services/supabase';
-import { mockAuthors } from '@/mocks/data';
+import { mockAuthors } from '@/mocks';
+import { followService, supabase } from '@/services';
 
 jest.mock('@/services/supabase', () => ({
   supabase: {

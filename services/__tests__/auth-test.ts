@@ -1,6 +1,4 @@
-import { authService } from '@/services/auth';
-import { supabase } from '@/services/supabase';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { authService, secureStorage, supabase } from '@/services';
 
 jest.mock('@/services/supabase', () => ({
   supabase: {
@@ -9,19 +7,15 @@ jest.mock('@/services/supabase', () => ({
       signInWithPassword: jest.fn(),
       signOut: jest.fn(),
       getSession: jest.fn(),
+      refreshSession: jest.fn(),
     },
-    from: jest.fn().mockReturnThis(),
-    select: jest.fn().mockReturnThis(),
-    eq: jest.fn().mockReturnThis(),
-    single: jest.fn().mockReturnThis(),
-    update: jest.fn().mockReturnThis(),
+    from: jest.fn(() => ({
+      select: jest.fn().mockReturnThis(),
+      eq: jest.fn().mockReturnThis(),
+      single: jest.fn().mockReturnThis(),
+      update: jest.fn().mockReturnThis(),
+    })),
   },
-}));
-
-jest.mock('@react-native-async-storage/async-storage', () => ({
-  setItem: jest.fn(),
-  getItem: jest.fn(),
-  removeItem: jest.fn(),
 }));
 
 describe('authService', () => {
@@ -49,7 +43,16 @@ describe('authService', () => {
 
   describe('signIn', () => {
     it('should sign in a user and set remember me', async () => {
-      const mockResponse = { data: { user: { id: 'user-id' } }, error: null };
+      const mockResponse = {
+        data: {
+          user: { id: 'user-id' },
+          session: {
+            access_token: 'access-token',
+            refresh_token: 'refresh-token',
+          },
+        },
+        error: null,
+      };
       (supabase.auth.signInWithPassword as jest.Mock).mockResolvedValueOnce(
         mockResponse,
       );
@@ -64,19 +67,24 @@ describe('authService', () => {
         email: 'test@test.com',
         password: 'password',
       });
-      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-        '@news_app_remember_me',
-        'true',
-      );
-      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-        '@news_app_remembered_email',
+      expect(secureStorage.setRememberMeEnabled).toHaveBeenCalledWith(true);
+      expect(secureStorage.setRememberMeEmail).toHaveBeenCalledWith(
         'test@test.com',
       );
       expect(result).toEqual(mockResponse.data);
     });
 
     it('should sign in a user and not set remember me', async () => {
-      const mockResponse = { data: { user: { id: 'user-id' } }, error: null };
+      const mockResponse = {
+        data: {
+          user: { id: 'user-id' },
+          session: {
+            access_token: 'access-token',
+            refresh_token: 'refresh-token',
+          },
+        },
+        error: null,
+      };
       (supabase.auth.signInWithPassword as jest.Mock).mockResolvedValueOnce(
         mockResponse,
       );
@@ -87,17 +95,13 @@ describe('authService', () => {
         rememberMe: false,
       });
 
-      expect(AsyncStorage.removeItem).toHaveBeenCalledWith(
-        '@news_app_remember_me',
-      );
-      expect(AsyncStorage.removeItem).toHaveBeenCalledWith(
-        '@news_app_remembered_email',
-      );
+      expect(secureStorage.removeRememberMeEnabled).toHaveBeenCalled();
+      expect(secureStorage.removeRememberMeEmail).toHaveBeenCalled();
     });
   });
 
   describe('signOut', () => {
-    it('should sign out a user and clear remember me', async () => {
+    it('should sign out a user and clear secure storage', async () => {
       (supabase.auth.signOut as jest.Mock).mockResolvedValueOnce({
         error: null,
       });
@@ -105,12 +109,7 @@ describe('authService', () => {
       await authService.signOut();
 
       expect(supabase.auth.signOut).toHaveBeenCalled();
-      expect(AsyncStorage.removeItem).toHaveBeenCalledWith(
-        '@news_app_remember_me',
-      );
-      expect(AsyncStorage.removeItem).toHaveBeenCalledWith(
-        '@news_app_remembered_email',
-      );
+      expect(secureStorage.clear).toHaveBeenCalled();
     });
   });
 
@@ -131,12 +130,12 @@ describe('authService', () => {
   describe('getProfile', () => {
     it('should get a user profile', async () => {
       const mockProfile = { id: 'user-id', username: 'test' };
-      (supabase.from('profiles').select as jest.Mock).mockReturnValueOnce({
-        eq: jest.fn().mockReturnThis(),
-        single: jest
-          .fn()
-          .mockResolvedValueOnce({ data: mockProfile, error: null }),
-      });
+      const single = jest
+        .fn()
+        .mockResolvedValueOnce({ data: mockProfile, error: null });
+      const eq = jest.fn().mockReturnValue({ single });
+      const select = jest.fn().mockReturnValue({ eq });
+      (supabase.from as jest.Mock).mockReturnValue({ select });
 
       const result = await authService.getProfile('user-id');
 
@@ -149,13 +148,13 @@ describe('authService', () => {
     it('should update a user profile', async () => {
       const mockProfile = { id: 'user-id', username: 'updated' };
       const updates = { username: 'updated' };
-      (supabase.from('profiles').update as jest.Mock).mockReturnValueOnce({
-        eq: jest.fn().mockReturnThis(),
-        select: jest.fn().mockReturnThis(),
-        single: jest
-          .fn()
-          .mockResolvedValueOnce({ data: mockProfile, error: null }),
-      });
+      const single = jest
+        .fn()
+        .mockResolvedValueOnce({ data: mockProfile, error: null });
+      const select = jest.fn().mockReturnValue({ single });
+      const eq = jest.fn().mockReturnValue({ select });
+      const update = jest.fn().mockReturnValue({ eq });
+      (supabase.from as jest.Mock).mockReturnValue({ update });
 
       const result = await authService.updateProfile(
         'user-id',
@@ -169,18 +168,21 @@ describe('authService', () => {
 
   describe('getRememberedEmail', () => {
     it('should return the remembered email if remember me is enabled', async () => {
-      (AsyncStorage.getItem as jest.Mock).mockImplementation(key => {
-        if (key === '@news_app_remember_me') return 'true';
-        if (key === '@news_app_remembered_email') return 'test@test.com';
-        return null;
-      });
+      (secureStorage.getRememberMeEnabled as jest.Mock).mockResolvedValueOnce(
+        true,
+      );
+      (secureStorage.getRememberMeEmail as jest.Mock).mockResolvedValueOnce(
+        'test@test.com',
+      );
 
       const email = await authService.getRememberedEmail();
       expect(email).toBe('test@test.com');
     });
 
     it('should return null if remember me is not enabled', async () => {
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce('false');
+      (secureStorage.getRememberMeEnabled as jest.Mock).mockResolvedValueOnce(
+        false,
+      );
       const email = await authService.getRememberedEmail();
       expect(email).toBeNull();
     });
@@ -188,13 +190,17 @@ describe('authService', () => {
 
   describe('isRememberMeEnabled', () => {
     it('should return true if remember me is enabled', async () => {
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce('true');
+      (secureStorage.getRememberMeEnabled as jest.Mock).mockResolvedValueOnce(
+        true,
+      );
       const isEnabled = await authService.isRememberMeEnabled();
       expect(isEnabled).toBe(true);
     });
 
     it('should return false if remember me is not enabled', async () => {
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce('false');
+      (secureStorage.getRememberMeEnabled as jest.Mock).mockResolvedValueOnce(
+        false,
+      );
       const isEnabled = await authService.isRememberMeEnabled();
       expect(isEnabled).toBe(false);
     });

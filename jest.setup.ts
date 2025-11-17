@@ -47,3 +47,31 @@ jest.mock('expo-image-picker', () => ({
 jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
+
+jest.mock('@/services/secureStorage', () => ({
+  secureStorage: {
+    setSessionData: jest.fn(),
+    setAccessToken: jest.fn(),
+    setRefreshToken: jest.fn(),
+    setRememberMeEnabled: jest.fn(),
+    setRememberMeEmail: jest.fn(),
+    removeRememberMeEnabled: jest.fn(),
+    removeRememberMeEmail: jest.fn(),
+    clear: jest.fn(),
+    getSessionData: jest.fn(),
+    getRefreshToken: jest.fn(),
+    getRememberMeEnabled: jest.fn(),
+    getRememberMeEmail: jest.fn(),
+  },
+}));
+
+jest.mock('expo-file-system/legacy', () => ({
+  readAsStringAsync: jest.fn(),
+  EncodingType: {
+    Base64: 'base64',
+  },
+}));
+
+jest.mock('base64-arraybuffer', () => ({
+  decode: jest.fn(),
+}));

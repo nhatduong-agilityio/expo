@@ -51,15 +51,30 @@ news-app/
 ├── components/             # Reusable components
 ├── constants/              # App constants and configuration
 ├── hooks/                  # Custom React hooks
-├── scripts/                # Build and utility scripts
-├── .storybook/            # Storybook configuration
-├── __tests__/             # Test files
-├── app.json               # Expo configuration
-├── package.json           # Dependencies
-├── tsconfig.json          # TypeScript configuration
-├── .eslintrc.js          # ESLint configuration
-├── .prettierrc           # Prettier configuration
-└── README.md             # This file
+├── mocks/                  # Mock data
+├── services/               # API services
+├── stores/                 # State management stores
+├── types/                  # TypeScript type definitions
+├── utils/                  # Utility functions
+├── .editorconfig           # Editor configuration
+├── .gitignore              # Git ignore rules
+├── .lintstagedrc.js        # Lint-staged configuration
+├── .prettierrc             # Prettier configuration
+├── app.json                # Expo configuration
+├── babel.config.js         # Babel configuration
+├── eas.json                # EAS configuration
+├── eslint.config.js        # ESLint configuration
+├── index.ts                # Entry point
+├── jest.config.js          # Jest configuration
+├── jest.setup.ts           # Jest setup
+├── metro.config.js         # Metro bundler configuration
+├── news-app.sql            # Database schema
+├── package.json            # Dependencies
+├── storage-setup.sql       # Storage setup
+├── tsconfig.json           # TypeScript configuration
+├── unistyles.ts            # Unistyles configuration
+├── yarn.lock               # Yarn lock file
+└── README.md               # This file
 ```
 
 ## 🚀 Getting Started
@@ -93,13 +108,20 @@ npm install
 yarn install
 ```
 
-3. Start the development server:
+3. Create your **.env** file:
+
+```bash
+EXPO_PUBLIC_SUPABASE_URL=
+EXPO_PUBLIC_SUPABASE_ANON_KEY=
+```
+
+4. Start the development server:
 
 ```bash
 npx expo start
 ```
 
-4. Run on your preferred platform:
+5. Run on your preferred platform:
    - Press `i` for iOS simulator
    - Press `a` for Android emulator
    - Scan QR code with Expo Go app on your physical device

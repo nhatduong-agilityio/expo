@@ -1,5 +1,4 @@
-import { storageService } from '@/services/storage';
-import { supabase } from '@/services/supabase';
+import { storageService, supabase } from '@/services';
 import { decode } from 'base64-arraybuffer';
 import * as FileSystem from 'expo-file-system/legacy';
 
@@ -12,17 +11,6 @@ jest.mock('@/services/supabase', () => ({
       getPublicUrl: jest.fn(),
     },
   },
-}));
-
-jest.mock('expo-file-system/legacy', () => ({
-  readAsStringAsync: jest.fn(),
-  EncodingType: {
-    Base64: 'base64',
-  },
-}));
-
-jest.mock('base64-arraybuffer', () => ({
-  decode: jest.fn(),
 }));
 
 describe('storageService', () => {
