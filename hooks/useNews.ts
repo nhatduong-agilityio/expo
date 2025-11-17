@@ -27,6 +27,7 @@ export const NEWS_QUERY_KEYS = {
   details: () => [...NEWS_QUERY_KEYS.all, 'detail'] as const,
   detail: (id: string) => [...NEWS_QUERY_KEYS.details(), id] as const,
   trending: () => [...NEWS_QUERY_KEYS.all, 'trending'] as const,
+  infiniteTrending: () => [...NEWS_QUERY_KEYS.all, 'infiniteTrending'] as const,
 };
 
 // Get paginated news (for regular pagination)
@@ -70,6 +71,35 @@ export const useTrendingNews = (limit = 10) => {
   return useQuery({
     queryKey: NEWS_QUERY_KEYS.trending(),
     queryFn: () => newsService.getTrendingNews(limit),
+  });
+};
+
+// Get trending news with infinite scroll
+export const useInfiniteTrendingNews = (limit = 10) => {
+  return useInfiniteQuery({
+    queryKey: NEWS_QUERY_KEYS.infiniteTrending(),
+    queryFn: async ({ pageParam = 1 }) => {
+      // Get trending news with pagination
+      const allTrending = await newsService.getTrendingNews(100); // Get more items
+      const start = (pageParam - 1) * limit;
+      const end = start + limit;
+      const paginatedData = allTrending.slice(start, end);
+
+      return {
+        data: paginatedData,
+        count: allTrending.length,
+        page: pageParam,
+        limit,
+        totalPages: Math.ceil(allTrending.length / limit),
+      };
+    },
+    getNextPageParam: lastPage => {
+      if (lastPage.page < lastPage.totalPages) {
+        return lastPage.page + 1;
+      }
+      return undefined;
+    },
+    initialPageParam: 1,
   });
 };
 

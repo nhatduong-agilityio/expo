@@ -1,6 +1,6 @@
 import { FlashList } from '@shopify/flash-list';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, RefreshControl, View } from 'react-native';
 import {
   SafeAreaView,
@@ -12,7 +12,7 @@ import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { FILTER_PROFILE_TABS, PROFILE_TABS } from '@/constants';
 
 // Hooks
-import { useIsFollowing, useNews, useToggleFollow } from '@/hooks';
+import { useInfiniteNews, useIsFollowing, useToggleFollow } from '@/hooks';
 
 // Services
 import { authService } from '@/services';
@@ -49,13 +49,22 @@ const AuthorProfileScreen = () => {
   const { mutate: toggleFollow, isPending: isFollowPending } =
     useToggleFollow();
 
-  // Fetch author's news
-  const { data, isLoading, refetch, isRefetching } = useNews(
-    { authorId: authorId },
-    { page: 1, limit: 50 },
-  );
+  // Fetch author's news with infinite scroll
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    refetch,
+    isRefetching,
+  } = useInfiniteNews({ authorId: authorId }, 10);
 
-  const authorNews = data?.data || [];
+  // Flatten paginated data
+  const authorNews = useMemo(
+    () => data?.pages.flatMap(page => page.data) ?? [],
+    [data],
+  );
 
   const handleBackPress = () => {
     router.back();
@@ -85,6 +94,12 @@ const AuthorProfileScreen = () => {
     // TODO: Handle news press
   };
 
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   const renderNewsItem = useCallback(
     ({ item }: { item: News }) => (
       <View style={styles.newsItem}>
@@ -95,6 +110,15 @@ const AuthorProfileScreen = () => {
   );
 
   const newsKeyExtractor = useCallback((item: News) => item.id, []);
+
+  const renderFooter = useCallback(() => {
+    if (!isFetchingNextPage) return null;
+    return (
+      <View style={styles.footerLoader}>
+        <ActivityIndicator size="small" color={theme.colors.primary} />
+      </View>
+    );
+  }, [isFetchingNextPage, theme]);
 
   const renderHeader = () => {
     if (!author) return null;
@@ -214,16 +238,20 @@ const AuthorProfileScreen = () => {
 
       {/* Scrollable News List */}
       <FlashList
+        key={activeTab}
         data={authorNews}
         renderItem={renderNewsItem}
         keyExtractor={newsKeyExtractor}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmpty}
+        ListFooterComponent={renderFooter}
         contentContainerStyle={[
           styles.listContent,
           { paddingBottom: insets.bottom + 20 },
         ]}
         showsVerticalScrollIndicator={false}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
         refreshControl={
           <RefreshControl
             refreshing={isRefetching}
@@ -282,6 +310,10 @@ const styles = StyleSheet.create(theme => ({
   },
   listContent: {
     paddingTop: 0,
+  },
+  footerLoader: {
+    paddingVertical: theme.spacing.lg,
+    alignItems: 'center',
   },
   emptyState: {
     paddingVertical: theme.spacing['4xl'],

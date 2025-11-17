@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 
@@ -10,15 +9,13 @@ import { SignInData, SignUpData } from '@/types';
 
 // Services
 import { authService } from '@/services';
+import { secureStorage } from '@/services/secureStorage';
 
 // Stores
 import { useAuthStore } from '@/stores';
 
-const REMEMBER_ME_KEY = '@news_app_remember_me';
-const REMEMBERED_EMAIL_KEY = '@news_app_remembered_email';
-
 export const useAuth = () => {
-  const { setSession, setProfile } = useAuthStore();
+  const { setUser, setProfile } = useAuthStore();
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -26,10 +23,10 @@ export const useAuth = () => {
     mutationFn: async (data: SignUpData) => {
       const result = await authService.signUp(data);
 
-      // Store remember me preference for signup
+      // Store remember me preference securely if enabled
       if (data.rememberMe) {
-        await AsyncStorage.setItem(REMEMBER_ME_KEY, 'true');
-        await AsyncStorage.setItem(REMEMBERED_EMAIL_KEY, data.email);
+        await secureStorage.setRememberMeEnabled(true);
+        await secureStorage.setRememberMeEmail(data.email);
       }
 
       return result;
@@ -42,11 +39,14 @@ export const useAuth = () => {
   const signInMutation = useMutation({
     mutationFn: (data: SignInData) => authService.signIn(data),
     onSuccess: async data => {
-      setSession(data.session);
+      // Only store non-sensitive user data in store
+      setUser(data.session?.user || null);
+
       if (data.session?.user) {
         const profile = await authService.getProfile(data.session.user.id);
         setProfile(profile);
       }
+
       router.replace(ROUTES.HOME);
     },
   });
@@ -55,7 +55,7 @@ export const useAuth = () => {
     mutationFn: () => authService.signOut(),
     onSuccess: () => {
       queryClient.clear();
-      setSession(null);
+      setUser(null);
       setProfile(null);
     },
   });

@@ -56,7 +56,10 @@ const HomeScreen = () => {
   );
 
   // Flatten paginated data
-  const newsItems = data?.pages.flatMap(page => page.data) ?? [];
+  const newsItems = useMemo(
+    () => data?.pages.flatMap(page => page.data) ?? [],
+    [data?.pages],
+  );
 
   // Generate tabs from categories
   const FILTER_CATEGORY_TABS = useMemo(
@@ -162,6 +165,7 @@ const HomeScreen = () => {
       </View>
 
       <FlashList
+        key={activeCategory}
         data={newsItems}
         renderItem={renderNewsItem}
         keyExtractor={newsKeyExtractor}

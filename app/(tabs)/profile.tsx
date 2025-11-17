@@ -1,7 +1,7 @@
 import { FlashList } from '@shopify/flash-list';
 import { useRouter } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { ActivityIndicator, RefreshControl, View } from 'react-native';
 import {
   SafeAreaView,
@@ -12,7 +12,7 @@ import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { FILTER_PROFILE_TABS, PROFILE_TABS, ROUTES } from '@/constants';
 
 // Hooks
-import { useNews } from '@/hooks';
+import { useInfiniteNews } from '@/hooks';
 
 // Stores
 import { useAuthStore } from '@/stores';
@@ -33,13 +33,22 @@ const ProfileScreen = () => {
   // Get current user
   const { user, profile } = useAuthStore();
 
-  // Fetch user's news
-  const { data, isLoading, refetch, isRefetching } = useNews(
-    { authorId: user?.id },
-    { page: 1, limit: 50 },
-  );
+  // Fetch user's news with infinite scroll
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    refetch,
+    isRefetching,
+  } = useInfiniteNews({ authorId: user?.id }, 10);
 
-  const userNews = data?.data || [];
+  // Flatten paginated data
+  const userNews = useMemo(
+    () => data?.pages.flatMap(page => page.data) ?? [],
+    [data],
+  );
 
   const handleSettingsPress = () => {
     router.push(ROUTES.SETTINGS);
@@ -69,6 +78,12 @@ const ProfileScreen = () => {
     await WebBrowser.openBrowserAsync(profile?.website || '');
   };
 
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   const renderNewsItem = useCallback(
     ({ item }: { item: News }) => (
       <View style={styles.newsItem}>
@@ -79,6 +94,15 @@ const ProfileScreen = () => {
   );
 
   const newsKeyExtractor = useCallback((item: News) => item.id, []);
+
+  const renderFooter = useCallback(() => {
+    if (!isFetchingNextPage) return null;
+    return (
+      <View style={styles.footerLoader}>
+        <ActivityIndicator size="small" color={theme.colors.primary} />
+      </View>
+    );
+  }, [isFetchingNextPage, theme]);
 
   const renderHeader = () => (
     <View style={styles.profileHeader}>
@@ -186,16 +210,20 @@ const ProfileScreen = () => {
 
       {/* Scrollable News List */}
       <FlashList
+        key={activeTab}
         data={userNews}
         renderItem={renderNewsItem}
         keyExtractor={newsKeyExtractor}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmpty}
+        ListFooterComponent={renderFooter}
         contentContainerStyle={[
           styles.listContent,
           { paddingBottom: insets.bottom + 80 },
         ]}
         showsVerticalScrollIndicator={false}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
         refreshControl={
           <RefreshControl
             refreshing={isRefetching}
@@ -261,6 +289,10 @@ const styles = StyleSheet.create(theme => ({
   },
   listContent: {
     paddingTop: 0,
+  },
+  footerLoader: {
+    paddingVertical: theme.spacing.lg,
+    alignItems: 'center',
   },
   emptyState: {
     paddingVertical: theme.spacing['4xl'],

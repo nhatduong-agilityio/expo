@@ -13,7 +13,7 @@ import {
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 // Hooks
-import { useCategories, useTrendingNews } from '@/hooks';
+import { useCategories, useInfiniteTrendingNews } from '@/hooks';
 
 // Types
 import { Category, News } from '@/types';
@@ -40,13 +40,22 @@ const ExploreScreen = () => {
     isRefetching: categoriesRefetching,
   } = useCategories();
 
-  // Fetch trending news
+  // Fetch trending news with infinite scroll
   const {
-    data: trendingNews,
+    data: trendingData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
     isLoading: newsLoading,
     refetch: refetchNews,
     isRefetching: newsRefetching,
-  } = useTrendingNews(10);
+  } = useInfiniteTrendingNews(10);
+
+  // Flatten paginated trending news
+  const trendingNews = useMemo(
+    () => trendingData?.pages.flatMap(page => page.data) ?? [],
+    [trendingData],
+  );
 
   const handleSeeAllTopicsPress = () => {
     // TODO: Navigate to see all topics screen
@@ -60,6 +69,12 @@ const ExploreScreen = () => {
     // TODO: Navigate to news detail screen
   };
 
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   // Combine data into a single list
   const listData: ListItem[] = useMemo(() => {
     const items: ListItem[] = [];
@@ -71,7 +86,7 @@ const ExploreScreen = () => {
       });
     }
 
-    if (!newsLoading && trendingNews) {
+    if (!newsLoading && trendingNews.length > 0) {
       items.push({ type: 'popular-header', data: null });
       trendingNews.forEach(news => {
         items.push({ type: 'news', data: news });
@@ -151,6 +166,15 @@ const ExploreScreen = () => {
 
   const getItemType = useCallback((item: ListItem) => item.type, []);
 
+  const renderFooter = useCallback(() => {
+    if (!isFetchingNextPage) return null;
+    return (
+      <View style={styles.footerLoader}>
+        <ActivityIndicator size="small" color={theme.colors.primary} />
+      </View>
+    );
+  }, [isFetchingNextPage, theme]);
+
   const isRefreshing = categoriesRefetching || newsRefetching;
   const isLoading = categoriesLoading || newsLoading;
 
@@ -191,6 +215,9 @@ const ExploreScreen = () => {
           { paddingBottom: insets.bottom + 80 },
         ]}
         showsVerticalScrollIndicator={false}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={renderFooter}
         refreshControl={
           <RefreshControl
             refreshing={isRefreshing}
@@ -237,6 +264,10 @@ const styles = StyleSheet.create(theme => ({
   newsItem: {
     paddingHorizontal: theme.spacing.xl,
     marginBottom: theme.spacing.lg,
+  },
+  footerLoader: {
+    paddingVertical: theme.spacing.lg,
+    alignItems: 'center',
   },
   loadingContainer: {
     flex: 1,

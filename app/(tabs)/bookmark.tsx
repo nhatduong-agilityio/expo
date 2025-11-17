@@ -9,7 +9,7 @@ import {
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 // Hooks
-import { useBookmarks, useDebounce } from '@/hooks';
+import { useDebounce, useInfiniteBookmarks } from '@/hooks';
 
 // Types
 import { Bookmark } from '@/types';
@@ -24,13 +24,22 @@ const BookmarkScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearch = useDebounce(searchQuery, 300);
 
-  // Fetch bookmarks
-  const { data, isLoading, refetch, isRefetching } = useBookmarks({
-    page: 1,
-    limit: 100,
-  });
+  // Fetch bookmarks with infinite scroll
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    refetch,
+    isRefetching,
+  } = useInfiniteBookmarks(10);
 
-  const bookmarks = useMemo(() => data?.data || [], [data]);
+  // Flatten paginated data
+  const bookmarks = useMemo(
+    () => data?.pages.flatMap(page => page.data) ?? [],
+    [data],
+  );
 
   // Filter bookmarks based on search query
   const filteredBookmarks = useMemo(
@@ -51,6 +60,12 @@ const BookmarkScreen = () => {
     [debouncedSearch, bookmarks],
   );
 
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   const renderBookmarkItem = useCallback(({ item }: { item: Bookmark }) => {
     if (!item.news) return null;
 
@@ -62,6 +77,15 @@ const BookmarkScreen = () => {
   }, []);
 
   const bookmarkKeyExtractor = useCallback((item: Bookmark) => item.id, []);
+
+  const renderFooter = useCallback(() => {
+    if (!isFetchingNextPage) return null;
+    return (
+      <View style={styles.footerLoader}>
+        <ActivityIndicator size="small" color={theme.colors.primary} />
+      </View>
+    );
+  }, [isFetchingNextPage, theme]);
 
   const renderEmptyState = useCallback(
     () => (
@@ -117,11 +141,14 @@ const BookmarkScreen = () => {
           renderItem={renderBookmarkItem}
           keyExtractor={bookmarkKeyExtractor}
           ListEmptyComponent={renderEmptyState}
+          ListFooterComponent={renderFooter}
           contentContainerStyle={[
             styles.listContent,
             { paddingBottom: insets.bottom + 80 },
           ]}
           showsVerticalScrollIndicator={false}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.5}
           refreshControl={
             <RefreshControl
               refreshing={isRefetching}
@@ -155,22 +182,16 @@ const styles = StyleSheet.create(theme => ({
     paddingBottom: theme.spacing.lg,
     gap: theme.spacing.sm,
   },
-  filterButton: {
-    padding: theme.spacing.xs,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-    borderRadius: theme.borderRadius.sm,
-    width: 48,
-    height: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   listContent: {
     paddingTop: 0,
   },
   newsItem: {
     paddingHorizontal: theme.spacing.xl,
     marginBottom: theme.spacing.md,
+  },
+  footerLoader: {
+    paddingVertical: theme.spacing.lg,
+    alignItems: 'center',
   },
   emptyState: {
     flex: 1,
