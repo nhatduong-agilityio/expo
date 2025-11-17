@@ -23,7 +23,7 @@ import {
 } from '@/hooks';
 
 // Utils
-import { getTimeAgo } from '@/utils';
+import { formatNumber, getTimeAgo } from '@/utils';
 
 // Types
 import { News } from '@/types';
@@ -96,7 +96,12 @@ export const PostCard = memo(
           disabled={isLikePending}
           accessibilityRole="button"
           accessibilityLabel={isLiked ? 'Unlike post' : 'Like post'}
-          accessibilityHint={isLiked ? 'Unlikes the post' : 'Likes the post'}
+          accessibilityHint={
+            isLiked
+              ? 'Double tap to unlike this post'
+              : 'Double tap to like this post'
+          }
+          accessibilityState={{ disabled: isLikePending, selected: isLiked }}
         >
           <Ionicons
             name={isLiked ? 'heart' : 'heart-outline'}
@@ -117,9 +122,13 @@ export const PostCard = memo(
           }
           accessibilityHint={
             isBookmarked
-              ? 'Removes the post from bookmarks'
-              : 'Bookmarks the post'
+              ? 'Double tap to remove this post from your bookmarks'
+              : 'Double tap to save this post to your bookmarks'
           }
+          accessibilityState={{
+            disabled: isBookmarkPending,
+            selected: isBookmarked,
+          }}
         >
           <Ionicons
             name={isBookmarked ? 'bookmark' : 'bookmark-outline'}
@@ -139,7 +148,7 @@ export const PostCard = memo(
         hitSlop={8}
         accessibilityRole="button"
         accessibilityLabel="More options"
-        accessibilityHint="Opens a menu with more options for this post"
+        accessibilityHint="Double tap to open a menu with more options for this post"
       >
         <Ionicons
           style={styles.menuIcon}
@@ -153,10 +162,13 @@ export const PostCard = memo(
       typeof post.featuredImageUrl === 'string'
         ? { uri: post.featuredImageUrl }
         : DEFAULT_AVATAR;
+
+    const accessibilityLabel = `${post.title} by ${post.author?.fullName || 'Unknown author'}. ${post.category?.name || 'Uncategorized'}. Posted ${getTimeAgo(post.createdAt)}. ${formatNumber(post.likesCount)} likes, ${formatNumber(post.commentsCount)} comments.`;
+
     const accessibilityProps = {
       accessibilityRole: 'button' as const,
-      accessibilityLabel: `${post.title} by ${post.author?.fullName}`,
-      accessibilityHint: 'Opens the post details',
+      accessibilityLabel,
+      accessibilityHint: 'Double tap to read the full article',
     };
 
     if (variant === 'horizontal') {
@@ -173,10 +185,16 @@ export const PostCard = memo(
             contentFit="cover"
             placeholder={{ blurhash: BLUR_HASH }}
             accessibilityIgnoresInvertColors
+            accessible={false}
           />
           <View style={styles.contentHorizontal}>
             <View style={styles.headerRow}>
-              <Text style={styles.category} numberOfLines={1}>
+              <Text
+                style={styles.category}
+                numberOfLines={1}
+                accessibilityLabel={`Category: ${post.category?.name || 'Uncategorized'}`}
+                accessibilityHint={`Category: ${post.category?.name || 'Uncategorized'}`}
+              >
                 {post.category?.name}
               </Text>
               {renderActions()}
@@ -199,7 +217,12 @@ export const PostCard = memo(
               <View style={styles.footerRight}>
                 <View style={styles.timeContainer}>
                   <Ionicons name="time-outline" size={14} />
-                  <Text style={styles.timeAgo} numberOfLines={1}>
+                  <Text
+                    style={styles.timeAgo}
+                    numberOfLines={1}
+                    accessibilityLabel={`Posted ${getTimeAgo(post.createdAt)}`}
+                    accessibilityHint={`Posted ${getTimeAgo(post.createdAt)}`}
+                  >
                     {getTimeAgo(post.createdAt)}
                   </Text>
                 </View>
@@ -225,10 +248,16 @@ export const PostCard = memo(
           contentFit="cover"
           placeholder={{ blurhash: BLUR_HASH }}
           accessibilityIgnoresInvertColors
+          accessible={false}
         />
         <View style={styles.contentVertical}>
           <View style={styles.headerRow}>
-            <Text style={styles.category} numberOfLines={1}>
+            <Text
+              style={styles.category}
+              numberOfLines={1}
+              accessibilityLabel={`Category: ${post.category?.name || 'Uncategorized'}`}
+              accessibilityHint={`Category: ${post.category?.name || 'Uncategorized'}`}
+            >
               {post.category?.name}
             </Text>
             {renderActions()}
@@ -251,7 +280,12 @@ export const PostCard = memo(
             <View style={styles.footerRight}>
               <View style={styles.timeContainer}>
                 <Ionicons name="time-outline" size={14} />
-                <Text style={styles.timeAgo} numberOfLines={1}>
+                <Text
+                  style={styles.timeAgo}
+                  numberOfLines={1}
+                  accessibilityLabel={`Posted ${getTimeAgo(post.createdAt)}`}
+                  accessibilityHint={`Posted ${getTimeAgo(post.createdAt)}`}
+                >
                   {getTimeAgo(post.createdAt)}
                 </Text>
               </View>

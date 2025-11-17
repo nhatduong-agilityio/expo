@@ -23,14 +23,22 @@ export const Tabs = memo(
       variant,
     });
 
+    const activeTabLabel = tabs.find(tab => tab.id === activeTab)?.label || '';
+
     return (
-      <View testID="tabs" style={styles.container}>
+      <View
+        testID="tabs"
+        style={styles.container}
+        accessibilityLabel={`Tab navigation. ${tabs.length} tabs available. Currently on ${activeTabLabel} tab`}
+        accessibilityHint={`Tab navigation. ${tabs.length} tabs available. Currently on ${activeTabLabel} tab`}
+        accessible={true}
+      >
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}
         >
-          {tabs.map(tab => {
+          {tabs.map((tab, index) => {
             const isActive = tab.id === activeTab;
 
             styles.useVariants({
@@ -48,13 +56,20 @@ export const Tabs = memo(
                 onPress={() => onTabChange(tab.id)}
                 accessibilityRole="tab"
                 accessibilityState={{ selected: isActive }}
-                accessibilityLabel={tab.label}
-                accessibilityHint={`Switch to the ${tab.label} tab`}
+                accessibilityLabel={`${tab.label} tab`}
+                accessibilityHint={
+                  isActive
+                    ? `Currently viewing ${tab.label}`
+                    : `Double tap to switch to ${tab.label} tab`
+                }
+                accessible={true}
               >
                 <Text variant="body" style={styles.tabText}>
                   {tab.label}
                 </Text>
-                {isActive && <View style={styles.activeIndicator} />}
+                {isActive && (
+                  <View style={styles.activeIndicator} accessible={false} />
+                )}
               </Pressable>
             );
           })}

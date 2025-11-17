@@ -24,14 +24,34 @@ export const SettingsItem = memo(
     showSwitch = false,
     switchValue = false,
     onSwitchChange,
+    accessibilityLabel,
+    accessibilityHint,
     ...rest
   }: SettingsItemProps) => {
     const { theme } = useUnistyles();
+
+    const getAccessibilityLabel = () => {
+      if (accessibilityLabel) return accessibilityLabel;
+      let baseLabel = label;
+      if (showSwitch) baseLabel += `. Switch is ${switchValue ? 'on' : 'off'}`;
+      return baseLabel;
+    };
+
+    const getAccessibilityHint = () => {
+      if (accessibilityHint) return accessibilityHint;
+      if (showSwitch)
+        return switchValue ? 'Double tap to turn off' : 'Double tap to turn on';
+      return 'Double tap to open';
+    };
 
     return (
       <Pressable
         style={({ pressed }) => [styles.container, pressed && styles.pressed]}
         disabled={showSwitch}
+        accessibilityRole={showSwitch ? 'switch' : 'button'}
+        accessibilityLabel={getAccessibilityLabel()}
+        accessibilityHint={getAccessibilityHint()}
+        accessibilityState={showSwitch ? { checked: switchValue } : undefined}
         {...rest}
       >
         <View style={styles.leftContent}>

@@ -18,6 +18,8 @@ export type FloatButtonProps = Omit<PressableProps, 'children'> & {
   disabled?: boolean;
   loading?: boolean;
   position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
+  accessibilityLabel?: string;
+  accessibilityHint?: string;
 };
 
 export const FloatButton = memo(
@@ -28,6 +30,8 @@ export const FloatButton = memo(
     disabled = false,
     loading = false,
     position = 'bottom-right',
+    accessibilityLabel,
+    accessibilityHint,
     ...rest
   }: FloatButtonProps) => {
     styles.useVariants({
@@ -36,6 +40,14 @@ export const FloatButton = memo(
       disabled: disabled || loading || undefined,
       position,
     });
+
+    const isDisabled = disabled || loading;
+
+    const getDefaultAccessibilityLabel = () => {
+      if (accessibilityLabel) return accessibilityLabel;
+      const iconLabel = iconName.replace(/-/g, ' ');
+      return `${iconLabel} button`;
+    };
 
     const renderContent = () => {
       if (loading) {
@@ -58,13 +70,16 @@ export const FloatButton = memo(
         role="button"
         testID="float-button-pressable"
         accessibilityRole="button"
-        accessibilityLabel={loading ? 'Loading' : 'Open'}
-        accessibilityHint={loading ? 'Loading' : 'Open'}
+        accessibilityLabel={getDefaultAccessibilityLabel()}
+        accessibilityHint={
+          accessibilityHint || (loading ? 'Loading' : 'Double tap to activate')
+        }
+        accessibilityState={{ disabled: isDisabled, busy: loading }}
         style={({ pressed }) => [
           styles.container,
-          pressed && !disabled && !loading && styles.pressed,
+          pressed && !isDisabled && styles.pressed,
         ]}
-        disabled={disabled || loading}
+        disabled={isDisabled}
         {...rest}
       >
         {renderContent()}

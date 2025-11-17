@@ -2,6 +2,8 @@
 
 exports[`AccessLayout should match snapshot for login mode 1`] = `
 <RNCSafeAreaView
+  accessibilityHint="Login screen"
+  accessibilityLabel="Login screen"
   edges={
     {
       "bottom": "additive",
@@ -17,6 +19,7 @@ exports[`AccessLayout should match snapshot for login mode 1`] = `
   }
 >
   <RCTScrollView
+    showsVerticalScrollIndicator={false}
     style={
       {
         "flex": 1,
@@ -36,6 +39,9 @@ exports[`AccessLayout should match snapshot for login mode 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Hello"
+          accessibilityRole="text"
+          accessible={true}
           style={
             [
               {
@@ -224,6 +230,9 @@ exports[`AccessLayout should match snapshot for login mode 1`] = `
           Hello
         </Text>
         <Text
+          accessibilityLabel="Again!"
+          accessibilityRole="text"
+          accessible={true}
           style={
             [
               {
@@ -413,6 +422,9 @@ exports[`AccessLayout should match snapshot for login mode 1`] = `
         </Text>
       </View>
       <Text
+        accessibilityLabel="Welcome back you've been missed"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -616,12 +628,16 @@ exports[`AccessLayout should match snapshot for login mode 1`] = `
             {
               "alignItems": "center",
               "flexDirection": "row",
+              "gap": 4,
               "justifyContent": "center",
               "marginTop": 8,
             }
           }
         >
           <Text
+            accessibilityLabel="don't have an account ?"
+            accessibilityRole="text"
+            accessible={true}
             style={
               [
                 {
@@ -844,6 +860,9 @@ exports[`AccessLayout should match snapshot for login mode 1`] = `
             role="link"
           >
             <Text
+              accessibilityLabel="Sign up"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {
@@ -1039,6 +1058,8 @@ exports[`AccessLayout should match snapshot for login mode 1`] = `
 
 exports[`AccessLayout should match snapshot for signup mode 1`] = `
 <RNCSafeAreaView
+  accessibilityHint="Sign up screen"
+  accessibilityLabel="Sign up screen"
   edges={
     {
       "bottom": "additive",
@@ -1054,6 +1075,7 @@ exports[`AccessLayout should match snapshot for signup mode 1`] = `
   }
 >
   <RCTScrollView
+    showsVerticalScrollIndicator={false}
     style={
       {
         "flex": 1,
@@ -1073,6 +1095,9 @@ exports[`AccessLayout should match snapshot for signup mode 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Hello!"
+          accessibilityRole="text"
+          accessible={true}
           style={
             [
               {
@@ -1262,6 +1287,9 @@ exports[`AccessLayout should match snapshot for signup mode 1`] = `
         </Text>
       </View>
       <Text
+        accessibilityLabel="Signup to get Started"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {
@@ -1465,12 +1493,16 @@ exports[`AccessLayout should match snapshot for signup mode 1`] = `
             {
               "alignItems": "center",
               "flexDirection": "row",
+              "gap": 4,
               "justifyContent": "center",
               "marginTop": 8,
             }
           }
         >
           <Text
+            accessibilityLabel="Already have an account ?"
+            accessibilityRole="text"
+            accessible={true}
             style={
               [
                 {
@@ -1693,6 +1725,9 @@ exports[`AccessLayout should match snapshot for signup mode 1`] = `
             role="link"
           >
             <Text
+              accessibilityLabel="Login"
+              accessibilityRole="text"
+              accessible={true}
               style={
                 [
                   {

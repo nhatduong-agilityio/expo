@@ -41,7 +41,7 @@ describe('SearchBar', () => {
     // We can check for the pressable area around the icon.
 
     await waitFor(() => {
-      expect(getByLabelText('Press to search')).toBeTruthy();
+      expect(getByLabelText('search icon')).toBeTruthy();
     });
   });
 

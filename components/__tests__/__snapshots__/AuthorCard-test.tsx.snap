@@ -2,6 +2,9 @@
 
 exports[`AuthorCard should match to snapshot 1`] = `
 <View
+  accessibilityHint="Double tap to view author profile"
+  accessibilityLabel="John Doe, 12 followers"
+  accessibilityRole="button"
   accessibilityState={
     {
       "busy": undefined,
@@ -38,6 +41,8 @@ exports[`AuthorCard should match to snapshot 1`] = `
       "elevation": 1,
       "flexDirection": "row",
       "gap": 12,
+      "paddingHorizontal": 4,
+      "paddingVertical": 8,
       "shadowColor": "#000",
       "shadowOffset": {
         "height": 1,
@@ -90,7 +95,7 @@ exports[`AuthorCard should match to snapshot 1`] = `
   >
     <View
       accessibilityHint=""
-      accessibilityLabel="Avatar"
+      accessibilityLabel="J"
       accessibilityRole="image"
       accessibilityState={
         {
@@ -226,6 +231,9 @@ exports[`AuthorCard should match to snapshot 1`] = `
     }
   >
     <Text
+      accessibilityLabel="John Doe"
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -416,6 +424,8 @@ exports[`AuthorCard should match to snapshot 1`] = `
       John Doe
     </Text>
     <Text
+      accessibilityRole="text"
+      accessible={true}
       numberOfLines={1}
       style={
         [
@@ -608,9 +618,12 @@ exports[`AuthorCard should match to snapshot 1`] = `
     </Text>
   </View>
   <View
+    accessibilityHint="Double tap to follow this author"
+    accessibilityLabel="Follow author"
+    accessibilityRole="button"
     accessibilityState={
       {
-        "busy": undefined,
+        "busy": false,
         "checked": undefined,
         "disabled": false,
         "expanded": undefined,
@@ -717,10 +730,15 @@ exports[`AuthorCard should match to snapshot 1`] = `
         }
       }
     >
-      <View>
+      <View
+        accessible={false}
+      >
         <Text />
       </View>
       <Text
+        accessibilityLabel="Follow"
+        accessibilityRole="text"
+        accessible={true}
         style={
           [
             {

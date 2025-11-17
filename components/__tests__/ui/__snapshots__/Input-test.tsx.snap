@@ -83,7 +83,11 @@ exports[`Input should match to snapshot 1`] = `
     }
   >
     <TextInput
-      accessibilityHint="Input field"
+      accessibilityState={
+        {
+          "disabled": false,
+        }
+      }
       editable={true}
       onBlur={[Function]}
       onFocus={[Function]}

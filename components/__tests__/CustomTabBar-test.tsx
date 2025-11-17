@@ -200,7 +200,7 @@ describe('CustomTabBar', () => {
 
     it('should render correct number of tabs', () => {
       const { getAllByRole } = render(<CustomTabBar {...defaultProps} />);
-      const buttons = getAllByRole('button');
+      const buttons = getAllByRole('tab');
 
       expect(buttons).toHaveLength(4);
     });
@@ -264,7 +264,7 @@ describe('CustomTabBar', () => {
       });
 
       const homeButton = getByTestId('home-tab-button');
-      expect(homeButton.props.accessibilityState).toEqual({});
+      expect(homeButton.props.accessibilityState).toEqual({ selected: false });
     });
   });
 
@@ -380,11 +380,11 @@ describe('CustomTabBar', () => {
 
     it('should have button accessibility role', () => {
       const { getAllByRole } = render(<CustomTabBar {...defaultProps} />);
-      const buttons = getAllByRole('button');
+      const buttons = getAllByRole('tab');
 
       expect(buttons).toHaveLength(4);
       buttons.forEach(button => {
-        expect(button.props.accessibilityRole).toBe('button');
+        expect(button.props.accessibilityRole).toBe('tab');
       });
     });
   });
@@ -402,7 +402,7 @@ describe('CustomTabBar', () => {
       });
 
       const { getAllByRole } = render(<CustomTabBar {...props} />);
-      const buttons = getAllByRole('button');
+      const buttons = getAllByRole('tab');
 
       expect(buttons).toHaveLength(2);
     });

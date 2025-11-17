@@ -29,6 +29,7 @@ export type InputProps = Omit<TextInputProps, 'placeholderTextColor'> & {
   styleContainer?: StyleProp<ViewStyle>;
   onRightIconPress?: () => void;
   onLeftIconPress?: () => void;
+  required?: boolean;
 };
 
 export const Input = memo(
@@ -50,6 +51,9 @@ export const Input = memo(
         onRightIconPress,
         onLeftIconPress,
         style,
+        required = false,
+        accessibilityLabel,
+        accessibilityHint,
         ...rest
       },
       ref,
@@ -83,6 +87,11 @@ export const Input = memo(
 
       const showClear = showClearButton && hasValue && !disabled && isFocused;
 
+      const inputAccessibilityLabel =
+        accessibilityLabel || label || rest.placeholder;
+      const inputAccessibilityHint =
+        accessibilityHint || (error ? `Error: ${error}` : undefined);
+
       return (
         <View style={styles.wrapper}>
           {label && (
@@ -92,6 +101,7 @@ export const Input = memo(
               style={styles.label}
             >
               {label}
+              {required && ' *'}
             </Text>
           )}
 
@@ -102,9 +112,14 @@ export const Input = memo(
                 style={styles.leftIconContainer}
                 onPress={onLeftIconPress}
                 hitSlop={8}
+                disabled={disabled}
                 accessibilityRole="button"
-                accessibilityLabel={`Press to ${leftIcon}`}
-                accessibilityHint={`Press to ${leftIcon}`}
+                accessibilityLabel={`${leftIcon.replace(/-/g, ' ')} icon`}
+                accessibilityHint={
+                  onLeftIconPress
+                    ? `Double tap to ${leftIcon.replace(/-/g, ' ')}`
+                    : undefined
+                }
               >
                 <Ionicons
                   name={leftIcon}
@@ -123,8 +138,9 @@ export const Input = memo(
               value={value}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              accessibilityLabel={label}
-              accessibilityHint="Input field"
+              accessibilityLabel={inputAccessibilityLabel}
+              accessibilityHint={inputAccessibilityHint}
+              accessibilityState={{ disabled }}
               {...rest}
             />
 
@@ -136,7 +152,7 @@ export const Input = memo(
                 hitSlop={8}
                 accessibilityRole="button"
                 accessibilityLabel="Clear input"
-                accessibilityHint="Clears the text from the input field"
+                accessibilityHint="Double tap to clear the text from the input field"
               >
                 <Ionicons
                   name="close"
@@ -152,9 +168,14 @@ export const Input = memo(
                 style={styles.rightIconContainer}
                 onPress={onRightIconPress}
                 hitSlop={8}
+                disabled={disabled}
                 accessibilityRole="button"
-                accessibilityLabel={`Press to ${rightIcon}`}
-                accessibilityHint={`Press to ${rightIcon}`}
+                accessibilityLabel={`${rightIcon.replace(/-/g, ' ')} icon`}
+                accessibilityHint={
+                  onRightIconPress
+                    ? `Double tap to ${rightIcon.replace(/-/g, ' ')}`
+                    : undefined
+                }
               >
                 <Ionicons
                   name={rightIcon}
@@ -172,7 +193,12 @@ export const Input = memo(
                 size={16}
                 color={styles.icon(!!error).color}
               />
-              <Text variant="caption" color="error">
+              <Text
+                variant="caption"
+                color="error"
+                accessibilityLabel="Error"
+                accessibilityHint="Error"
+              >
                 {error}
               </Text>
             </View>

@@ -18,6 +18,8 @@ export const Switch = memo(
     label,
     disabled = false,
     size = 'md',
+    accessibilityLabel,
+    accessibilityHint,
     ...rest
   }: SwitchProps) => {
     const animatedValue = useRef(new Animated.Value(value ? 1 : 0)).current;
@@ -59,6 +61,17 @@ export const Switch = memo(
       outputRange: [outputStart, outputEnd],
     });
 
+    const getAccessibilityLabel = () => {
+      if (accessibilityLabel) return accessibilityLabel;
+      if (label) return `${label} switch`;
+      return 'Switch';
+    };
+
+    const getAccessibilityHint = () => {
+      if (accessibilityHint) return accessibilityHint;
+      return value ? 'Double tap to turn off' : 'Double tap to turn on';
+    };
+
     return (
       <Pressable
         testID="switch"
@@ -68,6 +81,10 @@ export const Switch = memo(
         ]}
         onPress={handlePress}
         disabled={disabled}
+        accessibilityRole="switch"
+        accessibilityLabel={getAccessibilityLabel()}
+        accessibilityHint={getAccessibilityHint()}
+        accessibilityState={{ checked: value, disabled }}
         {...rest}
       >
         <View style={styles.track}>

@@ -19,6 +19,8 @@ export const Checkbox = memo(
     label,
     disabled = false,
     size = 'md',
+    accessibilityLabel,
+    accessibilityHint,
     ...rest
   }: CheckboxProps) => {
     styles.useVariants({
@@ -33,6 +35,17 @@ export const Checkbox = memo(
       }
     };
 
+    const getAccessibilityLabel = () => {
+      if (accessibilityLabel) return accessibilityLabel;
+      if (label) return `${label} checkbox`;
+      return 'Checkbox';
+    };
+
+    const getAccessibilityHint = () => {
+      if (accessibilityHint) return accessibilityHint;
+      return checked ? 'Double tap to uncheck' : 'Double tap to check';
+    };
+
     return (
       <Pressable
         testID="checkbox-pressable"
@@ -42,12 +55,16 @@ export const Checkbox = memo(
         ]}
         onPress={handlePress}
         disabled={disabled}
+        accessibilityRole="checkbox"
+        accessibilityLabel={getAccessibilityLabel()}
+        accessibilityHint={getAccessibilityHint()}
+        accessibilityState={{ checked, disabled }}
         {...rest}
       >
         <View testID="checkbox-container" style={styles.checkboxContainer}>
           <View style={styles.checkbox}>
             {checked && (
-              <View style={styles.checkmark}>
+              <View style={styles.checkmark} accessible={false}>
                 <Ionicons name="checkmark" size={18} color="white" />
               </View>
             )}

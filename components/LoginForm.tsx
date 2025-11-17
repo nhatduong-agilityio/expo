@@ -46,12 +46,16 @@ export const LoginForm = memo(
     // Load remembered email on mount
     useEffect(() => {
       const loadRememberedData = async () => {
-        const rememberedEmail = await authService.getRememberedEmail();
-        const isRememberMe = await authService.isRememberMeEnabled();
+        try {
+          const rememberedEmail = await authService.getRememberedEmail();
+          const isRememberMe = await authService.isRememberMeEnabled();
 
-        if (rememberedEmail) {
-          setValue('email', rememberedEmail);
-          setValue('rememberMe', isRememberMe);
+          if (rememberedEmail) {
+            setValue('email', rememberedEmail);
+            setValue('rememberMe', isRememberMe);
+          }
+        } catch (error) {
+          console.error('Failed to load remembered data:', error);
         }
       };
 
