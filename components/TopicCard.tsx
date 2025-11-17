@@ -1,5 +1,11 @@
 import { memo } from 'react';
-import { Platform, Pressable, PressableProps, View } from 'react-native';
+import {
+  GestureResponderEvent,
+  Platform,
+  Pressable,
+  PressableProps,
+  View,
+} from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 // Hooks
@@ -22,7 +28,8 @@ export const TopicCard = memo(
     const { data: isSubscribed } = useIsSubscribed(category.id);
     const { mutate: toggleSubscription, isPending } = useToggleSubscription();
 
-    const handleSavePress = () => {
+    const handleSavePress = (event: GestureResponderEvent) => {
+      event.stopPropagation();
       if (onSavePress) {
         onSavePress(!isSubscribed);
       } else {

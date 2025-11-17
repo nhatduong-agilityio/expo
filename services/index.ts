@@ -4,5 +4,6 @@ export * from './category';
 export * from './follow';
 export * from './like';
 export * from './news';
+export * from './secureStorage';
 export * from './storage';
 export * from './supabase';

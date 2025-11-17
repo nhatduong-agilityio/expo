@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 // Services
 import { bookmarkService } from '@/services';
@@ -13,11 +18,15 @@ import { News, PaginationParams } from '@/types';
 import { NEWS_QUERY_KEYS } from './useNews';
 
 export const BOOKMARK_QUERY_KEYS = {
-  all: ['bookmarks'] as const,
-  lists: () => [...BOOKMARK_QUERY_KEYS.all, 'list'] as const,
-  list: (userId: string) => [...BOOKMARK_QUERY_KEYS.lists(), userId] as const,
-  check: (newsId: string) =>
-    [...BOOKMARK_QUERY_KEYS.all, 'check', newsId] as const,
+  all: ['bookmarks'],
+  lists: () => [...BOOKMARK_QUERY_KEYS.all, 'list'],
+  list: (userId: string) => [...BOOKMARK_QUERY_KEYS.lists(), userId],
+  infiniteList: (userId: string) => [
+    ...BOOKMARK_QUERY_KEYS.all,
+    'infiniteList',
+    userId,
+  ],
+  check: (newsId: string) => [...BOOKMARK_QUERY_KEYS.all, 'check', newsId],
 };
 
 // Get user bookmarks
@@ -29,6 +38,25 @@ export const useBookmarks = (
   return useQuery({
     queryKey: BOOKMARK_QUERY_KEYS.list(user?.id || ''),
     queryFn: () => bookmarkService.getBookmarks(user!.id, pagination),
+    enabled: !!user,
+  });
+};
+
+// Get user bookmarks with infinite scroll
+export const useInfiniteBookmarks = (limit = 10) => {
+  const { user } = useAuthStore();
+
+  return useInfiniteQuery({
+    queryKey: BOOKMARK_QUERY_KEYS.infiniteList(user?.id || ''),
+    queryFn: ({ pageParam = 1 }) =>
+      bookmarkService.getBookmarks(user!.id, { page: pageParam, limit }),
+    getNextPageParam: lastPage => {
+      if (lastPage.page < lastPage.totalPages) {
+        return lastPage.page + 1;
+      }
+      return undefined;
+    },
+    initialPageParam: 1,
     enabled: !!user,
   });
 };
@@ -170,6 +198,9 @@ export const useToggleBookmark = () => {
       });
       queryClient.invalidateQueries({
         queryKey: BOOKMARK_QUERY_KEYS.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: BOOKMARK_QUERY_KEYS.infiniteList(user!.id),
       });
       queryClient.invalidateQueries({
         queryKey: NEWS_QUERY_KEYS.detail(newsId),

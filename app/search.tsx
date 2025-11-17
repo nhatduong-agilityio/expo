@@ -2,7 +2,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { FlashList } from '@shopify/flash-list';
 import { useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Pressable, TextInput, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  RefreshControl,
+  TextInput,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
@@ -10,7 +16,12 @@ import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { CONTENT_TABS, FILTER_CONTENT_TABS, ROUTES } from '@/constants';
 
 // Hooks
-import { useCategories, useDebounce, useNews } from '@/hooks';
+import {
+  useCategories,
+  useDebounce,
+  useInfiniteAuthors,
+  useInfiniteNews,
+} from '@/hooks';
 
 // Types
 import { Author, Category, News } from '@/types';
@@ -32,14 +43,35 @@ const SearchScreen = () => {
   const [activeTab, setActiveTab] = useState<string>(CONTENT_TABS.NEWS.ID);
   const debouncedSearch = useDebounce(searchQuery, 300);
 
-  // Fetch news based on search
-  const { data: newsData, isLoading: newsLoading } = useNews(
-    { search: debouncedSearch },
-    { page: 1, limit: 50 },
-  );
-
   // Fetch categories
   const { data: categories, isLoading: categoriesLoading } = useCategories();
+
+  // Fetch news based on search with infinite scroll
+  const {
+    data: newsData,
+    fetchNextPage: fetchNextNewsPage,
+    hasNextPage: hasNextNewsPage,
+    isFetchingNextPage: isFetchingNextNewsPage,
+    isLoading: newsLoading,
+    refetch: refetchNews,
+    isRefetching: newsRefetching,
+  } = useInfiniteNews(
+    {
+      search: debouncedSearch,
+    },
+    20,
+  );
+
+  // Fetch authors with infinite scroll
+  const {
+    data: authorsData,
+    fetchNextPage: fetchNextAuthorsPage,
+    hasNextPage: hasNextAuthorsPage,
+    isFetchingNextPage: isFetchingNextAuthorsPage,
+    isLoading: authorsLoading,
+    refetch: refetchAuthors,
+    isRefetching: authorsRefetching,
+  } = useInfiniteAuthors(debouncedSearch, 20);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -49,8 +81,19 @@ const SearchScreen = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const filteredNews = useMemo(() => newsData?.data || [], [newsData]);
+  // Flatten paginated news data
+  const allNews = useMemo(
+    () => newsData?.pages.flatMap(page => page.data) ?? [],
+    [newsData],
+  );
 
+  // Flatten paginated authors data
+  const allAuthors = useMemo(
+    () => authorsData?.pages.flatMap(page => page.data) ?? [],
+    [authorsData],
+  );
+
+  // Filter topics based on search
   const filteredTopics = useMemo(
     () =>
       (categories || []).filter(
@@ -63,28 +106,24 @@ const SearchScreen = () => {
     [debouncedSearch, categories],
   );
 
-  // Mock authors for now - you can create a separate service for this
-  const filteredAuthors: AuthorItem[] = useMemo(() => {
-    if (!debouncedSearch) return [];
-    // Extract unique authors from news
-    const authorsMap = new Map<string, AuthorItem>();
-    filteredNews.forEach(news => {
-      if (news.author && !authorsMap.has(news.author.id)) {
-        authorsMap.set(news.author.id, {
-          ...news.author,
-          following: false,
-        });
-      }
-    });
-    return Array.from(authorsMap.values());
-  }, [debouncedSearch, filteredNews]);
-
   const handleAuthorPress = useCallback(
     (authorId: string) => {
       router.push(ROUTES.AUTHOR_PROFILE(authorId));
     },
     [router],
   );
+
+  const handleLoadMoreNews = useCallback(() => {
+    if (hasNextNewsPage && !isFetchingNextNewsPage) {
+      fetchNextNewsPage();
+    }
+  }, [hasNextNewsPage, isFetchingNextNewsPage, fetchNextNewsPage]);
+
+  const handleLoadMoreAuthors = useCallback(() => {
+    if (hasNextAuthorsPage && !isFetchingNextAuthorsPage) {
+      fetchNextAuthorsPage();
+    }
+  }, [hasNextAuthorsPage, isFetchingNextAuthorsPage, fetchNextAuthorsPage]);
 
   const renderNewsItem = useCallback(
     ({ item }: { item: NewsItem }) => (
@@ -124,10 +163,28 @@ const SearchScreen = () => {
   const topicKeyExtractor = useCallback((item: TopicItem) => item.id, []);
   const authorKeyExtractor = useCallback((item: AuthorItem) => item.id, []);
 
+  const renderNewsFooter = useCallback(() => {
+    if (!isFetchingNextNewsPage) return null;
+    return (
+      <View style={styles.footerLoader}>
+        <ActivityIndicator size="small" color={theme.colors.primary} />
+      </View>
+    );
+  }, [isFetchingNextNewsPage, theme]);
+
+  const renderAuthorsFooter = useCallback(() => {
+    if (!isFetchingNextAuthorsPage) return null;
+    return (
+      <View style={styles.footerLoader}>
+        <ActivityIndicator size="small" color={theme.colors.primary} />
+      </View>
+    );
+  }, [isFetchingNextAuthorsPage, theme]);
+
   const renderEmptyState = useCallback(
     () => (
       <View style={styles.emptyState}>
-        {newsLoading || categoriesLoading ? (
+        {newsLoading || categoriesLoading || authorsLoading ? (
           <ActivityIndicator size="large" color={theme.colors.primary} />
         ) : (
           <Text variant="body" color="secondary" align="center">
@@ -138,7 +195,14 @@ const SearchScreen = () => {
         )}
       </View>
     ),
-    [debouncedSearch, activeTab, newsLoading, categoriesLoading, theme],
+    [
+      debouncedSearch,
+      activeTab,
+      newsLoading,
+      categoriesLoading,
+      authorsLoading,
+      theme,
+    ],
   );
 
   const renderContent = () => {
@@ -146,34 +210,63 @@ const SearchScreen = () => {
       case CONTENT_TABS.NEWS.ID:
         return (
           <FlashList
-            data={filteredNews}
+            key={activeTab}
+            data={allNews}
             renderItem={renderNewsItem}
             keyExtractor={newsKeyExtractor}
             contentContainerStyle={styles.listContent}
             ListEmptyComponent={renderEmptyState}
+            ListFooterComponent={renderNewsFooter}
             showsVerticalScrollIndicator={false}
+            onEndReached={handleLoadMoreNews}
+            onEndReachedThreshold={0.5}
+            refreshControl={
+              <RefreshControl
+                refreshing={newsRefetching}
+                onRefresh={refetchNews}
+                tintColor={theme.colors.primary}
+              />
+            }
           />
         );
       case CONTENT_TABS.TOPICS.ID:
         return (
           <FlashList
+            key={activeTab}
             data={filteredTopics}
             renderItem={renderTopicItem}
             keyExtractor={topicKeyExtractor}
             contentContainerStyle={styles.listContent}
             ListEmptyComponent={renderEmptyState}
             showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                tintColor={theme.colors.primary}
+              />
+            }
           />
         );
       case CONTENT_TABS.AUTHOR.ID:
         return (
           <FlashList
-            data={filteredAuthors}
+            key={activeTab}
+            data={allAuthors}
             renderItem={renderAuthorItem}
             keyExtractor={authorKeyExtractor}
             contentContainerStyle={styles.listContent}
             ListEmptyComponent={renderEmptyState}
+            ListFooterComponent={renderAuthorsFooter}
             showsVerticalScrollIndicator={false}
+            onEndReached={handleLoadMoreAuthors}
+            onEndReachedThreshold={0.5}
+            refreshControl={
+              <RefreshControl
+                refreshing={authorsRefetching}
+                onRefresh={refetchAuthors}
+                tintColor={theme.colors.primary}
+              />
+            }
           />
         );
       default:
@@ -258,6 +351,10 @@ const styles = StyleSheet.create(theme => ({
   },
   authorItem: {
     marginBottom: theme.spacing.md,
+  },
+  footerLoader: {
+    paddingVertical: theme.spacing.lg,
+    alignItems: 'center',
   },
   emptyState: {
     paddingVertical: theme.spacing['3xl'],

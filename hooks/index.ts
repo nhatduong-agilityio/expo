@@ -1,4 +1,5 @@
 export * from './useAuth';
+export * from './useAuthors';
 export * from './useBookmarks';
 export * from './useCategories';
 export * from './useDebounce';

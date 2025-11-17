@@ -41,7 +41,7 @@ export const unstable_settings = {
 };
 
 const RootLayout = () => {
-  const { isAuthenticated, setSession, setProfile, isLoading, setLoading } =
+  const { isAuthenticated, setUser, setProfile, isLoading, setLoading } =
     useAuthStore();
   const segments = useSegments();
   const router = useRouter();
@@ -61,9 +61,11 @@ const RootLayout = () => {
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        // Check for existing session
+        // Check for existing session (from secure storage)
         const session = await authService.getSession();
-        setSession(session);
+
+        // Only store non-sensitive user data
+        setUser(session?.user ?? null);
 
         if (session?.user) {
           try {
@@ -86,7 +88,8 @@ const RootLayout = () => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session);
+      // Only store non-sensitive user data
+      setUser(session?.user ?? null);
 
       if (session?.user) {
         try {
@@ -101,7 +104,7 @@ const RootLayout = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [setLoading, setProfile, setSession]);
+  }, [setLoading, setProfile, setUser]);
 
   // Perform navigation
   useEffect(() => {
@@ -138,53 +141,62 @@ const RootLayout = () => {
     <Fragment>
       <QueryClientProvider client={queryClient}>
         <Stack screenOptions={{ headerShown: false }}>
+          {/* Storybook - Only accessible when enabled */}
           <Stack.Protected guard={StorybookEnabled}>
             <Stack.Screen name={SCREENS.STORYBOOK} />
           </Stack.Protected>
-          <Stack.Screen name={SCREENS.AUTH.LAYOUT} />
-          <Stack.Screen name={SCREENS.TABS.LAYOUT} />
-          <Stack.Screen
-            name={SCREENS.SEARCH}
-            options={{
-              presentation: 'containedModal',
-              animation: 'slide_from_bottom',
-            }}
-          />
-          <Stack.Screen
-            name={SCREENS.SETTINGS}
-            options={{
-              presentation: 'containedModal',
-              animation: 'slide_from_right',
-            }}
-          />
-          <Stack.Screen
-            name={SCREENS.EDIT_PROFILE}
-            options={{
-              presentation: 'containedModal',
-              animation: 'slide_from_bottom',
-            }}
-          />
-          <Stack.Screen
-            name={SCREENS.AUTHOR_PROFILE}
-            options={{
-              presentation: 'containedModal',
-              animation: 'slide_from_right',
-            }}
-          />
-          <Stack.Screen
-            name={SCREENS.POST_DETAIL}
-            options={{
-              presentation: 'containedModal',
-              animation: 'slide_from_right',
-            }}
-          />
-          <Stack.Screen
-            name={SCREENS.CREATE_POST}
-            options={{
-              presentation: 'containedModal',
-              animation: 'slide_from_bottom',
-            }}
-          />
+
+          {/* Auth screens - Only accessible when NOT authenticated */}
+          <Stack.Protected guard={!isAuthenticated}>
+            <Stack.Screen name={SCREENS.AUTH.LAYOUT} />
+          </Stack.Protected>
+
+          {/* Protected screens - Only accessible when authenticated */}
+          <Stack.Protected guard={isAuthenticated}>
+            <Stack.Screen name={SCREENS.TABS.LAYOUT} />
+            <Stack.Screen
+              name={SCREENS.SEARCH}
+              options={{
+                presentation: 'containedModal',
+                animation: 'slide_from_bottom',
+              }}
+            />
+            <Stack.Screen
+              name={SCREENS.SETTINGS}
+              options={{
+                presentation: 'containedModal',
+                animation: 'slide_from_right',
+              }}
+            />
+            <Stack.Screen
+              name={SCREENS.EDIT_PROFILE}
+              options={{
+                presentation: 'containedModal',
+                animation: 'slide_from_bottom',
+              }}
+            />
+            <Stack.Screen
+              name={SCREENS.AUTHOR_PROFILE}
+              options={{
+                presentation: 'containedModal',
+                animation: 'slide_from_right',
+              }}
+            />
+            <Stack.Screen
+              name={SCREENS.POST_DETAIL}
+              options={{
+                presentation: 'containedModal',
+                animation: 'slide_from_right',
+              }}
+            />
+            <Stack.Screen
+              name={SCREENS.CREATE_POST}
+              options={{
+                presentation: 'containedModal',
+                animation: 'slide_from_bottom',
+              }}
+            />
+          </Stack.Protected>
         </Stack>
         <StatusBar style="auto" />
       </QueryClientProvider>
