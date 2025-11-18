@@ -9,6 +9,7 @@ import { z } from 'zod';
 import { signupSchema } from '@/constants';
 
 // Components
+import { EyeCloseOutline, EyeOutline } from './icons';
 import { Button, Checkbox, Input } from './ui';
 
 type SignupFormData = z.infer<typeof signupSchema>;
@@ -49,7 +50,8 @@ export const SignupForm = memo(
           name="email"
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
-              label="Email*"
+              label="Email"
+              required
               placeholder="Enter your email"
               value={value}
               onChangeText={onChange}
@@ -70,7 +72,8 @@ export const SignupForm = memo(
           name="password"
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
-              label="Password*"
+              label="Password"
+              required
               placeholder="Enter your password"
               value={value}
               onChangeText={onChange}
@@ -80,7 +83,7 @@ export const SignupForm = memo(
               autoCapitalize="none"
               autoComplete="new-password"
               disabled={isLoading}
-              rightIcon={showPassword ? 'eye-outline' : 'eye-off-outline'}
+              rightIcon={showPassword ? EyeOutline : EyeCloseOutline}
               onRightIconPress={() => setShowPassword(!showPassword)}
             />
           )}
@@ -92,7 +95,8 @@ export const SignupForm = memo(
           name="confirmPassword"
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
-              label="Confirm Password*"
+              label="Confirm Password"
+              required
               placeholder="Confirm your password"
               value={value}
               onChangeText={onChange}
@@ -102,9 +106,7 @@ export const SignupForm = memo(
               autoCapitalize="none"
               autoComplete="new-password"
               disabled={isLoading}
-              rightIcon={
-                showConfirmPassword ? 'eye-outline' : 'eye-off-outline'
-              }
+              rightIcon={showConfirmPassword ? EyeOutline : EyeCloseOutline}
               onRightIconPress={() =>
                 setShowConfirmPassword(!showConfirmPassword)
               }

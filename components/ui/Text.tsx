@@ -132,8 +132,8 @@ const styles = StyleSheet.create(theme => ({
         label: {
           fontSize: theme.fontSize.sm,
           lineHeight: theme.lineHeight.sm,
-          fontFamily: theme.fontFamily.semiBold,
-          fontWeight: theme.fontWeight.semiBold,
+          fontFamily: theme.fontFamily.regular,
+          fontWeight: theme.fontWeight.regular,
           color: theme.colors.textPrimary,
         },
         button: {

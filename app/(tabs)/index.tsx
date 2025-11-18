@@ -167,7 +167,7 @@ const HomeScreen = () => {
           editable={false}
           onPress={handleSearchPress}
           accessibilityLabel="Search news"
-          accessibilityHint="Double tap to open search screen"
+          accessibilityHint="Tap to open search screen"
         />
       </View>
 
@@ -185,7 +185,7 @@ const HomeScreen = () => {
           hitSlop={8}
           accessibilityRole="button"
           accessibilityLabel="See all latest news"
-          accessibilityHint="Double tap to view all the latest news articles"
+          accessibilityHint="Tap to view all the latest news articles"
         >
           <Text variant="bodySm" color="link">
             See all

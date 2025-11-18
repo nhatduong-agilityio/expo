@@ -1,8 +1,8 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
-import { ComponentProps, useCallback, useMemo, useState } from 'react';
+import { ComponentType, useCallback, useMemo, useState } from 'react';
 import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { SvgProps } from 'react-native-svg';
 import { StyleSheet, UnistylesRuntime } from 'react-native-unistyles';
 
 // Hooks
@@ -10,11 +10,19 @@ import { useAuth } from '@/hooks';
 
 // Components
 import { ScreenHeader } from '@/components';
+import {
+  BackOutline,
+  LockOutline,
+  LogoutOutline,
+  MoonOutline,
+  NotificationOutline,
+  QuestionOutline,
+} from '@/components/icons';
 import { SettingsItem } from '@/components/ui';
 
 type SettingsItemConfig = {
   id: string;
-  icon: ComponentProps<typeof Ionicons>['name'];
+  icon: ComponentType<SvgProps>;
   label: string;
   showChevron?: boolean;
   showSwitch?: boolean;
@@ -58,25 +66,25 @@ const SettingsScreen = () => {
     () => [
       {
         id: 'notification',
-        icon: 'notifications-outline',
+        icon: NotificationOutline,
         label: 'Notification',
         onPress: handleNotificationPress,
       },
       {
         id: 'security',
-        icon: 'lock-closed-outline',
+        icon: LockOutline,
         label: 'Security',
         onPress: handleSecurityPress,
       },
       {
         id: 'help',
-        icon: 'help-circle-outline',
+        icon: QuestionOutline,
         label: 'Help',
         onPress: handleHelpPress,
       },
       {
         id: 'darkMode',
-        icon: 'moon-outline',
+        icon: MoonOutline,
         label: 'Dark Mode',
         showChevron: false,
         showSwitch: true,
@@ -85,7 +93,7 @@ const SettingsScreen = () => {
       },
       {
         id: 'logout',
-        icon: 'log-out-outline',
+        icon: LogoutOutline,
         label: 'Logout',
         showChevron: false,
         onPress: handleLogout,
@@ -105,7 +113,7 @@ const SettingsScreen = () => {
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScreenHeader
         title="Settings"
-        leftIcon="arrow-back"
+        leftIcon={BackOutline}
         onLeftPress={handleBackPress}
         showLeftIcon
       />

@@ -102,12 +102,12 @@ describe('SignupForm', () => {
   });
 
   it('should render email, password, confirm password, and remember me fields', () => {
-    const { getByLabelText, getByText } = render(
+    const { getAllByLabelText, getByText } = render(
       <SignupForm onSubmit={mockOnSubmit} loading={false} />,
     );
-    expect(getByLabelText('Email*')).toBeTruthy();
-    expect(getByLabelText('Password*')).toBeTruthy();
-    expect(getByLabelText('Confirm Password*')).toBeTruthy();
+    expect(getAllByLabelText('Email')[0]).toBeTruthy();
+    expect(getAllByLabelText('Password')[0]).toBeTruthy();
+    expect(getAllByLabelText('Confirm Password')[0]).toBeTruthy();
     expect(getByText('Remember me')).toBeTruthy();
   });
 
@@ -131,13 +131,16 @@ describe('SignupForm', () => {
       watch: jest.fn(() => mockSubmitData),
     });
 
-    const { getByLabelText, getByText } = render(
+    const { getAllByLabelText, getByText } = render(
       <SignupForm onSubmit={mockOnSubmit} loading={false} />,
     );
 
-    fireEvent.changeText(getByLabelText('Email*'), 'test@example.com');
-    fireEvent.changeText(getByLabelText('Password*'), 'password123');
-    fireEvent.changeText(getByLabelText('Confirm Password*'), 'password123');
+    fireEvent.changeText(getAllByLabelText('Email')[0], 'test@example.com');
+    fireEvent.changeText(getAllByLabelText('Password')[0], 'password123');
+    fireEvent.changeText(
+      getAllByLabelText('Confirm Password')[0],
+      'password123',
+    );
     fireEvent.press(getByText('Sign Up'));
 
     await waitFor(() => {
@@ -195,31 +198,30 @@ describe('SignupForm', () => {
   });
 
   it('should toggle password visibility for password field', () => {
-    const { getByLabelText, getAllByTestId } = render(
+    const { getAllByTestId } = render(
       <SignupForm onSubmit={mockOnSubmit} loading={false} />,
     );
-    const passwordInput = getByLabelText('Password*');
+    const passwordInput = getAllByTestId('input')[1];
     expect(passwordInput.props.secureTextEntry).toBe(true);
 
-    fireEvent.press(getAllByTestId('eye-off-outline')[0]);
+    fireEvent.press(getAllByTestId('right-icon')[0]);
     expect(passwordInput.props.secureTextEntry).toBe(false);
 
-    fireEvent.press(getAllByTestId('eye-outline')[0]);
+    fireEvent.press(getAllByTestId('right-icon')[0]);
     expect(passwordInput.props.secureTextEntry).toBe(true);
   });
 
   it('should toggle password visibility for confirm password field', () => {
-    const { getByLabelText, getAllByTestId } = render(
+    const { getAllByTestId } = render(
       <SignupForm onSubmit={mockOnSubmit} loading={false} />,
     );
-    const confirmPasswordInput = getByLabelText('Confirm Password*');
+    const confirmPasswordInput = getAllByTestId('input')[2];
     expect(confirmPasswordInput.props.secureTextEntry).toBe(true);
 
-    // Find the second 'Press to eye off outline' which corresponds to confirm password
-    fireEvent.press(getAllByTestId('eye-off-outline')[0]);
-    expect(confirmPasswordInput.props.secureTextEntry).toBe(true);
+    fireEvent.press(getAllByTestId('right-icon')[1]);
+    expect(confirmPasswordInput.props.secureTextEntry).toBe(false);
 
-    fireEvent.press(getAllByTestId('eye-outline')[0]);
+    fireEvent.press(getAllByTestId('right-icon')[1]);
     expect(confirmPasswordInput.props.secureTextEntry).toBe(true);
   });
 

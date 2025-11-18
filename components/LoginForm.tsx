@@ -12,6 +12,7 @@ import { loginSchema } from '@/constants';
 import { authService } from '@/services';
 
 // Components
+import { EyeCloseOutline, EyeOutline } from './icons';
 import { Button, Checkbox, Input } from './ui';
 
 export type LoginFormData = z.infer<typeof loginSchema>;
@@ -70,7 +71,8 @@ export const LoginForm = memo(
           name="email"
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
-              label="Email*"
+              label="Email"
+              required
               placeholder="Enter your email"
               value={value}
               onChangeText={onChange}
@@ -91,7 +93,8 @@ export const LoginForm = memo(
           name="password"
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
-              label="Password*"
+              label="Password"
+              required
               placeholder="Enter your password"
               value={value}
               onChangeText={onChange}
@@ -101,7 +104,7 @@ export const LoginForm = memo(
               autoCapitalize="none"
               autoComplete="password"
               disabled={isLoading}
-              rightIcon={showPassword ? 'eye-outline' : 'eye-off-outline'}
+              rightIcon={showPassword ? EyeOutline : EyeCloseOutline}
               onRightIconPress={() => setShowPassword(!showPassword)}
             />
           )}

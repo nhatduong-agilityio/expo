@@ -2,7 +2,7 @@
 
 exports[`PostCard should match snapshot for horizontal variant 1`] = `
 <View
-  accessibilityHint="Double tap to read the full article"
+  accessibilityHint="Tap to read the full article"
   accessibilityLabel="Ukraine's President Zelensky to BBC: Blood money being paid for Russian... by BBC News. Europe. Posted 14m ago. 2.3K likes, 120 comments."
   accessibilityRole="button"
   accessibilityState={
@@ -294,9 +294,9 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {
@@ -496,9 +496,9 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {
@@ -538,7 +538,7 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
         }
       >
         <View
-          accessibilityHint="Double tap to view author profile"
+          accessibilityHint="Tap to view author profile"
           accessibilityLabel="BBC News"
           accessibilityRole="button"
           accessibilityState={
@@ -943,9 +943,9 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
                         },
                         "label": {
                           "color": "#050505",
-                          "fontFamily": "Poppins-SemiBold",
+                          "fontFamily": "Poppins-Regular",
                           "fontSize": 14,
-                          "fontWeight": "600",
+                          "fontWeight": "400",
                           "lineHeight": 20,
                         },
                         "placeholder": {
@@ -989,27 +989,93 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={14}
+            bbWidth={14}
+            fill="none"
+            focusable={false}
+            height={14}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
             style={
               [
                 {
-                  "color": undefined,
-                  "fontSize": 14,
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
                 },
-                undefined,
                 {
-                  "fontFamily": "ionicons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "flex": 0,
+                  "height": 14,
+                  "width": 14,
                 },
-                {},
               ]
             }
+            vbHeight={24}
+            vbWidth={24}
+            width={14}
           >
-            
-          </Text>
+            <RNSVGGroup
+              fill={null}
+              propList={
+                [
+                  "fill",
+                ]
+              }
+            >
+              <RNSVGGroup
+                clipPath="a"
+                fill={
+                  {
+                    "payload": 4278190080,
+                    "type": 0,
+                  }
+                }
+              >
+                <RNSVGPath
+                  d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10Zm0-2a8 8 0 1 0 0-16.001A8 8 0 0 0 12 20Zm1-8h4v2h-6V7h2v5Z"
+                  fill={
+                    {
+                      "payload": 4283321190,
+                      "type": 0,
+                    }
+                  }
+                  propList={
+                    [
+                      "fill",
+                    ]
+                  }
+                />
+              </RNSVGGroup>
+              <RNSVGDefs>
+                <RNSVGClipPath
+                  fill={
+                    {
+                      "payload": 4278190080,
+                      "type": 0,
+                    }
+                  }
+                  name="a"
+                >
+                  <RNSVGPath
+                    d="M0 0h24v24H0z"
+                    fill={
+                      {
+                        "payload": 4294967295,
+                        "type": 0,
+                      }
+                    }
+                    propList={
+                      [
+                        "fill",
+                      ]
+                    }
+                  />
+                </RNSVGClipPath>
+              </RNSVGDefs>
+            </RNSVGGroup>
+          </RNSVGSvgView>
           <Text
             accessibilityHint="Posted 14m ago"
             accessibilityLabel="Posted 14m ago"
@@ -1187,9 +1253,9 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
                       },
                       "label": {
                         "color": "#050505",
-                        "fontFamily": "Poppins-SemiBold",
+                        "fontFamily": "Poppins-Regular",
                         "fontSize": 14,
-                        "fontWeight": "600",
+                        "fontWeight": "400",
                         "lineHeight": 20,
                       },
                       "placeholder": {
@@ -1213,7 +1279,7 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
           </Text>
         </View>
         <View
-          accessibilityHint="Double tap to open a menu with more options for this post"
+          accessibilityHint="Tap to open a menu with more options for this post"
           accessibilityLabel="More options"
           accessibilityRole="button"
           accessibilityState={
@@ -1247,31 +1313,93 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={14}
+            bbWidth={14}
+            fill="none"
+            focusable={false}
+            height={14}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
             style={
               [
                 {
-                  "color": undefined,
-                  "fontSize": 14,
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
                 },
                 {
-                  "color": "#667080",
-                  "fontFamily": "Poppins-Bold",
-                  "letterSpacing": 1,
+                  "flex": 0,
+                  "height": 14,
+                  "width": 14,
                 },
-                {
-                  "fontFamily": "ionicons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
               ]
             }
+            vbHeight={24}
+            vbWidth={24}
+            width={14}
           >
-            
-          </Text>
+            <RNSVGGroup
+              fill={null}
+              propList={
+                [
+                  "fill",
+                ]
+              }
+            >
+              <RNSVGGroup
+                clipPath="a"
+                fill={
+                  {
+                    "payload": 4278190080,
+                    "type": 0,
+                  }
+                }
+              >
+                <RNSVGPath
+                  d="M4.5 10.5c-.825 0-1.5.675-1.5 1.5s.675 1.5 1.5 1.5S6 12.825 6 12s-.675-1.5-1.5-1.5Zm15 0c-.825 0-1.5.675-1.5 1.5s.675 1.5 1.5 1.5S21 12.825 21 12s-.675-1.5-1.5-1.5Zm-7.5 0c-.825 0-1.5.675-1.5 1.5s.675 1.5 1.5 1.5 1.5-.675 1.5-1.5-.675-1.5-1.5-1.5Z"
+                  fill={
+                    {
+                      "payload": 4283321190,
+                      "type": 0,
+                    }
+                  }
+                  propList={
+                    [
+                      "fill",
+                    ]
+                  }
+                />
+              </RNSVGGroup>
+              <RNSVGDefs>
+                <RNSVGClipPath
+                  fill={
+                    {
+                      "payload": 4278190080,
+                      "type": 0,
+                    }
+                  }
+                  name="a"
+                >
+                  <RNSVGPath
+                    d="M0 0h24v24H0z"
+                    fill={
+                      {
+                        "payload": 4294967295,
+                        "type": 0,
+                      }
+                    }
+                    propList={
+                      [
+                        "fill",
+                      ]
+                    }
+                  />
+                </RNSVGClipPath>
+              </RNSVGDefs>
+            </RNSVGGroup>
+          </RNSVGSvgView>
         </View>
       </View>
     </View>
@@ -1281,7 +1409,7 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
 
 exports[`PostCard should match snapshot for vertical variant 1`] = `
 <View
-  accessibilityHint="Double tap to read the full article"
+  accessibilityHint="Tap to read the full article"
   accessibilityLabel="Ukraine's President Zelensky to BBC: Blood money being paid for Russian... by BBC News. Europe. Posted 14m ago. 2.3K likes, 120 comments."
   accessibilityRole="button"
   accessibilityState={
@@ -1572,9 +1700,9 @@ exports[`PostCard should match snapshot for vertical variant 1`] = `
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {
@@ -1774,9 +1902,9 @@ exports[`PostCard should match snapshot for vertical variant 1`] = `
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {
@@ -1816,7 +1944,7 @@ exports[`PostCard should match snapshot for vertical variant 1`] = `
         }
       >
         <View
-          accessibilityHint="Double tap to view author profile"
+          accessibilityHint="Tap to view author profile"
           accessibilityLabel="BBC News"
           accessibilityRole="button"
           accessibilityState={
@@ -2221,9 +2349,9 @@ exports[`PostCard should match snapshot for vertical variant 1`] = `
                         },
                         "label": {
                           "color": "#050505",
-                          "fontFamily": "Poppins-SemiBold",
+                          "fontFamily": "Poppins-Regular",
                           "fontSize": 14,
-                          "fontWeight": "600",
+                          "fontWeight": "400",
                           "lineHeight": 20,
                         },
                         "placeholder": {
@@ -2267,7 +2395,93 @@ exports[`PostCard should match snapshot for vertical variant 1`] = `
             }
           }
         >
-          <Text />
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={14}
+            bbWidth={14}
+            fill="none"
+            focusable={false}
+            height={14}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
+                },
+                {
+                  "flex": 0,
+                  "height": 14,
+                  "width": 14,
+                },
+              ]
+            }
+            vbHeight={24}
+            vbWidth={24}
+            width={14}
+          >
+            <RNSVGGroup
+              fill={null}
+              propList={
+                [
+                  "fill",
+                ]
+              }
+            >
+              <RNSVGGroup
+                clipPath="a"
+                fill={
+                  {
+                    "payload": 4278190080,
+                    "type": 0,
+                  }
+                }
+              >
+                <RNSVGPath
+                  d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10Zm0-2a8 8 0 1 0 0-16.001A8 8 0 0 0 12 20Zm1-8h4v2h-6V7h2v5Z"
+                  fill={
+                    {
+                      "payload": 4283321190,
+                      "type": 0,
+                    }
+                  }
+                  propList={
+                    [
+                      "fill",
+                    ]
+                  }
+                />
+              </RNSVGGroup>
+              <RNSVGDefs>
+                <RNSVGClipPath
+                  fill={
+                    {
+                      "payload": 4278190080,
+                      "type": 0,
+                    }
+                  }
+                  name="a"
+                >
+                  <RNSVGPath
+                    d="M0 0h24v24H0z"
+                    fill={
+                      {
+                        "payload": 4294967295,
+                        "type": 0,
+                      }
+                    }
+                    propList={
+                      [
+                        "fill",
+                      ]
+                    }
+                  />
+                </RNSVGClipPath>
+              </RNSVGDefs>
+            </RNSVGGroup>
+          </RNSVGSvgView>
           <Text
             accessibilityHint="Posted 14m ago"
             accessibilityLabel="Posted 14m ago"
@@ -2445,9 +2659,9 @@ exports[`PostCard should match snapshot for vertical variant 1`] = `
                       },
                       "label": {
                         "color": "#050505",
-                        "fontFamily": "Poppins-SemiBold",
+                        "fontFamily": "Poppins-Regular",
                         "fontSize": 14,
-                        "fontWeight": "600",
+                        "fontWeight": "400",
                         "lineHeight": 20,
                       },
                       "placeholder": {
@@ -2471,7 +2685,7 @@ exports[`PostCard should match snapshot for vertical variant 1`] = `
           </Text>
         </View>
         <View
-          accessibilityHint="Double tap to open a menu with more options for this post"
+          accessibilityHint="Tap to open a menu with more options for this post"
           accessibilityLabel="More options"
           accessibilityRole="button"
           accessibilityState={
@@ -2505,7 +2719,93 @@ exports[`PostCard should match snapshot for vertical variant 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
         >
-          <Text />
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={14}
+            bbWidth={14}
+            fill="none"
+            focusable={false}
+            height={14}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
+                },
+                {
+                  "flex": 0,
+                  "height": 14,
+                  "width": 14,
+                },
+              ]
+            }
+            vbHeight={24}
+            vbWidth={24}
+            width={14}
+          >
+            <RNSVGGroup
+              fill={null}
+              propList={
+                [
+                  "fill",
+                ]
+              }
+            >
+              <RNSVGGroup
+                clipPath="a"
+                fill={
+                  {
+                    "payload": 4278190080,
+                    "type": 0,
+                  }
+                }
+              >
+                <RNSVGPath
+                  d="M4.5 10.5c-.825 0-1.5.675-1.5 1.5s.675 1.5 1.5 1.5S6 12.825 6 12s-.675-1.5-1.5-1.5Zm15 0c-.825 0-1.5.675-1.5 1.5s.675 1.5 1.5 1.5S21 12.825 21 12s-.675-1.5-1.5-1.5Zm-7.5 0c-.825 0-1.5.675-1.5 1.5s.675 1.5 1.5 1.5 1.5-.675 1.5-1.5-.675-1.5-1.5-1.5Z"
+                  fill={
+                    {
+                      "payload": 4283321190,
+                      "type": 0,
+                    }
+                  }
+                  propList={
+                    [
+                      "fill",
+                    ]
+                  }
+                />
+              </RNSVGGroup>
+              <RNSVGDefs>
+                <RNSVGClipPath
+                  fill={
+                    {
+                      "payload": 4278190080,
+                      "type": 0,
+                    }
+                  }
+                  name="a"
+                >
+                  <RNSVGPath
+                    d="M0 0h24v24H0z"
+                    fill={
+                      {
+                        "payload": 4294967295,
+                        "type": 0,
+                      }
+                    }
+                    propList={
+                      [
+                        "fill",
+                      ]
+                    }
+                  />
+                </RNSVGClipPath>
+              </RNSVGDefs>
+            </RNSVGGroup>
+          </RNSVGSvgView>
         </View>
       </View>
     </View>

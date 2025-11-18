@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { FlashList } from '@shopify/flash-list';
 import { useCallback, useMemo, useState } from 'react';
 import { ActivityIndicator, RefreshControl, View } from 'react-native';
@@ -16,6 +15,7 @@ import { Bookmark } from '@/types';
 
 // Components
 import { PostCard } from '@/components';
+import { BookmarkOutline, FilterOutline } from '@/components/icons';
 import { SearchBar, Text } from '@/components/ui';
 
 const BookmarkScreen = () => {
@@ -90,9 +90,9 @@ const BookmarkScreen = () => {
   const renderEmptyState = useCallback(
     () => (
       <View style={styles.emptyState}>
-        <Ionicons
-          name="bookmark-outline"
-          size={64}
+        <BookmarkOutline
+          width={64}
+          height={64}
           color={theme.colors.iconTertiary}
         />
         <Text variant="h3" align="center" style={styles.emptyTitle}>
@@ -129,7 +129,7 @@ const BookmarkScreen = () => {
           value={searchQuery}
           onChangeText={setSearchQuery}
           placeholder="Search"
-          rightIcon="options-outline"
+          rightIcon={FilterOutline}
         />
       </View>
 

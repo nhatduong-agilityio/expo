@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { ComponentProps, forwardRef, memo, useState } from 'react';
+import { ComponentType, forwardRef, memo, useState } from 'react';
 import {
   Pressable,
   StyleProp,
@@ -8,11 +8,13 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import { SvgProps } from 'react-native-svg';
 import {
   StyleSheet,
   UnistylesVariants,
   useUnistyles,
 } from 'react-native-unistyles';
+import { CloseOutline } from '../icons';
 import { Text } from './Text';
 
 type InputVariants = UnistylesVariants<typeof styles>;
@@ -23,8 +25,8 @@ export type InputProps = Omit<TextInputProps, 'placeholderTextColor'> & {
   label?: string;
   error?: string;
   disabled?: boolean;
-  leftIcon?: ComponentProps<typeof Ionicons>['name'];
-  rightIcon?: ComponentProps<typeof Ionicons>['name'];
+  leftIcon?: ComponentType<SvgProps>;
+  rightIcon?: ComponentType<SvgProps>;
   showClearButton?: boolean;
   styleContainer?: StyleProp<ViewStyle>;
   onRightIconPress?: () => void;
@@ -88,44 +90,49 @@ export const Input = memo(
       const showClear = showClearButton && hasValue && !disabled && isFocused;
 
       const inputAccessibilityLabel =
-        accessibilityLabel || label || rest.placeholder;
+        accessibilityLabel || required
+          ? label + '*'
+          : label || rest.placeholder;
       const inputAccessibilityHint =
         accessibilityHint || (error ? `Error: ${error}` : undefined);
+
+      const LeftIcon = leftIcon;
+      const RightIcon = rightIcon;
 
       return (
         <View style={styles.wrapper}>
           {label && (
-            <Text
-              variant="label"
-              color={disabled ? 'disabled' : error ? 'error' : 'primary'}
-              style={styles.label}
-            >
-              {label}
-              {required && ' *'}
-            </Text>
+            <View style={styles.labelContainer}>
+              <Text
+                variant="label"
+                color={disabled ? 'disabled' : 'primary'}
+                style={styles.label}
+              >
+                {label}
+              </Text>
+              {required && (
+                <Text variant="label" color="error" style={styles.label}>
+                  *
+                </Text>
+              )}
+            </View>
           )}
 
           <View style={[styles.container, styleContainer]}>
-            {leftIcon && (
+            {LeftIcon && (
               <Pressable
-                testID={leftIcon}
+                testID="left-icon"
                 style={styles.leftIconContainer}
                 onPress={onLeftIconPress}
                 hitSlop={8}
                 disabled={disabled}
                 accessibilityRole="button"
-                accessibilityLabel={`${leftIcon.replace(/-/g, ' ')} icon`}
+                accessibilityLabel="Left icon"
                 accessibilityHint={
-                  onLeftIconPress
-                    ? `Double tap to ${leftIcon.replace(/-/g, ' ')}`
-                    : undefined
+                  onLeftIconPress ? 'Tap to the left icon' : undefined
                 }
               >
-                <Ionicons
-                  name={leftIcon}
-                  size={24}
-                  color={styles.icon(!!error).color}
-                />
+                <LeftIcon color={styles.icon(!!error).color} />
               </Pressable>
             )}
 
@@ -152,36 +159,26 @@ export const Input = memo(
                 hitSlop={8}
                 accessibilityRole="button"
                 accessibilityLabel="Clear input"
-                accessibilityHint="Double tap to clear the text from the input field"
+                accessibilityHint="Tap to clear the text from the input field"
               >
-                <Ionicons
-                  name="close"
-                  size={24}
-                  color={styles.icon(!!error).color}
-                />
+                <CloseOutline color={styles.icon(!!error).color} />
               </Pressable>
             )}
 
-            {rightIcon && !showClear && (
+            {RightIcon && !showClear && (
               <Pressable
-                testID={rightIcon}
+                testID="right-icon"
                 style={styles.rightIconContainer}
                 onPress={onRightIconPress}
                 hitSlop={8}
                 disabled={disabled}
                 accessibilityRole="button"
-                accessibilityLabel={`${rightIcon.replace(/-/g, ' ')} icon`}
+                accessibilityLabel="Right icon"
                 accessibilityHint={
-                  onRightIconPress
-                    ? `Double tap to ${rightIcon.replace(/-/g, ' ')}`
-                    : undefined
+                  onRightIconPress ? 'Tap to the right icon' : undefined
                 }
               >
-                <Ionicons
-                  name={rightIcon}
-                  size={24}
-                  color={styles.icon(!!error).color}
-                />
+                <RightIcon color={styles.icon(!!error).color} />
               </Pressable>
             )}
           </View>
@@ -214,6 +211,9 @@ Input.displayName = 'Input';
 const styles = StyleSheet.create(theme => ({
   wrapper: {
     width: '100%',
+  },
+  labelContainer: {
+    flexDirection: 'row',
   },
   label: {
     marginBottom: theme.spacing.xs,

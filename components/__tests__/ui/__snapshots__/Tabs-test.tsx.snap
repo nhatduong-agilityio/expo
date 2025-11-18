@@ -254,9 +254,9 @@ exports[`Tabs should match to snapshot 1`] = `
                     },
                     "label": {
                       "color": "#050505",
-                      "fontFamily": "Poppins-SemiBold",
+                      "fontFamily": "Poppins-Regular",
                       "fontSize": 14,
-                      "fontWeight": "600",
+                      "fontWeight": "400",
                       "lineHeight": 20,
                     },
                     "placeholder": {
@@ -321,7 +321,7 @@ exports[`Tabs should match to snapshot 1`] = `
         />
       </View>
       <View
-        accessibilityHint="Double tap to switch to Profile tab"
+        accessibilityHint="Tap to switch to Profile tab"
         accessibilityLabel="Profile tab"
         accessibilityRole="tab"
         accessibilityState={
@@ -540,9 +540,9 @@ exports[`Tabs should match to snapshot 1`] = `
                     },
                     "label": {
                       "color": "#050505",
-                      "fontFamily": "Poppins-SemiBold",
+                      "fontFamily": "Poppins-Regular",
                       "fontSize": 14,
-                      "fontWeight": "600",
+                      "fontWeight": "400",
                       "lineHeight": 20,
                     },
                     "placeholder": {
@@ -582,7 +582,7 @@ exports[`Tabs should match to snapshot 1`] = `
         </Text>
       </View>
       <View
-        accessibilityHint="Double tap to switch to Settings tab"
+        accessibilityHint="Tap to switch to Settings tab"
         accessibilityLabel="Settings tab"
         accessibilityRole="tab"
         accessibilityState={
@@ -801,9 +801,9 @@ exports[`Tabs should match to snapshot 1`] = `
                     },
                     "label": {
                       "color": "#050505",
-                      "fontFamily": "Poppins-SemiBold",
+                      "fontFamily": "Poppins-Regular",
                       "fontSize": 14,
-                      "fontWeight": "600",
+                      "fontWeight": "400",
                       "lineHeight": 20,
                     },
                     "placeholder": {

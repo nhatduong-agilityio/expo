@@ -60,7 +60,7 @@ export const Tabs = memo(
                 accessibilityHint={
                   isActive
                     ? `Currently viewing ${tab.label}`
-                    : `Double tap to switch to ${tab.label} tab`
+                    : `Tap to switch to ${tab.label} tab`
                 }
                 accessible={true}
               >

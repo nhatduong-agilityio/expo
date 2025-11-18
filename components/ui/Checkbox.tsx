@@ -1,7 +1,7 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { memo } from 'react';
 import { Pressable, PressableProps, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
+import { CheckOutline } from '../icons';
 import { Text } from './Text';
 
 export type CheckboxProps = Omit<PressableProps, 'children'> & {
@@ -43,7 +43,7 @@ export const Checkbox = memo(
 
     const getAccessibilityHint = () => {
       if (accessibilityHint) return accessibilityHint;
-      return checked ? 'Double tap to uncheck' : 'Double tap to check';
+      return checked ? 'Tap to uncheck' : 'Tap to check';
     };
 
     return (
@@ -65,7 +65,11 @@ export const Checkbox = memo(
           <View style={styles.checkbox}>
             {checked && (
               <View style={styles.checkmark} accessible={false}>
-                <Ionicons name="checkmark" size={18} color="white" />
+                <CheckOutline
+                  width={18}
+                  height={18}
+                  color={styles.checkmarkIcon.color}
+                />
               </View>
             )}
           </View>

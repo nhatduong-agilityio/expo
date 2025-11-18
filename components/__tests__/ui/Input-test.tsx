@@ -1,5 +1,6 @@
 import { Input } from '@/components/ui';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
+import { View } from 'react-native';
 
 describe('Input', () => {
   it('should match to snapshot', async () => {
@@ -20,21 +21,19 @@ describe('Input', () => {
 
   it('should handle onChangeText event', async () => {
     const onChangeTextMock = jest.fn();
-    const { getByLabelText } = render(
+    const { getByTestId } = render(
       <Input onChangeText={onChangeTextMock} label="Email" />,
     );
-    fireEvent.changeText(getByLabelText('Email'), 'test@example.com');
+    fireEvent.changeText(getByTestId('input'), 'test@example.com');
     await waitFor(() => {
       expect(onChangeTextMock).toHaveBeenCalledWith('test@example.com');
     });
   });
 
   it('should be disabled', async () => {
-    const { getByLabelText } = render(
-      <Input disabled label="Disabled Input" />,
-    );
+    const { getByTestId } = render(<Input disabled label="Disabled Input" />);
     await waitFor(() => {
-      expect(getByLabelText('Disabled Input')).toBeDisabled();
+      expect(getByTestId('input')).toBeDisabled();
     });
   });
 
@@ -48,21 +47,23 @@ describe('Input', () => {
   it('should render with left and right icons and handle presses', async () => {
     const onLeftIconPressMock = jest.fn();
     const onRightIconPressMock = jest.fn();
+    const MockLeftIcon = () => <View testID="left-icon" />;
+    const MockRightIcon = () => <View testID="right-icon" />;
     const { getByLabelText } = render(
       <Input
-        leftIcon="person"
-        rightIcon="eye"
+        leftIcon={MockLeftIcon}
+        rightIcon={MockRightIcon}
         onLeftIconPress={onLeftIconPressMock}
         onRightIconPress={onRightIconPressMock}
       />,
     );
 
-    fireEvent.press(getByLabelText('person icon'));
+    fireEvent.press(getByLabelText('Left icon'));
     await waitFor(() => {
       expect(onLeftIconPressMock).toHaveBeenCalledTimes(1);
     });
 
-    fireEvent.press(getByLabelText('eye icon'));
+    fireEvent.press(getByLabelText('Right icon'));
     await waitFor(() => {
       expect(onRightIconPressMock).toHaveBeenCalledTimes(1);
     });
@@ -89,14 +90,14 @@ describe('Input', () => {
   it('should handle onFocus and onBlur events', () => {
     const onFocusMock = jest.fn();
     const onBlurMock = jest.fn();
-    const { getByLabelText } = render(
+    const { getAllByLabelText } = render(
       <Input onFocus={onFocusMock} onBlur={onBlurMock} label="Focusable" />,
     );
 
-    fireEvent(getByLabelText('Focusable'), 'focus');
+    fireEvent(getAllByLabelText('Focusable')[0], 'focus');
     expect(onFocusMock).toHaveBeenCalledTimes(1);
 
-    fireEvent(getByLabelText('Focusable'), 'blur');
+    fireEvent(getAllByLabelText('Focusable')[0], 'blur');
     expect(onBlurMock).toHaveBeenCalledTimes(1);
   });
 

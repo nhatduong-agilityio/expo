@@ -22,6 +22,7 @@ import { News } from '@/types';
 
 // Components
 import { PostCard, ProfileStats, ScreenHeader } from '@/components';
+import { AddOutline, SettingOutline } from '@/components/icons';
 import { Avatar, Button, FloatButton, Tabs, Text } from '@/components/ui';
 
 const ProfileScreen = () => {
@@ -183,7 +184,7 @@ const ProfileScreen = () => {
       <SafeAreaView style={styles.container} edges={['top']} key={rt.themeName}>
         <ScreenHeader
           title="Profile"
-          rightIcon="settings-outline"
+          rightIcon={SettingOutline}
           onRightPress={handleSettingsPress}
           showRightIcon
         />
@@ -199,7 +200,7 @@ const ProfileScreen = () => {
       {/* Fixed Header */}
       <ScreenHeader
         title="Profile"
-        rightIcon="settings-outline"
+        rightIcon={SettingOutline}
         onRightPress={handleSettingsPress}
         showRightIcon
       />
@@ -231,9 +232,11 @@ const ProfileScreen = () => {
 
       {/* Floating Action Button */}
       <FloatButton
-        iconName="add"
+        icon={AddOutline}
         position="bottom-right"
         onPress={handleCreatePostPress}
+        accessibilityHint="Tap to create a new post"
+        accessibilityLabel="Add news"
       />
     </SafeAreaView>
   );

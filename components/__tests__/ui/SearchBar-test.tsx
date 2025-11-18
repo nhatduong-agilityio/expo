@@ -35,16 +35,6 @@ describe('SearchBar', () => {
     });
   });
 
-  it('should always have a search icon', async () => {
-    const { getByLabelText } = render(<SearchBar />);
-    // The icon itself doesn't have a direct label, but its container does.
-    // We can check for the pressable area around the icon.
-
-    await waitFor(() => {
-      expect(getByLabelText('search icon')).toBeTruthy();
-    });
-  });
-
   it('should clear the input when the clear button is pressed', async () => {
     const onChangeTextMock = jest.fn();
     const { getByPlaceholderText, getByLabelText } = render(

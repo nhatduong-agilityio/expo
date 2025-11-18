@@ -1,7 +1,3 @@
-import AntDesign from '@expo/vector-icons/AntDesign';
-import Feather from '@expo/vector-icons/Feather';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
@@ -28,10 +24,25 @@ import { storageService } from '@/services';
 
 // Components
 import { ScreenHeader } from '@/components';
+import {
+  AddOutline,
+  AlignLeftOutline,
+  BackOutline,
+  BoldOutline,
+  CloseOutline,
+  EditOutline,
+  FontSizeOutline,
+  ImageOutline,
+  ItalicOutline,
+  LinkOutline,
+  ListOrderedOutline,
+  MoreHorizontalOutline,
+  MoreVerticalOutline,
+} from '@/components/icons';
 import { Button, Input, Text } from '@/components/ui';
 
 const CreatePostScreen = () => {
-  const { theme, rt } = useUnistyles();
+  const { rt } = useUnistyles();
   const router = useRouter();
   const [isUploading, setIsUploading] = useState(false);
 
@@ -46,7 +57,7 @@ const CreatePostScreen = () => {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, isValid },
   } = useForm<CreatePostFormData>({
     resolver: zodResolver(createPostSchema),
     defaultValues: {
@@ -214,8 +225,8 @@ const CreatePostScreen = () => {
       {/* Header */}
       <ScreenHeader
         title="Create News"
-        leftIcon="arrow-back"
-        rightIcon="ellipsis-vertical-sharp"
+        leftIcon={BackOutline}
+        rightIcon={MoreVerticalOutline}
         onLeftPress={handleBackPress}
         onRightPress={handleMenuPress}
         showLeftIcon
@@ -247,20 +258,12 @@ const CreatePostScreen = () => {
                 hitSlop={8}
                 disabled={isLoading}
               >
-                <Ionicons
-                  name="pencil"
-                  size={20}
-                  color={theme.colors.iconOnPrimary}
-                />
+                <EditOutline width={14} height={14} />
               </Pressable>
             </View>
           ) : (
             <View style={styles.addCoverPhoto}>
-              <Ionicons
-                name="add"
-                size={32}
-                color={theme.colors.iconSecondary}
-              />
+              <AddOutline width={32} height={32} />
               <Text variant="body" color="secondary">
                 Add Cover Photo
               </Text>
@@ -271,8 +274,9 @@ const CreatePostScreen = () => {
         {/* Category Selection */}
         {selectedCategory && (
           <View style={styles.categoryBadge}>
-            <Text variant="bodySm" style={styles.categoryText}>
-              Category: {selectedCategory.name}
+            <Text variant="body">Category:</Text>
+            <Text variant="body" style={styles.categoryText}>
+              {selectedCategory.name}
             </Text>
             <Pressable
               accessibilityRole="button"
@@ -281,11 +285,7 @@ const CreatePostScreen = () => {
               }
               hitSlop={8}
             >
-              <Ionicons
-                name="close-circle"
-                size={20}
-                color={theme.colors.iconSecondary}
-              />
+              <CloseOutline />
             </Pressable>
           </View>
         )}
@@ -349,7 +349,7 @@ const CreatePostScreen = () => {
           hitSlop={8}
           disabled={isLoading}
         >
-          <Feather name="bold" size={20} color={theme.colors.iconPrimary} />
+          <BoldOutline />
         </Pressable>
         <Pressable
           accessibilityRole="button"
@@ -357,7 +357,7 @@ const CreatePostScreen = () => {
           hitSlop={8}
           disabled={isLoading}
         >
-          <Feather name="italic" size={20} color={theme.colors.iconPrimary} />
+          <ItalicOutline />
         </Pressable>
         <Pressable
           accessibilityRole="button"
@@ -365,11 +365,7 @@ const CreatePostScreen = () => {
           hitSlop={8}
           disabled={isLoading}
         >
-          <AntDesign
-            name="ordered-list"
-            size={20}
-            color={theme.colors.iconPrimary}
-          />
+          <ListOrderedOutline />
         </Pressable>
         <Pressable
           accessibilityRole="button"
@@ -377,11 +373,7 @@ const CreatePostScreen = () => {
           hitSlop={8}
           disabled={isLoading}
         >
-          <AntDesign
-            name="unordered-list"
-            size={20}
-            color={theme.colors.iconPrimary}
-          />
+          <ListOrderedOutline />
         </Pressable>
         <Pressable
           accessibilityRole="button"
@@ -389,7 +381,7 @@ const CreatePostScreen = () => {
           hitSlop={8}
           disabled={isLoading}
         >
-          <AntDesign name="link" size={20} color={theme.colors.iconPrimary} />
+          <LinkOutline />
         </Pressable>
       </View>
 
@@ -402,7 +394,7 @@ const CreatePostScreen = () => {
             hitSlop={8}
             disabled={isLoading}
           >
-            <Ionicons name="text" size={20} color={theme.colors.iconPrimary} />
+            <FontSizeOutline />
           </Pressable>
           <Pressable
             accessibilityRole="button"
@@ -410,11 +402,7 @@ const CreatePostScreen = () => {
             hitSlop={8}
             disabled={isLoading}
           >
-            <MaterialCommunityIcons
-              name="text-long"
-              size={20}
-              color={theme.colors.iconPrimary}
-            />
+            <AlignLeftOutline />
           </Pressable>
           <Pressable
             accessibilityRole="button"
@@ -423,11 +411,7 @@ const CreatePostScreen = () => {
             onPress={handlePickImage}
             disabled={isLoading}
           >
-            <Ionicons
-              name="image-outline"
-              size={20}
-              color={theme.colors.iconPrimary}
-            />
+            <ImageOutline />
           </Pressable>
           <Pressable
             accessibilityRole="button"
@@ -436,11 +420,7 @@ const CreatePostScreen = () => {
             onPress={handleSelectCategory}
             disabled={isLoading}
           >
-            <Ionicons
-              name="pricetag-outline"
-              size={20}
-              color={theme.colors.iconPrimary}
-            />
+            <MoreHorizontalOutline />
           </Pressable>
         </View>
 
@@ -449,7 +429,7 @@ const CreatePostScreen = () => {
           size="md"
           onPress={handlePublish}
           loading={isLoading}
-          disabled={isLoading}
+          disabled={isLoading || !isValid}
         >
           Publish
         </Button>
@@ -479,6 +459,7 @@ const styles = StyleSheet.create(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     gap: theme.spacing.sm,
+    backgroundColor: theme.colors.backgroundSecondary,
   },
   coverImageWrapper: {
     position: 'relative',
@@ -494,21 +475,16 @@ const styles = StyleSheet.create(theme => ({
     position: 'absolute',
     bottom: theme.spacing.md,
     right: theme.spacing.md,
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.full,
     padding: theme.spacing.sm,
     ...(Platform.OS === 'ios' && theme.shadow.md),
   },
   categoryBadge: {
+    marginTop: theme.spacing.lg,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginHorizontal: theme.spacing.xl,
-    marginBottom: theme.spacing.md,
-    paddingHorizontal: theme.spacing.md,
-    paddingVertical: theme.spacing.sm,
-    backgroundColor: theme.colors.primaryLight,
-    borderRadius: theme.borderRadius.sm,
+    gap: theme.spacing.xs,
   },
   categoryText: {
     color: theme.colors.primary,

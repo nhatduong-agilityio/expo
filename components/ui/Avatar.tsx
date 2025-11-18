@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { memo, useState } from 'react';
@@ -13,6 +12,7 @@ import {
 import { BLUR_HASH, DEFAULT_AVATAR } from '@/constants';
 
 // Components
+import { CameraOutline } from '../icons';
 import { Text } from './Text';
 
 type AvatarVariants = UnistylesVariants<typeof styles>;
@@ -127,9 +127,9 @@ export const Avatar = memo(
         </Pressable>
         {editable && (
           <View style={styles.iconContainer}>
-            <Ionicons
-              name="camera"
-              size={20}
+            <CameraOutline
+              width={20}
+              height={20}
               color={theme.colors.iconOnPrimary}
             />
           </View>

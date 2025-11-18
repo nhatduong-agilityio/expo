@@ -2,7 +2,7 @@
 
 exports[`Checkbox should be in a checked state 1`] = `
 <View
-  accessibilityHint="Double tap to uncheck"
+  accessibilityHint="Tap to uncheck"
   accessibilityLabel="Checkbox"
   accessibilityRole="checkbox"
   accessibilityState={
@@ -111,7 +111,93 @@ exports[`Checkbox should be in a checked state 1`] = `
           }
         }
       >
-        <Text />
+        <RNSVGSvgView
+          align="xMidYMid"
+          bbHeight={18}
+          bbWidth={18}
+          fill="none"
+          focusable={false}
+          height={18}
+          meetOrSlice={0}
+          minX={0}
+          minY={0}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              {
+                "flex": 0,
+                "height": 18,
+                "width": 18,
+              },
+            ]
+          }
+          vbHeight={24}
+          vbWidth={24}
+          width={18}
+        >
+          <RNSVGGroup
+            fill={null}
+            propList={
+              [
+                "fill",
+              ]
+            }
+          >
+            <RNSVGGroup
+              clipPath="a"
+              fill={
+                {
+                  "payload": 4278190080,
+                  "type": 0,
+                }
+              }
+            >
+              <RNSVGPath
+                d="m10 15.172 9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414 4.95 4.95Z"
+                fill={
+                  {
+                    "payload": 4283321190,
+                    "type": 0,
+                  }
+                }
+                propList={
+                  [
+                    "fill",
+                  ]
+                }
+              />
+            </RNSVGGroup>
+            <RNSVGDefs>
+              <RNSVGClipPath
+                fill={
+                  {
+                    "payload": 4278190080,
+                    "type": 0,
+                  }
+                }
+                name="a"
+              >
+                <RNSVGPath
+                  d="M0 0h24v24H0z"
+                  fill={
+                    {
+                      "payload": 4294967295,
+                      "type": 0,
+                    }
+                  }
+                  propList={
+                    [
+                      "fill",
+                    ]
+                  }
+                />
+              </RNSVGClipPath>
+            </RNSVGDefs>
+          </RNSVGGroup>
+        </RNSVGSvgView>
       </View>
     </View>
   </View>
@@ -120,7 +206,7 @@ exports[`Checkbox should be in a checked state 1`] = `
 
 exports[`Checkbox should match to snapshot 1`] = `
 <View
-  accessibilityHint="Double tap to check"
+  accessibilityHint="Tap to check"
   accessibilityLabel="Checkbox"
   accessibilityRole="checkbox"
   accessibilityState={
