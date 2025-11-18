@@ -90,7 +90,7 @@ exports[`SearchBar should match to snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="search icon"
+        accessibilityLabel="Left icon"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -129,13 +129,99 @@ exports[`SearchBar should match to snapshot 1`] = `
             "marginHorizontal": 8,
           }
         }
-        testID="search"
+        testID="left-icon"
       >
-        <Text />
+        <RNSVGSvgView
+          align="xMidYMid"
+          bbHeight={24}
+          bbWidth={24}
+          fill="none"
+          focusable={false}
+          height={24}
+          meetOrSlice={0}
+          minX={0}
+          minY={0}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              {
+                "flex": 0,
+                "height": 24,
+                "width": 24,
+              },
+            ]
+          }
+          vbHeight={24}
+          vbWidth={24}
+          width={24}
+        >
+          <RNSVGGroup
+            fill={null}
+            propList={
+              [
+                "fill",
+              ]
+            }
+          >
+            <RNSVGGroup
+              clipPath="a"
+              fill={
+                {
+                  "payload": 4278190080,
+                  "type": 0,
+                }
+              }
+            >
+              <RNSVGPath
+                d="M11 2c4.968 0 9 4.032 9 9s-4.032 9-9 9-9-4.032-9-9 4.032-9 9-9Zm0 16c3.867 0 7-3.133 7-7 0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7Zm8.485.071 2.829 2.828-1.415 1.415-2.828-2.829 1.414-1.414Z"
+                fill={
+                  {
+                    "payload": 4284903552,
+                    "type": 0,
+                  }
+                }
+                propList={
+                  [
+                    "fill",
+                  ]
+                }
+              />
+            </RNSVGGroup>
+            <RNSVGDefs>
+              <RNSVGClipPath
+                fill={
+                  {
+                    "payload": 4278190080,
+                    "type": 0,
+                  }
+                }
+                name="a"
+              >
+                <RNSVGPath
+                  d="M0 0h24v24H0z"
+                  fill={
+                    {
+                      "payload": 4294967295,
+                      "type": 0,
+                    }
+                  }
+                  propList={
+                    [
+                      "fill",
+                    ]
+                  }
+                />
+              </RNSVGClipPath>
+            </RNSVGDefs>
+          </RNSVGGroup>
+        </RNSVGSvgView>
       </View>
       <TextInput
         accessibilityHint="Type to search"
-        accessibilityLabel="Search"
+        accessibilityLabel="undefined*"
         accessibilityState={
           {
             "disabled": false,

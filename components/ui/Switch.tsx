@@ -69,7 +69,7 @@ export const Switch = memo(
 
     const getAccessibilityHint = () => {
       if (accessibilityHint) return accessibilityHint;
-      return value ? 'Double tap to turn off' : 'Double tap to turn on';
+      return value ? 'Tap to turn off' : 'Tap to turn on';
     };
 
     return (

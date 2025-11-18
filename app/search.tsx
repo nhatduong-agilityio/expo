@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { FlashList } from '@shopify/flash-list';
 import { useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -28,6 +27,7 @@ import { Author, Category, News } from '@/types';
 
 // Components
 import { AuthorCard, PostCard, TopicCard } from '@/components';
+import { BackOutline } from '@/components/icons';
 import { SearchBar, Tabs, Text } from '@/components/ui';
 
 type NewsItem = News;
@@ -284,11 +284,7 @@ const SearchScreen = () => {
           accessibilityLabel="Go back"
           accessibilityHint="Navigates to the previous screen"
         >
-          <Ionicons
-            name="arrow-back"
-            size={24}
-            color={theme.colors.iconPrimary}
-          />
+          <BackOutline />
         </Pressable>
         <View style={styles.searchContainer}>
           <SearchBar

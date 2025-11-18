@@ -1,14 +1,15 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { ComponentProps, memo } from 'react';
+import { ComponentType, memo } from 'react';
 import { Pressable, PressableProps, View } from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { SvgProps } from 'react-native-svg';
+import { StyleSheet } from 'react-native-unistyles';
 
 // Components
+import { RightOutline } from '../icons';
 import { Switch } from './Switch';
 import { Text } from './Text';
 
 export type SettingsItemProps = Omit<PressableProps, 'children'> & {
-  icon: ComponentProps<typeof Ionicons>['name'];
+  icon: ComponentType<SvgProps>;
   label: string;
   showChevron?: boolean;
   showSwitch?: boolean;
@@ -28,8 +29,6 @@ export const SettingsItem = memo(
     accessibilityHint,
     ...rest
   }: SettingsItemProps) => {
-    const { theme } = useUnistyles();
-
     const getAccessibilityLabel = () => {
       if (accessibilityLabel) return accessibilityLabel;
       let baseLabel = label;
@@ -39,10 +38,11 @@ export const SettingsItem = memo(
 
     const getAccessibilityHint = () => {
       if (accessibilityHint) return accessibilityHint;
-      if (showSwitch)
-        return switchValue ? 'Double tap to turn off' : 'Double tap to turn on';
-      return 'Double tap to open';
+      if (showSwitch) return switchValue ? 'Tap to turn off' : 'Tap to turn on';
+      return 'Tap to open';
     };
+
+    const Icon = icon;
 
     return (
       <Pressable
@@ -55,7 +55,7 @@ export const SettingsItem = memo(
         {...rest}
       >
         <View style={styles.leftContent}>
-          <Ionicons name={icon} size={24} color={theme.colors.iconPrimary} />
+          <Icon />
           <Text variant="body" style={styles.label}>
             {label}
           </Text>
@@ -64,11 +64,7 @@ export const SettingsItem = memo(
         {showSwitch ? (
           <Switch value={switchValue} onChange={onSwitchChange} />
         ) : showChevron ? (
-          <Ionicons
-            name="chevron-forward"
-            size={20}
-            color={theme.colors.iconSecondary}
-          />
+          <RightOutline />
         ) : null}
       </Pressable>
     );

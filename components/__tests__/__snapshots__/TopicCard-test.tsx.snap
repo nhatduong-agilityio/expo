@@ -2,7 +2,7 @@
 
 exports[`TopicCard should match to snapshot 1`] = `
 <View
-  accessibilityHint="Double tap to view topic details"
+  accessibilityHint="Tap to view topic details"
   accessibilityLabel="Health topic. View the latest health news and explore articles on..."
   accessibilityRole="button"
   accessibilityState={
@@ -410,9 +410,9 @@ exports[`TopicCard should match to snapshot 1`] = `
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {
@@ -611,9 +611,9 @@ exports[`TopicCard should match to snapshot 1`] = `
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {
@@ -638,7 +638,7 @@ exports[`TopicCard should match to snapshot 1`] = `
     </Text>
   </View>
   <View
-    accessibilityHint="Double tap to subscribe to this topic"
+    accessibilityHint="Tap to subscribe to this topic"
     accessibilityLabel="Subscribe to topic"
     accessibilityRole="button"
     accessibilityState={
@@ -925,9 +925,9 @@ exports[`TopicCard should match to snapshot 1`] = `
                   },
                   "label": {
                     "color": "#050505",
-                    "fontFamily": "Poppins-SemiBold",
+                    "fontFamily": "Poppins-Regular",
                     "fontSize": 14,
-                    "fontWeight": "600",
+                    "fontWeight": "400",
                     "lineHeight": 20,
                   },
                   "placeholder": {

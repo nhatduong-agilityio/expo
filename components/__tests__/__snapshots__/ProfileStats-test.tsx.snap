@@ -226,9 +226,9 @@ exports[`ProfileStats should match to snapshot 1`] = `
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {
@@ -424,9 +424,9 @@ exports[`ProfileStats should match to snapshot 1`] = `
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {
@@ -663,9 +663,9 @@ exports[`ProfileStats should match to snapshot 1`] = `
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {
@@ -861,9 +861,9 @@ exports[`ProfileStats should match to snapshot 1`] = `
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {
@@ -1100,9 +1100,9 @@ exports[`ProfileStats should match to snapshot 1`] = `
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {
@@ -1298,9 +1298,9 @@ exports[`ProfileStats should match to snapshot 1`] = `
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {

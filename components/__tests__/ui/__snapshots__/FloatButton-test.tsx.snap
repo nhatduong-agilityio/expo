@@ -2,8 +2,8 @@
 
 exports[`FloatButton should match to snapshot 1`] = `
 <View
-  accessibilityHint="Double tap to activate"
-  accessibilityLabel="add button"
+  accessibilityHint="Tap to activate"
+  accessibilityLabel="Float button"
   accessibilityRole="button"
   accessibilityState={
     {
@@ -121,22 +121,84 @@ exports[`FloatButton should match to snapshot 1`] = `
               "color": "#FFFFFF",
             },
             "secondary": {
-              "color": "#050505",
+              "color": "#4E4B66",
             },
           },
         },
       }
     }
   >
-    <Text />
+    <RNSVGSvgView
+      align="xMidYMid"
+      bbHeight={24}
+      bbWidth={24}
+      fill="none"
+      focusable={false}
+      height={24}
+      meetOrSlice={0}
+      minX={0}
+      minY={0}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "borderWidth": 0,
+          },
+          {
+            "flex": 0,
+            "height": 24,
+            "width": 24,
+          },
+        ]
+      }
+      vbHeight={24}
+      vbWidth={24}
+      width={24}
+    >
+      <RNSVGGroup
+        fill={null}
+        propList={
+          [
+            "fill",
+          ]
+        }
+      >
+        <RNSVGPath
+          d="M12 5v14M5 12h14"
+          fill={
+            {
+              "payload": 4278190080,
+              "type": 0,
+            }
+          }
+          propList={
+            [
+              "stroke",
+              "strokeWidth",
+              "strokeLinecap",
+              "strokeLinejoin",
+            ]
+          }
+          stroke={
+            {
+              "payload": 4294967295,
+              "type": 0,
+            }
+          }
+          strokeLinecap={1}
+          strokeLinejoin={1}
+          strokeWidth={2}
+        />
+      </RNSVGGroup>
+    </RNSVGSvgView>
   </View>
 </View>
 `;
 
 exports[`FloatButton should render with a specific icon 1`] = `
 <View
-  accessibilityHint="Double tap to activate"
-  accessibilityLabel="pencil button"
+  accessibilityHint="Tap to activate"
+  accessibilityLabel="Float button"
   accessibilityRole="button"
   accessibilityState={
     {
@@ -158,6 +220,7 @@ exports[`FloatButton should render with a specific icon 1`] = `
   accessible={true}
   collapsable={false}
   focusable={true}
+  iconName="pencil"
   onBlur={[Function]}
   onClick={[Function]}
   onFocus={[Function]}
@@ -254,34 +317,76 @@ exports[`FloatButton should render with a specific icon 1`] = `
               "color": "#FFFFFF",
             },
             "secondary": {
-              "color": "#050505",
+              "color": "#4E4B66",
             },
           },
         },
       }
     }
   >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
+    <RNSVGSvgView
+      align="xMidYMid"
+      bbHeight={24}
+      bbWidth={24}
+      fill="none"
+      focusable={false}
+      height={24}
+      meetOrSlice={0}
+      minX={0}
+      minY={0}
       style={
         [
           {
-            "color": "white",
-            "fontSize": 24,
+            "backgroundColor": "transparent",
+            "borderWidth": 0,
           },
-          undefined,
           {
-            "fontFamily": "ionicons",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
+            "flex": 0,
+            "height": 24,
+            "width": 24,
           },
-          {},
         ]
       }
+      vbHeight={24}
+      vbWidth={24}
+      width={24}
     >
-      
-    </Text>
+      <RNSVGGroup
+        fill={null}
+        propList={
+          [
+            "fill",
+          ]
+        }
+      >
+        <RNSVGPath
+          d="M12 5v14M5 12h14"
+          fill={
+            {
+              "payload": 4278190080,
+              "type": 0,
+            }
+          }
+          propList={
+            [
+              "stroke",
+              "strokeWidth",
+              "strokeLinecap",
+              "strokeLinejoin",
+            ]
+          }
+          stroke={
+            {
+              "payload": 4294967295,
+              "type": 0,
+            }
+          }
+          strokeLinecap={1}
+          strokeLinejoin={1}
+          strokeWidth={2}
+        />
+      </RNSVGGroup>
+    </RNSVGSvgView>
   </View>
 </View>
 `;

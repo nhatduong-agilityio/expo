@@ -72,11 +72,12 @@ export const lightTheme = {
     inputBorderError: red.red50,
 
     // Icons
-    iconPrimary: neutral.black,
+    iconPrimary: grey.grey70,
     iconSecondary: grey.grey60,
     iconTertiary: grey.grey40,
     iconDisabled: grey.grey30,
     iconOnPrimary: neutral.white,
+    iconOnActive: blue.blue50,
 
     // Checkbox
     checkboxBorder: grey.grey60,
@@ -158,11 +159,12 @@ export const darkTheme = {
     inputBorderError: red.red40,
 
     // Icons
-    iconPrimary: grey.grey20,
-    iconSecondary: grey.grey40,
+    iconPrimary: grey.grey40,
+    iconSecondary: grey.grey20,
     iconTertiary: grey.grey50,
     iconDisabled: grey.grey60,
     iconOnPrimary: neutral.white,
+    iconOnActive: blue.blue50,
 
     // Controls
     checkboxBorder: grey.grey60,

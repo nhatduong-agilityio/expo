@@ -15,6 +15,7 @@ import { useIsFollowing, useToggleFollow } from '@/hooks';
 import { formatNumber, getTimeAgo } from '@/utils';
 
 // Components
+import { AddOutline } from './icons';
 import { Avatar, Button, Text } from './ui';
 
 export type AuthorCardProps = Omit<PressableProps, 'children'> & {
@@ -64,7 +65,7 @@ export const AuthorCard = memo(
         {...rest}
         accessibilityRole="button"
         accessibilityLabel={`${authorName}${followers ? `, ${formatNumber(followers)} followers` : ''}`}
-        accessibilityHint="Double tap to view author profile"
+        accessibilityHint="Tap to view author profile"
       >
         <Avatar
           source={avatar}
@@ -93,7 +94,7 @@ export const AuthorCard = memo(
         </View>
         {size !== 'xs' && showFollowButton && (
           <Button
-            leftIcon={!isFollowing ? 'add' : undefined}
+            leftIcon={!isFollowing ? AddOutline : undefined}
             variant={isFollowing ? 'primary' : 'outline'}
             size="xs"
             onPress={handleFollowPress}
@@ -104,8 +105,8 @@ export const AuthorCard = memo(
             }
             accessibilityHint={
               isFollowing
-                ? 'Double tap to unfollow this author'
-                : 'Double tap to follow this author'
+                ? 'Tap to unfollow this author'
+                : 'Tap to follow this author'
             }
           >
             {isFollowing ? 'Following' : 'Follow'}

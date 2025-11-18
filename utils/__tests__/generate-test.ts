@@ -1,5 +1,6 @@
+import { TABS } from '@/constants';
 import { mockTopics } from '@/mocks';
-import { categoriesTabs } from '@/utils';
+import { categoriesTabs, getTabBarConfig } from '@/utils';
 
 describe('categoriesTabs', () => {
   it('should return default tab when no categories provided', () => {
@@ -69,5 +70,22 @@ describe('categoriesTabs', () => {
     const result = categoriesTabs(unsortedCategories);
     expect(result[1].label).toBe('First');
     expect(result[2].label).toBe('Second');
+  });
+});
+
+describe('getTabBarConfig', () => {
+  it('should return the correct config for a valid route name', () => {
+    const result = getTabBarConfig('index');
+    expect(result).toEqual(TABS.HOME);
+  });
+
+  it('should return undefined for an invalid route name', () => {
+    const result = getTabBarConfig('invalid-route');
+    expect(result).toBeUndefined();
+  });
+
+  it('should return undefined for an empty route name', () => {
+    const result = getTabBarConfig('');
+    expect(result).toBeUndefined();
   });
 });

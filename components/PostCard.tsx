@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { memo } from 'react';
@@ -18,6 +17,7 @@ import { News } from '@/types';
 
 // Components
 import { AuthorCard } from './AuthorCard';
+import { MoreHorizontalOutline, TimeOutline } from './icons';
 import { Text } from './ui';
 
 export type PostCardProps = Omit<PressableProps, 'children'> & {
@@ -59,13 +59,9 @@ export const PostCard = memo(
         hitSlop={8}
         accessibilityRole="button"
         accessibilityLabel="More options"
-        accessibilityHint="Double tap to open a menu with more options for this post"
+        accessibilityHint="Tap to open a menu with more options for this post"
       >
-        <Ionicons
-          style={styles.menuIcon}
-          name="ellipsis-horizontal"
-          size={14}
-        />
+        <MoreHorizontalOutline width={14} height={14} />
       </Pressable>
     );
 
@@ -79,7 +75,7 @@ export const PostCard = memo(
     const accessibilityProps = {
       accessibilityRole: 'button' as const,
       accessibilityLabel,
-      accessibilityHint: 'Double tap to read the full article',
+      accessibilityHint: 'Tap to read the full article',
     };
 
     if (variant === 'horizontal') {
@@ -124,7 +120,7 @@ export const PostCard = memo(
               </View>
               <View style={styles.footerRight}>
                 <View style={styles.timeContainer}>
-                  <Ionicons name="time-outline" size={14} />
+                  <TimeOutline width={14} height={14} />
                   <Text
                     style={styles.timeAgo}
                     numberOfLines={1}
@@ -184,7 +180,7 @@ export const PostCard = memo(
             </View>
             <View style={styles.footerRight}>
               <View style={styles.timeContainer}>
-                <Ionicons name="time-outline" size={14} />
+                <TimeOutline width={14} height={14} />
                 <Text
                   style={styles.timeAgo}
                   numberOfLines={1}
@@ -286,10 +282,5 @@ const styles = StyleSheet.create(theme => ({
   timeAgo: {
     fontSize: theme.fontSize.xs,
     color: theme.colors.textTertiary,
-  },
-  menuIcon: {
-    color: theme.colors.iconSecondary,
-    fontFamily: theme.fontFamily.bold,
-    letterSpacing: 1,
   },
 }));

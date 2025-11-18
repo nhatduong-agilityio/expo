@@ -19,15 +19,16 @@ describe('ScreenHeader', () => {
 
   it('should render left icon and handle press', async () => {
     const onLeftPressMock = jest.fn();
+    const MockLeftIcon = () => <View testID="left-icon" />;
     const { getByLabelText } = render(
       <ScreenHeader
         title="Back"
-        leftIcon="arrow-back"
+        leftIcon={MockLeftIcon}
         showLeftIcon
         onLeftPress={onLeftPressMock}
       />,
     );
-    const leftButton = getByLabelText('arrow back');
+    const leftButton = getByLabelText('Left icon');
     expect(leftButton).toBeTruthy();
     fireEvent.press(leftButton);
 
@@ -38,15 +39,16 @@ describe('ScreenHeader', () => {
 
   it('should render right icon and handle press', async () => {
     const onRightPressMock = jest.fn();
+    const MockRightIcon = () => <View testID="right-icon" />;
     const { getByLabelText } = render(
       <ScreenHeader
         title="Options"
-        rightIcon="ellipsis-vertical"
+        rightIcon={MockRightIcon}
         showRightIcon
         onRightPress={onRightPressMock}
       />,
     );
-    const rightButton = getByLabelText('ellipsis vertical');
+    const rightButton = getByLabelText('Right icon');
     expect(rightButton).toBeTruthy();
     fireEvent.press(rightButton);
 

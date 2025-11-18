@@ -1,6 +1,7 @@
 import { forwardRef, memo } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
+import { SearchOutline } from '../icons';
 import { Input, InputProps } from './Input';
 
 export type SearchBarProps = Omit<InputProps, 'leftIcon'> & {
@@ -23,7 +24,7 @@ export const SearchBar = memo(
       const defaultAccessibilityLabel = accessibilityLabel || 'Search';
       const defaultAccessibilityHint =
         accessibilityHint ||
-        (editable ? 'Type to search' : 'Double tap to open search');
+        (editable ? 'Type to search' : 'Tap to open search');
 
       if (!editable && onPress) {
         return (
@@ -35,7 +36,7 @@ export const SearchBar = memo(
             accessibilityHint={defaultAccessibilityHint}
           >
             <Input
-              leftIcon="search"
+              leftIcon={SearchOutline}
               placeholder="Search"
               editable={false}
               pointerEvents="none"
@@ -51,11 +52,12 @@ export const SearchBar = memo(
         <View style={styles.container}>
           <Input
             ref={ref}
-            leftIcon="search"
+            leftIcon={SearchOutline}
             placeholder="Search"
             showClearButton
             accessibilityLabel={defaultAccessibilityLabel}
             accessibilityHint={defaultAccessibilityHint}
+            required={false}
             {...rest}
           />
         </View>

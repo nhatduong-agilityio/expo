@@ -22,6 +22,7 @@ import { News, Profile } from '@/types';
 
 // Components
 import { PostCard, ProfileStats, ScreenHeader } from '@/components';
+import { BackOutline, MoreVerticalOutline } from '@/components/icons';
 import { Avatar, Button, Tabs, Text } from '@/components/ui';
 
 const AuthorProfileScreen = () => {
@@ -209,8 +210,8 @@ const AuthorProfileScreen = () => {
       <SafeAreaView style={styles.container} edges={['top']} key={rt.themeName}>
         <ScreenHeader
           title=""
-          leftIcon="arrow-back"
-          rightIcon="ellipsis-vertical"
+          leftIcon={BackOutline}
+          rightIcon={MoreVerticalOutline}
           onLeftPress={handleBackPress}
           onRightPress={handleMenuPress}
           showLeftIcon
@@ -228,8 +229,8 @@ const AuthorProfileScreen = () => {
       {/* Header */}
       <ScreenHeader
         title=""
-        leftIcon="arrow-back"
-        rightIcon="ellipsis-vertical"
+        leftIcon={BackOutline}
+        rightIcon={MoreVerticalOutline}
         onLeftPress={handleBackPress}
         onRightPress={handleMenuPress}
         showLeftIcon

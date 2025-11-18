@@ -1,5 +1,4 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { ComponentProps, memo } from 'react';
+import { ComponentType, memo } from 'react';
 import {
   ActivityIndicator,
   Platform,
@@ -7,12 +6,14 @@ import {
   PressableProps,
   View,
 } from 'react-native';
+import { SvgProps } from 'react-native-svg';
 import { StyleSheet, UnistylesVariants } from 'react-native-unistyles';
+import { AddOutline } from '../icons';
 
 type FloatButtonVariants = UnistylesVariants<typeof styles>;
 
 export type FloatButtonProps = Omit<PressableProps, 'children'> & {
-  iconName?: ComponentProps<typeof Ionicons>['name'];
+  icon?: ComponentType<SvgProps>;
   size?: 'sm' | 'md' | 'lg';
   variant?: FloatButtonVariants['variant'];
   disabled?: boolean;
@@ -24,7 +25,7 @@ export type FloatButtonProps = Omit<PressableProps, 'children'> & {
 
 export const FloatButton = memo(
   ({
-    iconName = 'add',
+    icon = AddOutline,
     size = 'md',
     variant = 'primary',
     disabled = false,
@@ -42,12 +43,7 @@ export const FloatButton = memo(
     });
 
     const isDisabled = disabled || loading;
-
-    const getDefaultAccessibilityLabel = () => {
-      if (accessibilityLabel) return accessibilityLabel;
-      const iconLabel = iconName.replace(/-/g, ' ');
-      return `${iconLabel} button`;
-    };
+    const Icon = icon;
 
     const renderContent = () => {
       if (loading) {
@@ -60,7 +56,7 @@ export const FloatButton = memo(
 
       return (
         <View style={styles.iconContainer}>
-          <Ionicons name={iconName} size={24} color="white" />
+          <Icon color="white" />
         </View>
       );
     };
@@ -70,9 +66,9 @@ export const FloatButton = memo(
         role="button"
         testID="float-button-pressable"
         accessibilityRole="button"
-        accessibilityLabel={getDefaultAccessibilityLabel()}
+        accessibilityLabel="Float button"
         accessibilityHint={
-          accessibilityHint || (loading ? 'Loading' : 'Double tap to activate')
+          accessibilityHint || (loading ? 'Loading' : 'Tap to activate')
         }
         accessibilityState={{ disabled: isDisabled, busy: loading }}
         style={({ pressed }) => [

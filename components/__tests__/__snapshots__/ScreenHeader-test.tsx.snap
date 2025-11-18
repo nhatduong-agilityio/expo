@@ -221,9 +221,9 @@ exports[`ScreenHeader should match to snapshot with title only 1`] = `
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {
@@ -488,9 +488,9 @@ exports[`ScreenHeader should render placeholders when no icon or component is pr
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {

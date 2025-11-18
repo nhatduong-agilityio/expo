@@ -185,19 +185,19 @@ describe('LoginForm', () => {
   });
 
   it('should toggle password visibility', () => {
-    const { getByLabelText, getByAccessibilityHint } = render(
+    const { getByLabelText, getByTestId } = render(
       <LoginForm onSubmit={mockOnSubmit} />,
     );
     const passwordInput = getByLabelText('Password*');
     expect(passwordInput.props.secureTextEntry).toBe(true);
 
     act(() => {
-      fireEvent.press(getByAccessibilityHint('Double tap to eye off outline'));
+      fireEvent.press(getByTestId('right-icon'));
     });
     expect(passwordInput.props.secureTextEntry).toBe(false);
 
     act(() => {
-      fireEvent.press(getByAccessibilityHint('Double tap to eye outline'));
+      fireEvent.press(getByTestId('right-icon'));
     });
     expect(passwordInput.props.secureTextEntry).toBe(true);
   });

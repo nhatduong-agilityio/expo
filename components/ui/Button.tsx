@@ -1,11 +1,11 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { ComponentProps, memo } from 'react';
+import { ComponentType, memo } from 'react';
 import {
   ActivityIndicator,
   Pressable,
   PressableProps,
   View,
 } from 'react-native';
+import { SvgProps } from 'react-native-svg';
 import { StyleSheet, UnistylesVariants } from 'react-native-unistyles';
 import { Text } from './Text';
 
@@ -18,8 +18,8 @@ export type ButtonProps = Omit<PressableProps, 'children'> & {
   disabled?: boolean;
   loading?: boolean;
   children: string;
-  leftIcon?: ComponentProps<typeof Ionicons>['name'];
-  rightIcon?: ComponentProps<typeof Ionicons>['name'];
+  leftIcon?: ComponentType<SvgProps>;
+  rightIcon?: ComponentType<SvgProps>;
 };
 
 export const Button = memo(
@@ -45,6 +45,8 @@ export const Button = memo(
     });
 
     const isDisabled = disabled || loading;
+    const LeftIcon = leftIcon;
+    const RightIcon = rightIcon;
 
     const renderContent = () => {
       if (loading) {
@@ -61,17 +63,17 @@ export const Button = memo(
 
       return (
         <View style={styles.contentContainer}>
-          {leftIcon && (
+          {LeftIcon && (
             <View accessible={false}>
-              <Ionicons name={leftIcon} color={styles.text.color} size={24} />
+              <LeftIcon color={styles.text.color} />
             </View>
           )}
           <Text variant="button" style={styles.text}>
             {children}
           </Text>
-          {rightIcon && (
+          {RightIcon && (
             <View accessible={false}>
-              <Ionicons name={rightIcon} color={styles.text.color} size={24} />
+              <RightIcon color={styles.text.color} />
             </View>
           )}
         </View>

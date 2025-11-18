@@ -45,7 +45,7 @@ export const TopicCard = memo(
         {...rest}
         accessibilityRole="button"
         accessibilityLabel={`${category.name} topic. ${category.description || ''}`}
-        accessibilityHint="Double tap to view topic details"
+        accessibilityHint="Tap to view topic details"
       >
         <Avatar
           source={category.iconUrl || 'https://picsum.photos/100/100?random=10'}
@@ -76,8 +76,8 @@ export const TopicCard = memo(
             }
             accessibilityHint={
               isSubscribed
-                ? 'Double tap to unsubscribe from this topic'
-                : 'Double tap to subscribe to this topic'
+                ? 'Tap to unsubscribe from this topic'
+                : 'Tap to subscribe to this topic'
             }
           >
             {isLoading ? '' : isSubscribed ? 'Saved' : 'Save'}

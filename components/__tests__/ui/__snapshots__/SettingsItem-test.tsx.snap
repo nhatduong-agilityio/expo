@@ -2,7 +2,7 @@
 
 exports[`SettingsItem should hide the chevron when showChevron is false 1`] = `
 <View
-  accessibilityHint="Double tap to open"
+  accessibilityHint="Tap to open"
   accessibilityLabel="Help"
   accessibilityRole="button"
   accessibilityState={
@@ -58,27 +58,7 @@ exports[`SettingsItem should hide the chevron when showChevron is false 1`] = `
       }
     }
   >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
-      style={
-        [
-          {
-            "color": "#050505",
-            "fontSize": 24,
-          },
-          undefined,
-          {
-            "fontFamily": "ionicons",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
-        ]
-      }
-    >
-      
-    </Text>
+    <help />
     <Text
       accessibilityLabel="Help"
       accessibilityRole="text"
@@ -254,9 +234,9 @@ exports[`SettingsItem should hide the chevron when showChevron is false 1`] = `
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {
@@ -283,7 +263,7 @@ exports[`SettingsItem should hide the chevron when showChevron is false 1`] = `
 
 exports[`SettingsItem should match to snapshot 1`] = `
 <View
-  accessibilityHint="Double tap to open"
+  accessibilityHint="Tap to open"
   accessibilityLabel="Settings"
   accessibilityRole="button"
   accessibilityState={
@@ -339,7 +319,7 @@ exports[`SettingsItem should match to snapshot 1`] = `
       }
     }
   >
-    <Text />
+    <settings />
     <Text
       accessibilityLabel="Settings"
       accessibilityRole="text"
@@ -515,9 +495,9 @@ exports[`SettingsItem should match to snapshot 1`] = `
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {
@@ -539,13 +519,99 @@ exports[`SettingsItem should match to snapshot 1`] = `
       Settings
     </Text>
   </View>
-  <Text />
+  <RNSVGSvgView
+    align="xMidYMid"
+    bbHeight={24}
+    bbWidth={24}
+    fill="none"
+    focusable={false}
+    height={24}
+    meetOrSlice={0}
+    minX={0}
+    minY={0}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "borderWidth": 0,
+        },
+        {
+          "flex": 0,
+          "height": 24,
+          "width": 24,
+        },
+      ]
+    }
+    vbHeight={24}
+    vbWidth={24}
+    width={24}
+  >
+    <RNSVGGroup
+      fill={null}
+      propList={
+        [
+          "fill",
+        ]
+      }
+    >
+      <RNSVGGroup
+        clipPath="a"
+        fill={
+          {
+            "payload": 4278190080,
+            "type": 0,
+          }
+        }
+      >
+        <RNSVGPath
+          d="M12.172 12 9.343 9.172l1.414-1.415L15 12l-4.243 4.243-1.414-1.415L12.172 12Z"
+          fill={
+            {
+              "payload": 4283321190,
+              "type": 0,
+            }
+          }
+          propList={
+            [
+              "fill",
+            ]
+          }
+        />
+      </RNSVGGroup>
+      <RNSVGDefs>
+        <RNSVGClipPath
+          fill={
+            {
+              "payload": 4278190080,
+              "type": 0,
+            }
+          }
+          name="a"
+        >
+          <RNSVGPath
+            d="M0 0h24v24H0z"
+            fill={
+              {
+                "payload": 4294967295,
+                "type": 0,
+              }
+            }
+            propList={
+              [
+                "fill",
+              ]
+            }
+          />
+        </RNSVGClipPath>
+      </RNSVGDefs>
+    </RNSVGGroup>
+  </RNSVGSvgView>
 </View>
 `;
 
 exports[`SettingsItem should show a chevron by default 1`] = `
 <View
-  accessibilityHint="Double tap to open"
+  accessibilityHint="Tap to open"
   accessibilityLabel="Notifications"
   accessibilityRole="button"
   accessibilityState={
@@ -601,27 +667,7 @@ exports[`SettingsItem should show a chevron by default 1`] = `
       }
     }
   >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
-      style={
-        [
-          {
-            "color": "#050505",
-            "fontSize": 24,
-          },
-          undefined,
-          {
-            "fontFamily": "ionicons",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          {},
-        ]
-      }
-    >
-      
-    </Text>
+    <notifications />
     <Text
       accessibilityLabel="Notifications"
       accessibilityRole="text"
@@ -797,9 +843,9 @@ exports[`SettingsItem should show a chevron by default 1`] = `
                 },
                 "label": {
                   "color": "#050505",
-                  "fontFamily": "Poppins-SemiBold",
+                  "fontFamily": "Poppins-Regular",
                   "fontSize": 14,
-                  "fontWeight": "600",
+                  "fontWeight": "400",
                   "lineHeight": 20,
                 },
                 "placeholder": {
@@ -821,26 +867,92 @@ exports[`SettingsItem should show a chevron by default 1`] = `
       Notifications
     </Text>
   </View>
-  <Text
-    allowFontScaling={false}
-    selectable={false}
+  <RNSVGSvgView
+    align="xMidYMid"
+    bbHeight={24}
+    bbWidth={24}
+    fill="none"
+    focusable={false}
+    height={24}
+    meetOrSlice={0}
+    minX={0}
+    minY={0}
     style={
       [
         {
-          "color": "#667080",
-          "fontSize": 20,
+          "backgroundColor": "transparent",
+          "borderWidth": 0,
         },
-        undefined,
         {
-          "fontFamily": "ionicons",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
+          "flex": 0,
+          "height": 24,
+          "width": 24,
         },
-        {},
       ]
     }
+    vbHeight={24}
+    vbWidth={24}
+    width={24}
   >
-    
-  </Text>
+    <RNSVGGroup
+      fill={null}
+      propList={
+        [
+          "fill",
+        ]
+      }
+    >
+      <RNSVGGroup
+        clipPath="a"
+        fill={
+          {
+            "payload": 4278190080,
+            "type": 0,
+          }
+        }
+      >
+        <RNSVGPath
+          d="M12.172 12 9.343 9.172l1.414-1.415L15 12l-4.243 4.243-1.414-1.415L12.172 12Z"
+          fill={
+            {
+              "payload": 4283321190,
+              "type": 0,
+            }
+          }
+          propList={
+            [
+              "fill",
+            ]
+          }
+        />
+      </RNSVGGroup>
+      <RNSVGDefs>
+        <RNSVGClipPath
+          fill={
+            {
+              "payload": 4278190080,
+              "type": 0,
+            }
+          }
+          name="a"
+        >
+          <RNSVGPath
+            d="M0 0h24v24H0z"
+            fill={
+              {
+                "payload": 4294967295,
+                "type": 0,
+              }
+            }
+            propList={
+              [
+                "fill",
+              ]
+            }
+          />
+        </RNSVGClipPath>
+      </RNSVGDefs>
+    </RNSVGGroup>
+  </RNSVGSvgView>
 </View>
 `;

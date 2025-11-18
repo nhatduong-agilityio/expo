@@ -1,3 +1,14 @@
+import {
+  BookmarkFilled,
+  BookmarkOutline,
+  CompassFilled,
+  CompassOutline,
+  HomeFilled,
+  HomeOutline,
+  ProfileFilled,
+  ProfileOutline,
+} from '@/components/icons';
+
 export const SCREENS = {
   // Auth screens
   AUTH: {
@@ -29,25 +40,25 @@ export const TABS = {
   HOME: {
     NAME: 'index',
     TITLE: 'Home',
-    ICON: 'home',
-    ICON_OUTLINE: 'home-outline',
+    ICON: HomeFilled,
+    ICON_OUTLINE: HomeOutline,
   },
   EXPLORE: {
     NAME: 'explore',
     TITLE: 'Explore',
-    ICON: 'compass',
-    ICON_OUTLINE: 'compass-outline',
+    ICON: CompassFilled,
+    ICON_OUTLINE: CompassOutline,
   },
   BOOKMARK: {
     NAME: 'bookmark',
     TITLE: 'Bookmark',
-    ICON: 'bookmark',
-    ICON_OUTLINE: 'bookmark-outline',
+    ICON: BookmarkFilled,
+    ICON_OUTLINE: BookmarkOutline,
   },
   PROFILE: {
     NAME: 'profile',
     TITLE: 'Profile',
-    ICON: 'person-circle',
-    ICON_OUTLINE: 'person-circle-outline',
+    ICON: ProfileFilled,
+    ICON_OUTLINE: ProfileOutline,
   },
 } as const;

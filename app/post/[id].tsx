@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image } from 'expo-image';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect } from 'react';
@@ -30,6 +29,16 @@ import { formatNumber } from '@/utils';
 
 // Components
 import { AuthorCard, ScreenHeader } from '@/components';
+import {
+  BackOutline,
+  BookmarkFilled,
+  BookmarkOutline,
+  CommentOutline,
+  HeartFilled,
+  HeartOutline,
+  MoreVerticalOutline,
+  ShareOutline,
+} from '@/components/icons';
 import { Text } from '@/components/ui';
 
 const PostDetailScreen = () => {
@@ -92,7 +101,7 @@ const PostDetailScreen = () => {
       <SafeAreaView style={styles.container} edges={['top']} key={rt.themeName}>
         <ScreenHeader
           title=""
-          leftIcon="arrow-back"
+          leftIcon={BackOutline}
           onLeftPress={handleBackPress}
           showLeftIcon
         />
@@ -112,7 +121,7 @@ const PostDetailScreen = () => {
       {/* Header */}
       <ScreenHeader
         title=""
-        leftIcon="arrow-back"
+        leftIcon={BackOutline}
         rightComponent={
           <View style={styles.headerActions}>
             <Pressable
@@ -123,11 +132,7 @@ const PostDetailScreen = () => {
               accessibilityLabel="Share post"
               accessibilityHint="Press to share post"
             >
-              <Ionicons
-                name="share-social-outline"
-                size={24}
-                color={theme.colors.iconPrimary}
-              />
+              <ShareOutline />
             </Pressable>
             <Pressable
               onPress={handleMenuPress}
@@ -137,11 +142,7 @@ const PostDetailScreen = () => {
               accessibilityLabel="More options"
               accessibilityHint="Press to open more options"
             >
-              <Ionicons
-                name="ellipsis-vertical"
-                size={24}
-                color={theme.colors.iconPrimary}
-              />
+              <MoreVerticalOutline />
             </Pressable>
           </View>
         }
@@ -210,12 +211,12 @@ const PostDetailScreen = () => {
             accessibilityLabel={isLiked ? 'Unlike post' : 'Like post'}
             accessibilityHint={isLiked ? 'Unlikes the post' : 'Likes the post'}
           >
-            <Ionicons
-              name={isLiked ? 'heart' : 'heart-outline'}
-              size={24}
-              color={isLiked ? theme.colors.error : theme.colors.iconPrimary}
-              style={[isLikePending && { opacity: theme.opacity.disabled }]}
-            />
+            {isLiked ? (
+              <HeartFilled color={theme.colors.error} />
+            ) : (
+              <HeartOutline />
+            )}
+
             <Text variant="body" style={styles.engagementText}>
               {formatNumber(post.likesCount)}
             </Text>
@@ -229,11 +230,7 @@ const PostDetailScreen = () => {
             accessibilityLabel="View comments"
             accessibilityHint="Press to view comments"
           >
-            <Ionicons
-              name="chatbubble-outline"
-              size={24}
-              color={theme.colors.iconPrimary}
-            />
+            <CommentOutline />
             <Text variant="body" style={styles.engagementText}>
               {formatNumber(post.commentsCount)}
             </Text>
@@ -255,14 +252,11 @@ const PostDetailScreen = () => {
               : 'Bookmarks the post'
           }
         >
-          <Ionicons
-            name={isBookmarked ? 'bookmark' : 'bookmark-outline'}
-            size={24}
-            color={
-              isBookmarked ? theme.colors.primary : theme.colors.iconPrimary
-            }
-            style={[isBookmarkPending && { opacity: theme.opacity.disabled }]}
-          />
+          {isBookmarked ? (
+            <BookmarkFilled color={theme.colors.iconOnActive} />
+          ) : (
+            <BookmarkOutline />
+          )}
         </Pressable>
       </View>
     </SafeAreaView>

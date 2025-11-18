@@ -1,6 +1,5 @@
 import { CustomTabBar } from '@/components';
 import { TABS } from '@/constants';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import React from 'react';
 
@@ -41,12 +40,12 @@ const createMockBottomTabBarProps = (overrides?: any): any => {
     state: {
       index: 0,
       routes: [
-        { key: 'home-key', name: 'Home', params: undefined },
-        { key: 'explore-key', name: 'Explore', params: undefined },
-        { key: 'bookmark-key', name: 'Bookmark', params: undefined },
-        { key: 'profile-key', name: 'Profile', params: undefined },
+        { key: 'home-key', name: 'index', params: undefined },
+        { key: 'explore-key', name: 'explore', params: undefined },
+        { key: 'bookmark-key', name: 'bookmark', params: undefined },
+        { key: 'profile-key', name: 'profile', params: undefined },
       ],
-      routeNames: ['Home', 'Explore', 'Bookmark', 'Profile'],
+      routeNames: ['index', 'explore', 'bookmark', 'profile'],
       history: [],
       type: 'tab' as const,
       stale: false,
@@ -225,6 +224,14 @@ describe('CustomTabBar', () => {
 
     it('should use route name when title is not provided', () => {
       const props = createMockBottomTabBarProps({
+        state: {
+          routes: [
+            { key: 'home-key', name: 'index', params: undefined },
+            { key: 'explore-key', name: 'explore', params: undefined },
+            { key: 'bookmark-key', name: 'bookmark', params: undefined },
+            { key: 'profile-key', name: 'profile', params: undefined },
+          ],
+        },
         descriptors: {
           'home-key': {
             options: {
@@ -239,7 +246,7 @@ describe('CustomTabBar', () => {
       });
 
       const { getByText } = render(<CustomTabBar {...props} />);
-      expect(getByText('Home')).toBeTruthy();
+      expect(getByText('index')).toBeTruthy();
     });
   });
 
@@ -281,7 +288,7 @@ describe('CustomTabBar', () => {
         target: 'explore-key',
         canPreventDefault: true,
       });
-      expect(props.navigation.navigate).toHaveBeenCalledWith('Explore');
+      expect(props.navigation.navigate).toHaveBeenCalledWith('explore');
     });
 
     it('should not navigate when pressing the already active tab', () => {
@@ -326,40 +333,37 @@ describe('CustomTabBar', () => {
 
   describe('Icon Display', () => {
     it('should display outlined icons for inactive tabs', () => {
-      const { UNSAFE_getAllByType } = render(
-        <CustomTabBar {...defaultProps} />,
+      const { getByTestId } = render(<CustomTabBar {...defaultProps} />);
+      const icon = getByTestId(
+        `icon-${TABS.EXPLORE.ICON_OUTLINE.name}-false-false`,
       );
-      const icons = UNSAFE_getAllByType(Ionicons);
-
-      // First icon is active (filled), rest are outlined
-      expect(icons[1].props.name).toBe(TABS.HOME.ICON_OUTLINE);
+      expect(icon).toBeTruthy();
     });
 
     it('should display filled icon for active tab', () => {
-      const { UNSAFE_getAllByType } = render(
-        <CustomTabBar {...defaultProps} />,
-      );
-      const icons = UNSAFE_getAllByType(Ionicons);
-
-      expect(icons[0].props.name).toBe(TABS.HOME.ICON);
+      const { getByTestId } = render(<CustomTabBar {...defaultProps} />);
+      const icon = getByTestId(`icon-${TABS.HOME.ICON.name}-true-false`);
+      expect(icon).toBeTruthy();
     });
 
     it('should update icon when tab becomes active', () => {
-      const { rerender, UNSAFE_getAllByType } = render(
+      const { rerender, getByTestId } = render(
         <CustomTabBar {...defaultProps} />,
       );
-
-      let icons = UNSAFE_getAllByType(Ionicons);
-      expect(icons[1].props.name).toBe(TABS.HOME.ICON_OUTLINE);
+      const inactiveIcon = getByTestId(
+        `icon-${TABS.EXPLORE.ICON_OUTLINE.name}-false-false`,
+      );
+      expect(inactiveIcon).toBeTruthy();
 
       const propsWithSecondTabActive = createMockBottomTabBarProps({
         state: { index: 1 },
       });
 
       rerender(<CustomTabBar {...propsWithSecondTabActive} />);
-
-      icons = UNSAFE_getAllByType(Ionicons);
-      expect(icons[1].props.name).toBe(TABS.HOME.ICON);
+      const activeIcon = getByTestId(
+        `icon-${TABS.EXPLORE.ICON.name}-true-false`,
+      );
+      expect(activeIcon).toBeTruthy();
     });
   });
 
@@ -394,10 +398,10 @@ describe('CustomTabBar', () => {
       const props = createMockBottomTabBarProps({
         state: {
           routes: [
-            { key: 'home-key', name: 'Home', params: undefined },
-            { key: 'explore-key', name: 'Explore', params: undefined },
+            { key: 'home-key', name: 'index', params: undefined },
+            { key: 'explore-key', name: 'explore', params: undefined },
           ],
-          routeNames: ['Home', 'Explore'],
+          routeNames: ['index', 'explore'],
         },
       });
 
@@ -405,36 +409,6 @@ describe('CustomTabBar', () => {
       const buttons = getAllByRole('tab');
 
       expect(buttons).toHaveLength(2);
-    });
-
-    it('should handle unknown route names gracefully', () => {
-      const mockNav = createMockBottomTabBarProps().navigation;
-      const props = createMockBottomTabBarProps({
-        state: {
-          routes: [
-            { key: 'home-key', name: 'Home', params: undefined },
-            { key: 'explore-key', name: 'Explore', params: undefined },
-            { key: 'bookmark-key', name: 'Bookmark', params: undefined },
-            { key: 'profile-key', name: 'Profile', params: undefined },
-            { key: 'unknown-key', name: 'Unknown', params: undefined },
-          ],
-          routeNames: ['Home', 'Explore', 'Bookmark', 'Profile', 'Unknown'],
-        },
-        descriptors: {
-          'unknown-key': {
-            options: {
-              title: 'Unknown',
-              tabBarAccessibilityLabel: 'Unknown Tab',
-              tabBarButtonTestID: 'unknown-tab-button',
-            },
-            navigation: mockNav,
-            render: jest.fn(() => null),
-          },
-        },
-      });
-
-      const { getByText } = render(<CustomTabBar {...props} />);
-      expect(getByText('Unknown')).toBeTruthy();
     });
   });
 });

@@ -2,7 +2,7 @@
 
 exports[`Switch should match to snapshot 1`] = `
 <View
-  accessibilityHint="Double tap to turn on"
+  accessibilityHint="Tap to turn on"
   accessibilityLabel="Switch"
   accessibilityRole="switch"
   accessibilityState={
@@ -124,7 +124,7 @@ exports[`Switch should match to snapshot 1`] = `
 
 exports[`Switch should reflect the value prop (on state) 1`] = `
 <View
-  accessibilityHint="Double tap to turn off"
+  accessibilityHint="Tap to turn off"
   accessibilityLabel="Switch"
   accessibilityRole="switch"
   accessibilityState={

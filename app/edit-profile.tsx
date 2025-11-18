@@ -21,6 +21,7 @@ import { useAuthStore } from '@/stores';
 
 // Components
 import { ScreenHeader } from '@/components';
+import { CheckOutline, CloseOutline } from '@/components/icons';
 import { Avatar, Input } from '@/components/ui';
 
 const EditProfileScreen = () => {
@@ -150,8 +151,8 @@ const EditProfileScreen = () => {
       {/* Header */}
       <ScreenHeader
         title="Edit Profile"
-        leftIcon="close"
-        rightIcon="checkmark"
+        leftIcon={CloseOutline}
+        rightIcon={CheckOutline}
         onLeftPress={handleBackPress}
         onRightPress={handleSavePress}
         showLeftIcon
