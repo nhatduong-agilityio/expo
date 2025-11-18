@@ -40,9 +40,7 @@ exports[`AuthorCard should match to snapshot 1`] = `
       "backgroundColor": "transparent",
       "elevation": 1,
       "flexDirection": "row",
-      "gap": 12,
-      "paddingHorizontal": 4,
-      "paddingVertical": 8,
+      "gap": 8,
       "shadowColor": "#000",
       "shadowOffset": {
         "height": 1,
@@ -80,12 +78,16 @@ exports[`AuthorCard should match to snapshot 1`] = `
               "width": 24,
             },
             "xl": {
-              "height": 140,
-              "width": 140,
+              "height": 100,
+              "width": 100,
             },
             "xs": {
               "height": 20,
               "width": 20,
+            },
+            "xxl": {
+              "height": 140,
+              "width": 140,
             },
           },
         },
@@ -226,7 +228,6 @@ exports[`AuthorCard should match to snapshot 1`] = `
     style={
       {
         "flex": 1,
-        "gap": 4,
       }
     }
   >
@@ -396,6 +397,13 @@ exports[`AuthorCard should match to snapshot 1`] = `
                   "fontSize": 18,
                   "fontWeight": "600",
                   "lineHeight": 28,
+                },
+                "h5": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-SemiBold",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "lineHeight": 24,
                 },
                 "label": {
                   "color": "#050505",
@@ -588,6 +596,13 @@ exports[`AuthorCard should match to snapshot 1`] = `
                   "fontSize": 18,
                   "fontWeight": "600",
                   "lineHeight": 28,
+                },
+                "h5": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-SemiBold",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "lineHeight": 24,
                 },
                 "label": {
                   "color": "#050505",
@@ -900,6 +915,13 @@ exports[`AuthorCard should match to snapshot 1`] = `
                     "fontSize": 18,
                     "fontWeight": "600",
                     "lineHeight": 28,
+                  },
+                  "h5": {
+                    "color": "#050505",
+                    "fontFamily": "Poppins-SemiBold",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                    "lineHeight": 24,
                   },
                   "label": {
                     "color": "#050505",

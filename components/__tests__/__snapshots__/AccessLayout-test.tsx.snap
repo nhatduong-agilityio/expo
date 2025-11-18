@@ -204,6 +204,13 @@ exports[`AccessLayout should match snapshot for login mode 1`] = `
                       "fontWeight": "600",
                       "lineHeight": 28,
                     },
+                    "h5": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-SemiBold",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 24,
+                    },
                     "label": {
                       "color": "#050505",
                       "fontFamily": "Poppins-SemiBold",
@@ -394,6 +401,13 @@ exports[`AccessLayout should match snapshot for login mode 1`] = `
                       "fontSize": 18,
                       "fontWeight": "600",
                       "lineHeight": 28,
+                    },
+                    "h5": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-SemiBold",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 24,
                     },
                     "label": {
                       "color": "#050505",
@@ -586,6 +600,13 @@ exports[`AccessLayout should match snapshot for login mode 1`] = `
                     "fontSize": 18,
                     "fontWeight": "600",
                     "lineHeight": 28,
+                  },
+                  "h5": {
+                    "color": "#050505",
+                    "fontFamily": "Poppins-SemiBold",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                    "lineHeight": 24,
                   },
                   "label": {
                     "color": "#050505",
@@ -799,6 +820,13 @@ exports[`AccessLayout should match snapshot for login mode 1`] = `
                         "fontSize": 18,
                         "fontWeight": "600",
                         "lineHeight": 28,
+                      },
+                      "h5": {
+                        "color": "#050505",
+                        "fontFamily": "Poppins-SemiBold",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 24,
                       },
                       "label": {
                         "color": "#050505",
@@ -1024,6 +1052,13 @@ exports[`AccessLayout should match snapshot for login mode 1`] = `
                           "fontSize": 18,
                           "fontWeight": "600",
                           "lineHeight": 28,
+                        },
+                        "h5": {
+                          "color": "#050505",
+                          "fontFamily": "Poppins-SemiBold",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 24,
                         },
                         "label": {
                           "color": "#050505",
@@ -1260,6 +1295,13 @@ exports[`AccessLayout should match snapshot for signup mode 1`] = `
                       "fontWeight": "600",
                       "lineHeight": 28,
                     },
+                    "h5": {
+                      "color": "#050505",
+                      "fontFamily": "Poppins-SemiBold",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "lineHeight": 24,
+                    },
                     "label": {
                       "color": "#050505",
                       "fontFamily": "Poppins-SemiBold",
@@ -1451,6 +1493,13 @@ exports[`AccessLayout should match snapshot for signup mode 1`] = `
                     "fontSize": 18,
                     "fontWeight": "600",
                     "lineHeight": 28,
+                  },
+                  "h5": {
+                    "color": "#050505",
+                    "fontFamily": "Poppins-SemiBold",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                    "lineHeight": 24,
                   },
                   "label": {
                     "color": "#050505",
@@ -1664,6 +1713,13 @@ exports[`AccessLayout should match snapshot for signup mode 1`] = `
                         "fontSize": 18,
                         "fontWeight": "600",
                         "lineHeight": 28,
+                      },
+                      "h5": {
+                        "color": "#050505",
+                        "fontFamily": "Poppins-SemiBold",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 24,
                       },
                       "label": {
                         "color": "#050505",
@@ -1889,6 +1945,13 @@ exports[`AccessLayout should match snapshot for signup mode 1`] = `
                           "fontSize": 18,
                           "fontWeight": "600",
                           "lineHeight": 28,
+                        },
+                        "h5": {
+                          "color": "#050505",
+                          "fontFamily": "Poppins-SemiBold",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 24,
                         },
                         "label": {
                           "color": "#050505",

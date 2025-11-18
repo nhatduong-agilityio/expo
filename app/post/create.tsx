@@ -222,11 +222,7 @@ const CreatePostScreen = () => {
         showRightIcon
       />
 
-      <ScrollView
-        style={styles.content}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Cover Photo */}
         <Pressable
           accessibilityRole="button"
@@ -301,8 +297,10 @@ const CreatePostScreen = () => {
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               accessibilityLabel="Title input field"
-              styleContainer={styles.inputContainer}
-              style={styles.titleInput}
+              styleContainer={[
+                styles.inputContainer,
+                styles.inputBorderContainer,
+              ]}
               placeholder="News title"
               size="lg"
               value={value}
@@ -313,6 +311,7 @@ const CreatePostScreen = () => {
               textAlignVertical="top"
               disabled={isLoading}
               accessibilityHint="Enter the title of your news article"
+              scrollEnabled={false}
             />
           )}
         />
@@ -336,128 +335,125 @@ const CreatePostScreen = () => {
               textAlignVertical="top"
               disabled={isLoading}
               accessibilityHint="Enter the content of your news article"
+              scrollEnabled={false}
             />
           )}
         />
-
-        {/* Formatting Toolbar */}
-        <View style={styles.toolbar}>
-          <Pressable
-            accessibilityRole="button"
-            style={styles.toolbarButton}
-            hitSlop={8}
-            disabled={isLoading}
-          >
-            <Feather name="bold" size={20} color={theme.colors.iconPrimary} />
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            style={styles.toolbarButton}
-            hitSlop={8}
-            disabled={isLoading}
-          >
-            <Feather name="italic" size={20} color={theme.colors.iconPrimary} />
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            style={styles.toolbarButton}
-            hitSlop={8}
-            disabled={isLoading}
-          >
-            <AntDesign
-              name="ordered-list"
-              size={20}
-              color={theme.colors.iconPrimary}
-            />
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            style={styles.toolbarButton}
-            hitSlop={8}
-            disabled={isLoading}
-          >
-            <AntDesign
-              name="unordered-list"
-              size={20}
-              color={theme.colors.iconPrimary}
-            />
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            style={styles.toolbarButton}
-            hitSlop={8}
-            disabled={isLoading}
-          >
-            <AntDesign name="link" size={20} color={theme.colors.iconPrimary} />
-          </Pressable>
-        </View>
-
-        {/* Bottom Toolbar */}
-        <View style={styles.bottomToolbar}>
-          <View style={styles.bottomToolbarLeft}>
-            <Pressable
-              accessibilityRole="button"
-              style={styles.toolbarButton}
-              hitSlop={8}
-              disabled={isLoading}
-            >
-              <Ionicons
-                name="text"
-                size={20}
-                color={theme.colors.iconPrimary}
-              />
-            </Pressable>
-            <Pressable
-              accessibilityRole="button"
-              style={styles.toolbarButton}
-              hitSlop={8}
-              disabled={isLoading}
-            >
-              <MaterialCommunityIcons
-                name="text-long"
-                size={20}
-                color={theme.colors.iconPrimary}
-              />
-            </Pressable>
-            <Pressable
-              accessibilityRole="button"
-              style={styles.toolbarButton}
-              hitSlop={8}
-              onPress={handlePickImage}
-              disabled={isLoading}
-            >
-              <Ionicons
-                name="image-outline"
-                size={20}
-                color={theme.colors.iconPrimary}
-              />
-            </Pressable>
-            <Pressable
-              accessibilityRole="button"
-              style={styles.toolbarButton}
-              hitSlop={8}
-              onPress={handleSelectCategory}
-              disabled={isLoading}
-            >
-              <Ionicons
-                name="pricetag-outline"
-                size={20}
-                color={theme.colors.iconPrimary}
-              />
-            </Pressable>
-          </View>
-
-          <Button
-            variant="primary"
-            size="md"
-            onPress={handlePublish}
-            loading={isLoading}
-            disabled={isLoading}
-          >
-            Publish
-          </Button>
-        </View>
       </ScrollView>
+
+      {/* Formatting Toolbar */}
+      <View style={styles.toolbar}>
+        <Pressable
+          accessibilityRole="button"
+          style={styles.toolbarButton}
+          hitSlop={8}
+          disabled={isLoading}
+        >
+          <Feather name="bold" size={20} color={theme.colors.iconPrimary} />
+        </Pressable>
+        <Pressable
+          accessibilityRole="button"
+          style={styles.toolbarButton}
+          hitSlop={8}
+          disabled={isLoading}
+        >
+          <Feather name="italic" size={20} color={theme.colors.iconPrimary} />
+        </Pressable>
+        <Pressable
+          accessibilityRole="button"
+          style={styles.toolbarButton}
+          hitSlop={8}
+          disabled={isLoading}
+        >
+          <AntDesign
+            name="ordered-list"
+            size={20}
+            color={theme.colors.iconPrimary}
+          />
+        </Pressable>
+        <Pressable
+          accessibilityRole="button"
+          style={styles.toolbarButton}
+          hitSlop={8}
+          disabled={isLoading}
+        >
+          <AntDesign
+            name="unordered-list"
+            size={20}
+            color={theme.colors.iconPrimary}
+          />
+        </Pressable>
+        <Pressable
+          accessibilityRole="button"
+          style={styles.toolbarButton}
+          hitSlop={8}
+          disabled={isLoading}
+        >
+          <AntDesign name="link" size={20} color={theme.colors.iconPrimary} />
+        </Pressable>
+      </View>
+
+      {/* Bottom Toolbar */}
+      <View style={styles.bottomToolbar}>
+        <View style={styles.bottomToolbarLeft}>
+          <Pressable
+            accessibilityRole="button"
+            style={styles.toolbarButton}
+            hitSlop={8}
+            disabled={isLoading}
+          >
+            <Ionicons name="text" size={20} color={theme.colors.iconPrimary} />
+          </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            style={styles.toolbarButton}
+            hitSlop={8}
+            disabled={isLoading}
+          >
+            <MaterialCommunityIcons
+              name="text-long"
+              size={20}
+              color={theme.colors.iconPrimary}
+            />
+          </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            style={styles.toolbarButton}
+            hitSlop={8}
+            onPress={handlePickImage}
+            disabled={isLoading}
+          >
+            <Ionicons
+              name="image-outline"
+              size={20}
+              color={theme.colors.iconPrimary}
+            />
+          </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            style={styles.toolbarButton}
+            hitSlop={8}
+            onPress={handleSelectCategory}
+            disabled={isLoading}
+          >
+            <Ionicons
+              name="pricetag-outline"
+              size={20}
+              color={theme.colors.iconPrimary}
+            />
+          </Pressable>
+        </View>
+
+        <Button
+          variant="primary"
+          size="md"
+          onPress={handlePublish}
+          loading={isLoading}
+          disabled={isLoading}
+        >
+          Publish
+        </Button>
+      </View>
     </SafeAreaView>
   );
 };
@@ -469,14 +465,10 @@ const styles = StyleSheet.create(theme => ({
   },
   content: {
     flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: theme.spacing['3xl'],
+    paddingHorizontal: theme.spacing.xl,
   },
   coverPhotoContainer: {
-    marginHorizontal: theme.spacing.xl,
-    marginTop: theme.spacing.md,
-    marginBottom: theme.spacing.lg,
+    marginTop: theme.spacing.lg,
   },
   addCoverPhoto: {
     height: 200,
@@ -523,16 +515,19 @@ const styles = StyleSheet.create(theme => ({
     fontWeight: theme.fontWeight.semiBold,
   },
   inputContainer: {
-    paddingHorizontal: theme.spacing.xl,
     borderWidth: 0,
-    borderColor: 'transparent',
+    marginTop: theme.spacing.lg,
+    backgroundColor: 'transparent',
+    paddingHorizontal: 0,
   },
-  titleInput: {
+  inputBorderContainer: {
+    borderWidth: 0,
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.border,
   },
   contentInput: {
     minHeight: 300,
+    paddingBottom: theme.spacing.xs,
   },
   toolbar: {
     flexDirection: 'row',
@@ -546,6 +541,7 @@ const styles = StyleSheet.create(theme => ({
     borderWidth: 1,
     borderColor: theme.colors.border,
     borderRadius: theme.borderRadius.sm,
+    backgroundColor: theme.colors.inputBackground,
     ...(Platform.OS === 'ios' && theme.shadow.md),
   },
   toolbarButton: {
@@ -566,6 +562,7 @@ const styles = StyleSheet.create(theme => ({
     paddingVertical: theme.spacing.md,
     borderTopWidth: 1,
     borderTopColor: theme.colors.border,
+    marginBottom: theme.spacing.lg,
   },
   bottomToolbarLeft: {
     flexDirection: 'row',

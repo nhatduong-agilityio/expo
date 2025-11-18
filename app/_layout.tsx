@@ -10,8 +10,6 @@ import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { Fragment, useEffect } from 'react';
-import { ActivityIndicator, View } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
 
 // Constants
 import { ROUTES, SCREENS } from '@/constants';
@@ -128,15 +126,6 @@ const RootLayout = () => {
     return null;
   }
 
-  // Show loading indicator while checking auth
-  if (isLoading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
   return (
     <Fragment>
       <QueryClientProvider client={queryClient}>
@@ -203,14 +192,5 @@ const RootLayout = () => {
     </Fragment>
   );
 };
-
-const styles = StyleSheet.create(theme => ({
-  loadingContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: theme.colors.background,
-  },
-}));
 
 export default RootLayout;

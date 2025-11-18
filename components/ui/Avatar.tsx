@@ -31,7 +31,7 @@ export const Avatar = memo(
     source,
     editable = false,
     onChangeImage,
-    size = 'xl',
+    size = 'xxl',
     fallbackLabel,
     rounded = true,
   }: AvatarProps) => {
@@ -150,7 +150,8 @@ const styles = StyleSheet.create(theme => ({
         sm: { width: 24, height: 24 },
         md: { width: 40, height: 40 },
         lg: { width: 70, height: 70 },
-        xl: { width: 140, height: 140 },
+        xl: { width: 100, height: 100 },
+        xxl: { width: 140, height: 140 },
       },
       rounded: {
         true: {

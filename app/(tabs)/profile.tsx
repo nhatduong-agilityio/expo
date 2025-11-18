@@ -108,14 +108,12 @@ const ProfileScreen = () => {
     <View style={styles.profileHeader}>
       {/* Avatar and Stats Row */}
       <View style={styles.topSection}>
-        <View style={styles.avatarContainer}>
-          <Avatar
-            source={profile?.avatarUrl || null}
-            size="xl"
-            editable={false}
-            fallbackLabel={profile?.fullName?.charAt(0) || 'U'}
-          />
-        </View>
+        <Avatar
+          source={profile?.avatarUrl || null}
+          size="xl"
+          editable={false}
+          fallbackLabel={profile?.fullName?.charAt(0) || 'U'}
+        />
 
         {/* Profile Stats */}
         <ProfileStats
@@ -130,11 +128,9 @@ const ProfileScreen = () => {
 
       {/* User Info */}
       <View style={styles.userInfo}>
-        <Text variant="h3" style={styles.userName}>
-          {profile?.fullName || 'Anonymous User'}
-        </Text>
+        <Text variant="h4">{profile?.fullName || 'Anonymous User'}</Text>
         {profile?.bio && (
-          <Text variant="body" color="secondary" style={styles.userBio}>
+          <Text variant="body" color="secondary">
             {profile.bio}
           </Text>
         )}
@@ -257,7 +253,7 @@ const styles = StyleSheet.create(theme => ({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: theme.spacing.lg,
-    gap: theme.spacing.md,
+    gap: theme.spacing.lg,
   },
   avatarContainer: {
     width: 140,
@@ -265,12 +261,6 @@ const styles = StyleSheet.create(theme => ({
   userInfo: {
     gap: theme.spacing.xs,
     marginBottom: theme.spacing.lg,
-  },
-  userName: {
-    color: theme.colors.textPrimary,
-  },
-  userBio: {
-    color: theme.colors.textSecondary,
   },
   actionButtons: {
     flexDirection: 'row',

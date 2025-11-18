@@ -80,12 +80,16 @@ exports[`TopicCard should match to snapshot 1`] = `
               "width": 24,
             },
             "xl": {
-              "height": 140,
-              "width": 140,
+              "height": 100,
+              "width": 100,
             },
             "xs": {
               "height": 20,
               "width": 20,
+            },
+            "xxl": {
+              "height": 140,
+              "width": 140,
             },
           },
         },
@@ -397,6 +401,13 @@ exports[`TopicCard should match to snapshot 1`] = `
                   "fontWeight": "600",
                   "lineHeight": 28,
                 },
+                "h5": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-SemiBold",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "lineHeight": 24,
+                },
                 "label": {
                   "color": "#050505",
                   "fontFamily": "Poppins-SemiBold",
@@ -590,6 +601,13 @@ exports[`TopicCard should match to snapshot 1`] = `
                   "fontSize": 18,
                   "fontWeight": "600",
                   "lineHeight": 28,
+                },
+                "h5": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-SemiBold",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "lineHeight": 24,
                 },
                 "label": {
                   "color": "#050505",
@@ -897,6 +915,13 @@ exports[`TopicCard should match to snapshot 1`] = `
                     "fontSize": 18,
                     "fontWeight": "600",
                     "lineHeight": 28,
+                  },
+                  "h5": {
+                    "color": "#050505",
+                    "fontFamily": "Poppins-SemiBold",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                    "lineHeight": 24,
                   },
                   "label": {
                     "color": "#050505",

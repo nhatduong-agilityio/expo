@@ -52,7 +52,7 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
           "horizontal": {
             "alignItems": "center",
             "flexDirection": "row",
-            "gap": 4,
+            "gap": 8,
           },
           "vertical": {
             "flexDirection": "column",
@@ -117,350 +117,209 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
       }
     }
   >
-    <View
+    <Text
+      accessibilityHint="Category: Europe"
+      accessibilityLabel="Category: Europe"
+      accessibilityRole="text"
+      accessible={true}
+      numberOfLines={1}
       style={
-        {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "justifyContent": "space-between",
-        }
-      }
-    >
-      <Text
-        accessibilityHint="Category: Europe"
-        accessibilityLabel="Category: Europe"
-        accessibilityRole="text"
-        accessible={true}
-        numberOfLines={1}
-        style={
-          [
-            {
-              "variants": {
-                "align": {
-                  "center": {
-                    "textAlign": "center",
-                  },
-                  "justify": {
-                    "textAlign": "justify",
-                  },
-                  "left": {
-                    "textAlign": "left",
-                  },
-                  "right": {
-                    "textAlign": "right",
-                  },
+        [
+          {
+            "variants": {
+              "align": {
+                "center": {
+                  "textAlign": "center",
                 },
-                "color": {
-                  "accent": {
-                    "color": "#1877F2",
-                  },
-                  "disabled": {
-                    "color": "#B0B3B8",
-                  },
-                  "error": {
-                    "color": "#ED2E7E",
-                  },
-                  "errorHover": {
-                    "color": "#C30052",
-                  },
-                  "link": {
-                    "color": "#1877F2",
-                  },
-                  "onPrimary": {
-                    "color": "#FFFFFF",
-                  },
-                  "placeholder": {
-                    "color": "#B0B3B8",
-                  },
-                  "primary": {
-                    "color": "#050505",
-                  },
-                  "secondary": {
-                    "color": "#4E4B66",
-                  },
-                  "success": {
-                    "color": "#00BA88",
-                  },
-                  "successHover": {
-                    "color": "#00966D",
-                  },
-                  "tertiary": {
-                    "color": "#667080",
-                  },
-                  "warning": {
-                    "color": "#F4B740",
-                  },
-                  "warningHover": {
-                    "color": "#946200",
-                  },
+                "justify": {
+                  "textAlign": "justify",
                 },
-                "decoration": {
-                  "lineThrough": {
-                    "textDecorationLine": "line-through",
-                  },
-                  "none": {
-                    "textDecorationLine": "none",
-                  },
-                  "underline": {
-                    "textDecorationLine": "underline",
-                  },
-                  "underlineLineThrough": {
-                    "textDecorationLine": "underline line-through",
-                  },
+                "left": {
+                  "textAlign": "left",
                 },
-                "textTransform": {
-                  "capitalize": {
-                    "textTransform": "capitalize",
-                  },
-                  "lowercase": {
-                    "textTransform": "lowercase",
-                  },
-                  "none": {
-                    "textTransform": "none",
-                  },
-                  "uppercase": {
-                    "textTransform": "uppercase",
-                  },
+                "right": {
+                  "textAlign": "right",
                 },
-                "variant": {
-                  "body": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-Regular",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 24,
-                  },
-                  "bodyLg": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-Regular",
-                    "fontSize": 18,
-                    "fontWeight": "400",
-                    "lineHeight": 28,
-                  },
-                  "bodySm": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-Regular",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "lineHeight": 20,
-                  },
-                  "button": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-SemiBold",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "letterSpacing": 0.12,
-                    "lineHeight": 24,
-                  },
-                  "caption": {
-                    "color": "#4E4B66",
-                    "fontFamily": "Poppins-Regular",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "lineHeight": 16,
-                  },
-                  "display": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-Bold",
-                    "fontSize": 48,
-                    "fontWeight": "700",
-                    "lineHeight": 56,
-                  },
-                  "h1": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-Bold",
-                    "fontSize": 32,
-                    "fontWeight": "700",
-                    "lineHeight": 40,
-                  },
-                  "h2": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-Bold",
-                    "fontSize": 24,
-                    "fontWeight": "700",
-                    "lineHeight": 32,
-                  },
-                  "h3": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-SemiBold",
-                    "fontSize": 20,
-                    "fontWeight": "600",
-                    "lineHeight": 28,
-                  },
-                  "h4": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-SemiBold",
-                    "fontSize": 18,
-                    "fontWeight": "600",
-                    "lineHeight": 28,
-                  },
-                  "label": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-SemiBold",
-                    "fontSize": 14,
-                    "fontWeight": "600",
-                    "lineHeight": 20,
-                  },
-                  "placeholder": {
-                    "color": "#B0B3B8",
-                    "fontFamily": "Poppins-Regular",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 24,
-                  },
+              },
+              "color": {
+                "accent": {
+                  "color": "#1877F2",
+                },
+                "disabled": {
+                  "color": "#B0B3B8",
+                },
+                "error": {
+                  "color": "#ED2E7E",
+                },
+                "errorHover": {
+                  "color": "#C30052",
+                },
+                "link": {
+                  "color": "#1877F2",
+                },
+                "onPrimary": {
+                  "color": "#FFFFFF",
+                },
+                "placeholder": {
+                  "color": "#B0B3B8",
+                },
+                "primary": {
+                  "color": "#050505",
+                },
+                "secondary": {
+                  "color": "#4E4B66",
+                },
+                "success": {
+                  "color": "#00BA88",
+                },
+                "successHover": {
+                  "color": "#00966D",
+                },
+                "tertiary": {
+                  "color": "#667080",
+                },
+                "warning": {
+                  "color": "#F4B740",
+                },
+                "warningHover": {
+                  "color": "#946200",
+                },
+              },
+              "decoration": {
+                "lineThrough": {
+                  "textDecorationLine": "line-through",
+                },
+                "none": {
+                  "textDecorationLine": "none",
+                },
+                "underline": {
+                  "textDecorationLine": "underline",
+                },
+                "underlineLineThrough": {
+                  "textDecorationLine": "underline line-through",
+                },
+              },
+              "textTransform": {
+                "capitalize": {
+                  "textTransform": "capitalize",
+                },
+                "lowercase": {
+                  "textTransform": "lowercase",
+                },
+                "none": {
+                  "textTransform": "none",
+                },
+                "uppercase": {
+                  "textTransform": "uppercase",
+                },
+              },
+              "variant": {
+                "body": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-Regular",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 24,
+                },
+                "bodyLg": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-Regular",
+                  "fontSize": 18,
+                  "fontWeight": "400",
+                  "lineHeight": 28,
+                },
+                "bodySm": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-Regular",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                },
+                "button": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-SemiBold",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "letterSpacing": 0.12,
+                  "lineHeight": 24,
+                },
+                "caption": {
+                  "color": "#4E4B66",
+                  "fontFamily": "Poppins-Regular",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "lineHeight": 16,
+                },
+                "display": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-Bold",
+                  "fontSize": 48,
+                  "fontWeight": "700",
+                  "lineHeight": 56,
+                },
+                "h1": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-Bold",
+                  "fontSize": 32,
+                  "fontWeight": "700",
+                  "lineHeight": 40,
+                },
+                "h2": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-Bold",
+                  "fontSize": 24,
+                  "fontWeight": "700",
+                  "lineHeight": 32,
+                },
+                "h3": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-SemiBold",
+                  "fontSize": 20,
+                  "fontWeight": "600",
+                  "lineHeight": 28,
+                },
+                "h4": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-SemiBold",
+                  "fontSize": 18,
+                  "fontWeight": "600",
+                  "lineHeight": 28,
+                },
+                "h5": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-SemiBold",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "lineHeight": 24,
+                },
+                "label": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-SemiBold",
+                  "fontSize": 14,
+                  "fontWeight": "600",
+                  "lineHeight": 20,
+                },
+                "placeholder": {
+                  "color": "#B0B3B8",
+                  "fontFamily": "Poppins-Regular",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 24,
                 },
               },
             },
-            {
-              "color": "#4E4B66",
-              "flex": 1,
-              "fontSize": 12,
-              "textTransform": "capitalize",
-            },
-          ]
-        }
-      >
-        Europe
-      </Text>
-      <View
-        style={
+          },
           {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "gap": 8,
-          }
-        }
-      >
-        <View
-          accessibilityHint="Double tap to like this post"
-          accessibilityLabel="Like post"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": false,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          hitSlop={8}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "padding": 4,
-            }
-          }
-        >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              [
-                {
-                  "color": "#667080",
-                  "fontSize": 20,
-                },
-                [
-                  false,
-                ],
-                {
-                  "fontFamily": "ionicons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-        <View
-          accessibilityHint="Double tap to save this post to your bookmarks"
-          accessibilityLabel="Bookmark post"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": false,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          hitSlop={8}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "padding": 4,
-            }
-          }
-        >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              [
-                {
-                  "color": "#667080",
-                  "fontSize": 20,
-                },
-                [
-                  false,
-                ],
-                {
-                  "fontFamily": "ionicons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-      </View>
-    </View>
+            "color": "#4E4B66",
+            "flex": 1,
+            "fontSize": 12,
+            "textTransform": "capitalize",
+          },
+        ]
+      }
+    >
+      Europe
+    </Text>
     <Text
       accessibilityLabel="Ukraine's President Zelensky to BBC: Blood money being paid for Russian..."
       accessibilityRole="text"
@@ -628,6 +487,13 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
                   "fontWeight": "600",
                   "lineHeight": 28,
                 },
+                "h5": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-SemiBold",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "lineHeight": 24,
+                },
                 "label": {
                   "color": "#050505",
                   "fontFamily": "Poppins-SemiBold",
@@ -710,9 +576,7 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
               "backgroundColor": "transparent",
               "elevation": 1,
               "flexDirection": "row",
-              "gap": 12,
-              "paddingHorizontal": 4,
-              "paddingVertical": 8,
+              "gap": 8,
               "shadowColor": "#000",
               "shadowOffset": {
                 "height": 1,
@@ -750,12 +614,16 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
                       "width": 24,
                     },
                     "xl": {
-                      "height": 140,
-                      "width": 140,
+                      "height": 100,
+                      "width": 100,
                     },
                     "xs": {
                       "height": 20,
                       "width": 20,
+                    },
+                    "xxl": {
+                      "height": 140,
+                      "width": 140,
                     },
                   },
                 },
@@ -896,7 +764,6 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
             style={
               {
                 "flex": 1,
-                "gap": 4,
               }
             }
           >
@@ -1066,6 +933,13 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
                           "fontSize": 18,
                           "fontWeight": "600",
                           "lineHeight": 28,
+                        },
+                        "h5": {
+                          "color": "#050505",
+                          "fontFamily": "Poppins-SemiBold",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 24,
                         },
                         "label": {
                           "color": "#050505",
@@ -1304,6 +1178,13 @@ exports[`PostCard should match snapshot for horizontal variant 1`] = `
                         "fontWeight": "600",
                         "lineHeight": 28,
                       },
+                      "h5": {
+                        "color": "#050505",
+                        "fontFamily": "Poppins-SemiBold",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 24,
+                      },
                       "label": {
                         "color": "#050505",
                         "fontFamily": "Poppins-SemiBold",
@@ -1450,7 +1331,7 @@ exports[`PostCard should match snapshot for vertical variant 1`] = `
           "horizontal": {
             "alignItems": "center",
             "flexDirection": "row",
-            "gap": 4,
+            "gap": 8,
           },
           "vertical": {
             "flexDirection": "column",
@@ -1514,306 +1395,209 @@ exports[`PostCard should match snapshot for vertical variant 1`] = `
       }
     }
   >
-    <View
+    <Text
+      accessibilityHint="Category: Europe"
+      accessibilityLabel="Category: Europe"
+      accessibilityRole="text"
+      accessible={true}
+      numberOfLines={1}
       style={
-        {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "justifyContent": "space-between",
-        }
-      }
-    >
-      <Text
-        accessibilityHint="Category: Europe"
-        accessibilityLabel="Category: Europe"
-        accessibilityRole="text"
-        accessible={true}
-        numberOfLines={1}
-        style={
-          [
-            {
-              "variants": {
-                "align": {
-                  "center": {
-                    "textAlign": "center",
-                  },
-                  "justify": {
-                    "textAlign": "justify",
-                  },
-                  "left": {
-                    "textAlign": "left",
-                  },
-                  "right": {
-                    "textAlign": "right",
-                  },
+        [
+          {
+            "variants": {
+              "align": {
+                "center": {
+                  "textAlign": "center",
                 },
-                "color": {
-                  "accent": {
-                    "color": "#1877F2",
-                  },
-                  "disabled": {
-                    "color": "#B0B3B8",
-                  },
-                  "error": {
-                    "color": "#ED2E7E",
-                  },
-                  "errorHover": {
-                    "color": "#C30052",
-                  },
-                  "link": {
-                    "color": "#1877F2",
-                  },
-                  "onPrimary": {
-                    "color": "#FFFFFF",
-                  },
-                  "placeholder": {
-                    "color": "#B0B3B8",
-                  },
-                  "primary": {
-                    "color": "#050505",
-                  },
-                  "secondary": {
-                    "color": "#4E4B66",
-                  },
-                  "success": {
-                    "color": "#00BA88",
-                  },
-                  "successHover": {
-                    "color": "#00966D",
-                  },
-                  "tertiary": {
-                    "color": "#667080",
-                  },
-                  "warning": {
-                    "color": "#F4B740",
-                  },
-                  "warningHover": {
-                    "color": "#946200",
-                  },
+                "justify": {
+                  "textAlign": "justify",
                 },
-                "decoration": {
-                  "lineThrough": {
-                    "textDecorationLine": "line-through",
-                  },
-                  "none": {
-                    "textDecorationLine": "none",
-                  },
-                  "underline": {
-                    "textDecorationLine": "underline",
-                  },
-                  "underlineLineThrough": {
-                    "textDecorationLine": "underline line-through",
-                  },
+                "left": {
+                  "textAlign": "left",
                 },
-                "textTransform": {
-                  "capitalize": {
-                    "textTransform": "capitalize",
-                  },
-                  "lowercase": {
-                    "textTransform": "lowercase",
-                  },
-                  "none": {
-                    "textTransform": "none",
-                  },
-                  "uppercase": {
-                    "textTransform": "uppercase",
-                  },
+                "right": {
+                  "textAlign": "right",
                 },
-                "variant": {
-                  "body": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-Regular",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 24,
-                  },
-                  "bodyLg": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-Regular",
-                    "fontSize": 18,
-                    "fontWeight": "400",
-                    "lineHeight": 28,
-                  },
-                  "bodySm": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-Regular",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "lineHeight": 20,
-                  },
-                  "button": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-SemiBold",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "letterSpacing": 0.12,
-                    "lineHeight": 24,
-                  },
-                  "caption": {
-                    "color": "#4E4B66",
-                    "fontFamily": "Poppins-Regular",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "lineHeight": 16,
-                  },
-                  "display": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-Bold",
-                    "fontSize": 48,
-                    "fontWeight": "700",
-                    "lineHeight": 56,
-                  },
-                  "h1": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-Bold",
-                    "fontSize": 32,
-                    "fontWeight": "700",
-                    "lineHeight": 40,
-                  },
-                  "h2": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-Bold",
-                    "fontSize": 24,
-                    "fontWeight": "700",
-                    "lineHeight": 32,
-                  },
-                  "h3": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-SemiBold",
-                    "fontSize": 20,
-                    "fontWeight": "600",
-                    "lineHeight": 28,
-                  },
-                  "h4": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-SemiBold",
-                    "fontSize": 18,
-                    "fontWeight": "600",
-                    "lineHeight": 28,
-                  },
-                  "label": {
-                    "color": "#050505",
-                    "fontFamily": "Poppins-SemiBold",
-                    "fontSize": 14,
-                    "fontWeight": "600",
-                    "lineHeight": 20,
-                  },
-                  "placeholder": {
-                    "color": "#B0B3B8",
-                    "fontFamily": "Poppins-Regular",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 24,
-                  },
+              },
+              "color": {
+                "accent": {
+                  "color": "#1877F2",
+                },
+                "disabled": {
+                  "color": "#B0B3B8",
+                },
+                "error": {
+                  "color": "#ED2E7E",
+                },
+                "errorHover": {
+                  "color": "#C30052",
+                },
+                "link": {
+                  "color": "#1877F2",
+                },
+                "onPrimary": {
+                  "color": "#FFFFFF",
+                },
+                "placeholder": {
+                  "color": "#B0B3B8",
+                },
+                "primary": {
+                  "color": "#050505",
+                },
+                "secondary": {
+                  "color": "#4E4B66",
+                },
+                "success": {
+                  "color": "#00BA88",
+                },
+                "successHover": {
+                  "color": "#00966D",
+                },
+                "tertiary": {
+                  "color": "#667080",
+                },
+                "warning": {
+                  "color": "#F4B740",
+                },
+                "warningHover": {
+                  "color": "#946200",
+                },
+              },
+              "decoration": {
+                "lineThrough": {
+                  "textDecorationLine": "line-through",
+                },
+                "none": {
+                  "textDecorationLine": "none",
+                },
+                "underline": {
+                  "textDecorationLine": "underline",
+                },
+                "underlineLineThrough": {
+                  "textDecorationLine": "underline line-through",
+                },
+              },
+              "textTransform": {
+                "capitalize": {
+                  "textTransform": "capitalize",
+                },
+                "lowercase": {
+                  "textTransform": "lowercase",
+                },
+                "none": {
+                  "textTransform": "none",
+                },
+                "uppercase": {
+                  "textTransform": "uppercase",
+                },
+              },
+              "variant": {
+                "body": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-Regular",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 24,
+                },
+                "bodyLg": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-Regular",
+                  "fontSize": 18,
+                  "fontWeight": "400",
+                  "lineHeight": 28,
+                },
+                "bodySm": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-Regular",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                },
+                "button": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-SemiBold",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "letterSpacing": 0.12,
+                  "lineHeight": 24,
+                },
+                "caption": {
+                  "color": "#4E4B66",
+                  "fontFamily": "Poppins-Regular",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "lineHeight": 16,
+                },
+                "display": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-Bold",
+                  "fontSize": 48,
+                  "fontWeight": "700",
+                  "lineHeight": 56,
+                },
+                "h1": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-Bold",
+                  "fontSize": 32,
+                  "fontWeight": "700",
+                  "lineHeight": 40,
+                },
+                "h2": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-Bold",
+                  "fontSize": 24,
+                  "fontWeight": "700",
+                  "lineHeight": 32,
+                },
+                "h3": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-SemiBold",
+                  "fontSize": 20,
+                  "fontWeight": "600",
+                  "lineHeight": 28,
+                },
+                "h4": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-SemiBold",
+                  "fontSize": 18,
+                  "fontWeight": "600",
+                  "lineHeight": 28,
+                },
+                "h5": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-SemiBold",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "lineHeight": 24,
+                },
+                "label": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-SemiBold",
+                  "fontSize": 14,
+                  "fontWeight": "600",
+                  "lineHeight": 20,
+                },
+                "placeholder": {
+                  "color": "#B0B3B8",
+                  "fontFamily": "Poppins-Regular",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 24,
                 },
               },
             },
-            {
-              "color": "#4E4B66",
-              "flex": 1,
-              "fontSize": 12,
-              "textTransform": "capitalize",
-            },
-          ]
-        }
-      >
-        Europe
-      </Text>
-      <View
-        style={
+          },
           {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "gap": 8,
-          }
-        }
-      >
-        <View
-          accessibilityHint="Double tap to like this post"
-          accessibilityLabel="Like post"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": false,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          hitSlop={8}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "padding": 4,
-            }
-          }
-        >
-          <Text />
-        </View>
-        <View
-          accessibilityHint="Double tap to save this post to your bookmarks"
-          accessibilityLabel="Bookmark post"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": false,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          hitSlop={8}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "padding": 4,
-            }
-          }
-        >
-          <Text />
-        </View>
-      </View>
-    </View>
+            "color": "#4E4B66",
+            "flex": 1,
+            "fontSize": 12,
+            "textTransform": "capitalize",
+          },
+        ]
+      }
+    >
+      Europe
+    </Text>
     <Text
       accessibilityLabel="Ukraine's President Zelensky to BBC: Blood money being paid for Russian..."
       accessibilityRole="text"
@@ -1981,6 +1765,13 @@ exports[`PostCard should match snapshot for vertical variant 1`] = `
                   "fontWeight": "600",
                   "lineHeight": 28,
                 },
+                "h5": {
+                  "color": "#050505",
+                  "fontFamily": "Poppins-SemiBold",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "lineHeight": 24,
+                },
                 "label": {
                   "color": "#050505",
                   "fontFamily": "Poppins-SemiBold",
@@ -2063,9 +1854,7 @@ exports[`PostCard should match snapshot for vertical variant 1`] = `
               "backgroundColor": "transparent",
               "elevation": 1,
               "flexDirection": "row",
-              "gap": 12,
-              "paddingHorizontal": 4,
-              "paddingVertical": 8,
+              "gap": 8,
               "shadowColor": "#000",
               "shadowOffset": {
                 "height": 1,
@@ -2103,12 +1892,16 @@ exports[`PostCard should match snapshot for vertical variant 1`] = `
                       "width": 24,
                     },
                     "xl": {
-                      "height": 140,
-                      "width": 140,
+                      "height": 100,
+                      "width": 100,
                     },
                     "xs": {
                       "height": 20,
                       "width": 20,
+                    },
+                    "xxl": {
+                      "height": 140,
+                      "width": 140,
                     },
                   },
                 },
@@ -2249,7 +2042,6 @@ exports[`PostCard should match snapshot for vertical variant 1`] = `
             style={
               {
                 "flex": 1,
-                "gap": 4,
               }
             }
           >
@@ -2419,6 +2211,13 @@ exports[`PostCard should match snapshot for vertical variant 1`] = `
                           "fontSize": 18,
                           "fontWeight": "600",
                           "lineHeight": 28,
+                        },
+                        "h5": {
+                          "color": "#050505",
+                          "fontFamily": "Poppins-SemiBold",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 24,
                         },
                         "label": {
                           "color": "#050505",
@@ -2636,6 +2435,13 @@ exports[`PostCard should match snapshot for vertical variant 1`] = `
                         "fontSize": 18,
                         "fontWeight": "600",
                         "lineHeight": 28,
+                      },
+                      "h5": {
+                        "color": "#050505",
+                        "fontFamily": "Poppins-SemiBold",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 24,
                       },
                       "label": {
                         "color": "#050505",

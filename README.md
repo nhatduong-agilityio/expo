@@ -149,9 +149,9 @@ yarn test --coverage
 Launch Storybook for component development:
 
 ```bash
-npm run storybook
+npm run storybook:start
 # or
-yarn storybook
+yarn storybook:start
 ```
 
 ## 🎨 Code Quality

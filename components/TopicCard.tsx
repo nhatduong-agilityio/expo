@@ -1,11 +1,5 @@
 import { memo } from 'react';
-import {
-  GestureResponderEvent,
-  Platform,
-  Pressable,
-  PressableProps,
-  View,
-} from 'react-native';
+import { Platform, Pressable, PressableProps, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 // Hooks
@@ -61,7 +55,7 @@ export const TopicCard = memo(
           fallbackLabel={category.name.charAt(0)}
         />
         <View style={styles.content}>
-          <Text style={styles.title} numberOfLines={1}>
+          <Text variant="body" style={styles.title} numberOfLines={1}>
             {category.name}
           </Text>
           {category.description && (
