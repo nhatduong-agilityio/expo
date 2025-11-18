@@ -207,6 +207,7 @@ const HomeScreen = () => {
       </View>
 
       <FlashList
+        key={activeCategory}
         data={newsItems}
         renderItem={renderNewsItem}
         keyExtractor={newsKeyExtractor}
@@ -270,7 +271,7 @@ const styles = StyleSheet.create(theme => ({
     marginBottom: theme.spacing.lg,
   },
   listContent: {
-    paddingTop: 0,
+    paddingTop: theme.spacing.sm,
   },
   newsItem: {
     paddingHorizontal: theme.spacing.xl,

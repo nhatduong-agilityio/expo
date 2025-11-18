@@ -12,16 +12,17 @@ import { StyleSheet } from 'react-native-unistyles';
 import { useIsFollowing, useToggleFollow } from '@/hooks';
 
 // Utils
-import { formatNumber } from '@/utils';
+import { formatNumber, getTimeAgo } from '@/utils';
 
 // Components
 import { Avatar, Button, Text } from './ui';
 
 export type AuthorCardProps = Omit<PressableProps, 'children'> & {
   avatar?: ImageSourcePropType | string | null;
-  size?: 'xs' | 'lg';
+  size?: 'xs' | 'md' | 'lg';
   followers?: number;
   following?: boolean;
+  timeCreated?: string;
   name?: string | null;
   authorId: string;
   onFollowPress?: (following: boolean) => void;
@@ -35,6 +36,7 @@ export const AuthorCard = memo(
     size = 'lg',
     followers,
     following = false,
+    timeCreated,
     authorId,
     onFollowPress,
     showFollowButton = true,
@@ -68,7 +70,6 @@ export const AuthorCard = memo(
           source={avatar}
           size={size}
           editable={false}
-          rounded={false}
           fallbackLabel={authorName.charAt(0)}
         />
         <View style={styles.content}>
@@ -82,6 +83,11 @@ export const AuthorCard = memo(
           {followers !== undefined && (
             <Text style={styles.followers} numberOfLines={1}>
               {formatNumber(followers)} Followers
+            </Text>
+          )}
+          {timeCreated !== undefined && (
+            <Text style={styles.followers} numberOfLines={1}>
+              {getTimeAgo(timeCreated)}
             </Text>
           )}
         </View>
@@ -116,15 +122,12 @@ const styles = StyleSheet.create(theme => ({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: theme.spacing.md,
-    paddingVertical: theme.spacing.sm,
-    paddingHorizontal: theme.spacing.xs,
+    gap: theme.spacing.sm,
     backgroundColor: 'transparent',
     ...(Platform.OS === 'ios' && theme.shadow.sm),
   },
   content: {
     flex: 1,
-    gap: theme.spacing.xs,
   },
   name: {
     color: theme.colors.textPrimary,

@@ -2,25 +2,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { memo } from 'react';
-import {
-  GestureResponderEvent,
-  Platform,
-  Pressable,
-  PressableProps,
-  View,
-} from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { Platform, Pressable, PressableProps, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 // Constants
 import { BLUR_HASH, DEFAULT_AVATAR, ROUTES } from '@/constants';
 
 // Hooks
-import {
-  useIsBookmarked,
-  useIsLiked,
-  useToggleBookmark,
-  useToggleLike,
-} from '@/hooks';
 
 // Utils
 import { formatNumber, getTimeAgo } from '@/utils';
@@ -50,18 +38,6 @@ export const PostCard = memo(
     ...rest
   }: PostCardProps) => {
     const router = useRouter();
-    const { theme } = useUnistyles();
-
-    // Check bookmark and like status
-    const { data: isBookmarked = post.isBookmarked || false } = useIsBookmarked(
-      post.id,
-    );
-    const { data: isLiked = post.isLiked || false } = useIsLiked(post.id);
-
-    // Mutations
-    const { mutate: toggleBookmark, isPending: isBookmarkPending } =
-      useToggleBookmark();
-    const { mutate: toggleLike, isPending: isLikePending } = useToggleLike();
 
     styles.useVariants({
       variant,
@@ -76,71 +52,6 @@ export const PostCard = memo(
     const handleAuthorPress = () => {
       router.push(ROUTES.AUTHOR_PROFILE(post.authorId));
     };
-
-    const handleBookmarkPress = (event: GestureResponderEvent) => {
-      event.stopPropagation();
-      toggleBookmark(post.id);
-    };
-
-    const handleLikePress = (event: GestureResponderEvent) => {
-      event.stopPropagation();
-      toggleLike(post.id);
-    };
-
-    const renderActions = () => (
-      <View style={styles.actions}>
-        <Pressable
-          onPress={handleLikePress}
-          style={styles.actionButton}
-          hitSlop={8}
-          disabled={isLikePending}
-          accessibilityRole="button"
-          accessibilityLabel={isLiked ? 'Unlike post' : 'Like post'}
-          accessibilityHint={
-            isLiked
-              ? 'Double tap to unlike this post'
-              : 'Double tap to like this post'
-          }
-          accessibilityState={{ disabled: isLikePending, selected: isLiked }}
-        >
-          <Ionicons
-            name={isLiked ? 'heart' : 'heart-outline'}
-            size={20}
-            color={isLiked ? theme.colors.error : theme.colors.iconSecondary}
-            style={[isLikePending && { opacity: theme.opacity.disabled }]}
-          />
-        </Pressable>
-
-        <Pressable
-          onPress={handleBookmarkPress}
-          style={styles.actionButton}
-          hitSlop={8}
-          disabled={isBookmarkPending}
-          accessibilityRole="button"
-          accessibilityLabel={
-            isBookmarked ? 'Remove bookmark' : 'Bookmark post'
-          }
-          accessibilityHint={
-            isBookmarked
-              ? 'Double tap to remove this post from your bookmarks'
-              : 'Double tap to save this post to your bookmarks'
-          }
-          accessibilityState={{
-            disabled: isBookmarkPending,
-            selected: isBookmarked,
-          }}
-        >
-          <Ionicons
-            name={isBookmarked ? 'bookmark' : 'bookmark-outline'}
-            size={20}
-            color={
-              isBookmarked ? theme.colors.primary : theme.colors.iconSecondary
-            }
-            style={[isBookmarkPending && { opacity: theme.opacity.disabled }]}
-          />
-        </Pressable>
-      </View>
-    );
 
     const renderMenuButton = () => (
       <Pressable
@@ -188,17 +99,14 @@ export const PostCard = memo(
             accessible={false}
           />
           <View style={styles.contentHorizontal}>
-            <View style={styles.headerRow}>
-              <Text
-                style={styles.category}
-                numberOfLines={1}
-                accessibilityLabel={`Category: ${post.category?.name || 'Uncategorized'}`}
-                accessibilityHint={`Category: ${post.category?.name || 'Uncategorized'}`}
-              >
-                {post.category?.name}
-              </Text>
-              {renderActions()}
-            </View>
+            <Text
+              style={styles.category}
+              numberOfLines={1}
+              accessibilityLabel={`Category: ${post.category?.name || 'Uncategorized'}`}
+              accessibilityHint={`Category: ${post.category?.name || 'Uncategorized'}`}
+            >
+              {post.category?.name || 'Uncategorized'}
+            </Text>
             <Text variant="body" style={styles.title} numberOfLines={2}>
               {post.title}
             </Text>
@@ -251,17 +159,14 @@ export const PostCard = memo(
           accessible={false}
         />
         <View style={styles.contentVertical}>
-          <View style={styles.headerRow}>
-            <Text
-              style={styles.category}
-              numberOfLines={1}
-              accessibilityLabel={`Category: ${post.category?.name || 'Uncategorized'}`}
-              accessibilityHint={`Category: ${post.category?.name || 'Uncategorized'}`}
-            >
-              {post.category?.name}
-            </Text>
-            {renderActions()}
-          </View>
+          <Text
+            style={styles.category}
+            numberOfLines={1}
+            accessibilityLabel={`Category: ${post.category?.name || 'Uncategorized'}`}
+            accessibilityHint={`Category: ${post.category?.name || 'Uncategorized'}`}
+          >
+            {post.category?.name}
+          </Text>
           <Text style={styles.title} numberOfLines={2}>
             {post.title}
           </Text>
@@ -313,7 +218,7 @@ const styles = StyleSheet.create(theme => ({
         },
         horizontal: {
           flexDirection: 'row',
-          gap: theme.spacing.xs,
+          gap: theme.spacing.sm,
           alignItems: 'center',
         },
       },
@@ -338,11 +243,6 @@ const styles = StyleSheet.create(theme => ({
   contentHorizontal: {
     flex: 1,
     height: '100%',
-    justifyContent: 'space-between',
-  },
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
   },
   category: {

@@ -1,10 +1,5 @@
 import { PostCard } from '@/components';
-import {
-  useIsBookmarked,
-  useIsLiked,
-  useToggleBookmark,
-  useToggleLike,
-} from '@/hooks';
+import { useIsBookmarked, useIsLiked } from '@/hooks';
 import { mockNews } from '@/mocks';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import { useRouter } from 'expo-router';
@@ -83,32 +78,6 @@ describe('PostCard', () => {
     expect(mockRouterPush).toHaveBeenCalledWith(
       `/author/${mockNews[0].author?.id}`,
     );
-  });
-
-  it('should toggle bookmark status', () => {
-    const toggleBookmarkMock = jest.fn();
-    (useToggleBookmark as jest.Mock).mockReturnValue({
-      mutate: toggleBookmarkMock,
-      isPending: false,
-    });
-    const { getByLabelText } = render(<PostCard post={mockNews[0]} />);
-    fireEvent.press(getByLabelText('Bookmark post'), {
-      stopPropagation: () => jest.fn(),
-    });
-    expect(toggleBookmarkMock).toHaveBeenCalledWith('1');
-  });
-
-  it('should toggle like status', () => {
-    const toggleLikeMock = jest.fn();
-    (useToggleLike as jest.Mock).mockReturnValue({
-      mutate: toggleLikeMock,
-      isPending: false,
-    });
-    const { getByLabelText } = render(<PostCard post={mockNews[0]} />);
-    fireEvent.press(getByLabelText('Like post'), {
-      stopPropagation: () => jest.fn(),
-    });
-    expect(toggleLikeMock).toHaveBeenCalledWith('1');
   });
 
   it('should call onMenuPress when menu button is pressed', () => {

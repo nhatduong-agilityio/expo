@@ -279,7 +279,6 @@ const SearchScreen = () => {
       <View style={styles.header}>
         <Pressable
           onPress={() => router.back()}
-          style={styles.backButton}
           hitSlop={8}
           accessibilityRole="button"
           accessibilityLabel="Go back"
@@ -300,16 +299,12 @@ const SearchScreen = () => {
           />
         </View>
       </View>
-
-      <View style={styles.tabsContainer}>
-        <Tabs
-          variant="secondary"
-          tabs={FILTER_CONTENT_TABS}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-        />
-      </View>
-
+      <Tabs
+        variant="secondary"
+        tabs={FILTER_CONTENT_TABS}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+      />
       <View style={styles.content}>{renderContent()}</View>
     </SafeAreaView>
   );
@@ -319,38 +314,33 @@ const styles = StyleSheet.create(theme => ({
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
+    padding: theme.spacing.xl,
+    gap: theme.spacing.lg,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: theme.spacing.lg,
-    paddingVertical: theme.spacing.md,
-    gap: theme.spacing.sm,
-  },
-  backButton: {
-    padding: theme.spacing.xs,
+    gap: theme.spacing.md,
   },
   searchContainer: {
     flex: 1,
-  },
-  tabsContainer: {
-    marginBottom: theme.spacing.md,
   },
   content: {
     flex: 1,
   },
   listContent: {
-    paddingHorizontal: theme.spacing.lg,
     paddingBottom: theme.spacing.xl,
   },
   newsItem: {
-    marginBottom: theme.spacing.md,
+    padding: theme.spacing.sm,
+    marginBottom: theme.spacing.lg,
   },
   topicItem: {
-    marginBottom: theme.spacing.sm,
+    marginBottom: theme.spacing.lg,
   },
   authorItem: {
-    marginBottom: theme.spacing.md,
+    padding: theme.spacing.sm,
+    marginBottom: theme.spacing.lg,
   },
   footerLoader: {
     paddingVertical: theme.spacing.lg,

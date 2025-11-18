@@ -28,12 +28,16 @@ exports[`Avatar should match to snapshot 1`] = `
             "width": 24,
           },
           "xl": {
-            "height": 140,
-            "width": 140,
+            "height": 100,
+            "width": 100,
           },
           "xs": {
             "height": 20,
             "width": 20,
+          },
+          "xxl": {
+            "height": 140,
+            "width": 140,
           },
         },
       },

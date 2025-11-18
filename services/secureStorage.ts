@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
 
@@ -10,9 +11,18 @@ const STORAGE_KEYS = {
   REMEMBER_ME_ENABLED: 'auth_remember_enabled',
 } as const;
 
+// Check if SecureStore is available
+const isSecureStoreAvailable = () => {
+  try {
+    return Platform.OS !== 'web' && SecureStore.isAvailableAsync !== undefined;
+  } catch {
+    return false;
+  }
+};
+
 /**
  * Secure storage service using Expo SecureStore
- * Falls back to localStorage on web (with warning)
+ * Falls back to AsyncStorage if SecureStore is not available
  */
 export const secureStorage = {
   /**
@@ -20,12 +30,12 @@ export const secureStorage = {
    */
   async setItem(key: string, value: string): Promise<void> {
     try {
-      if (Platform.OS === 'web') {
-        // Web fallback - warn about security
+      if (Platform.OS === 'web' || !isSecureStoreAvailable()) {
+        // Web or SecureStore not available - use AsyncStorage
         console.warn(
-          'SecureStore not available on web. Using localStorage (not secure).',
+          'SecureStore not available. Using AsyncStorage (not secure).',
         );
-        localStorage.setItem(key, value);
+        await AsyncStorage.setItem(key, value);
         return;
       }
 
@@ -34,7 +44,13 @@ export const secureStorage = {
       });
     } catch (error) {
       console.error('SecureStore setItem error:', error);
-      throw new Error('Failed to store secure data');
+      // Fallback to AsyncStorage
+      try {
+        await AsyncStorage.setItem(key, value);
+      } catch (fallbackError) {
+        console.error('AsyncStorage fallback error:', fallbackError);
+        throw new Error('Failed to store secure data');
+      }
     }
   },
 
@@ -43,14 +59,20 @@ export const secureStorage = {
    */
   async getItem(key: string): Promise<string | null> {
     try {
-      if (Platform.OS === 'web') {
-        return localStorage.getItem(key);
+      if (Platform.OS === 'web' || !isSecureStoreAvailable()) {
+        return await AsyncStorage.getItem(key);
       }
 
       return await SecureStore.getItemAsync(key);
     } catch (error) {
       console.error('SecureStore getItem error:', error);
-      return null;
+      // Fallback to AsyncStorage
+      try {
+        return await AsyncStorage.getItem(key);
+      } catch (fallbackError) {
+        console.error('AsyncStorage fallback error:', fallbackError);
+        return null;
+      }
     }
   },
 
@@ -59,15 +81,21 @@ export const secureStorage = {
    */
   async removeItem(key: string): Promise<void> {
     try {
-      if (Platform.OS === 'web') {
-        localStorage.removeItem(key);
+      if (Platform.OS === 'web' || !isSecureStoreAvailable()) {
+        await AsyncStorage.removeItem(key);
         return;
       }
 
       await SecureStore.deleteItemAsync(key);
     } catch (error) {
       console.error('SecureStore removeItem error:', error);
-      throw new Error('Failed to remove secure data');
+      // Fallback to AsyncStorage
+      try {
+        await AsyncStorage.removeItem(key);
+      } catch (fallbackError) {
+        console.error('AsyncStorage fallback error:', fallbackError);
+        throw new Error('Failed to remove secure data');
+      }
     }
   },
 

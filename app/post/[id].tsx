@@ -2,7 +2,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image } from 'expo-image';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Platform,
+  Pressable,
+  ScrollView,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
@@ -153,22 +159,25 @@ const PostDetailScreen = () => {
           <AuthorCard
             avatar={post.author?.avatarUrl || 'https://picsum.photos/100/100'}
             name={post.author?.fullName || 'Anonymous'}
-            followers={post.author?.followersCount || 0}
+            timeCreated={post.createdAt}
             following={false}
+            size="md"
             authorId={post.authorId}
             onPress={() => handleAuthorPress(post.authorId)}
           />
         </View>
 
         {/* Featured Image */}
-        <Image
-          source={imageSource}
-          style={styles.featuredImage}
-          contentFit="cover"
-          transition={200}
-          placeholder={{ blurhash: BLUR_HASH }}
-          accessibilityIgnoresInvertColors
-        />
+        <View style={styles.featuredImageContainer}>
+          <Image
+            source={imageSource}
+            style={styles.featuredImage}
+            contentFit="cover"
+            transition={200}
+            placeholder={{ blurhash: BLUR_HASH }}
+            accessibilityIgnoresInvertColors
+          />
+        </View>
 
         {/* Category */}
         <View style={styles.categoryContainer}>
@@ -188,77 +197,74 @@ const PostDetailScreen = () => {
             {post.content}
           </Text>
         </View>
-
-        {/* Engagement Actions */}
-        <View style={styles.engagementSection}>
-          <View style={styles.engagementLeft}>
-            <Pressable
-              onPress={handleLikePress}
-              style={styles.engagementButton}
-              hitSlop={8}
-              disabled={isLikePending}
-              accessibilityRole="button"
-              accessibilityLabel={isLiked ? 'Unlike post' : 'Like post'}
-              accessibilityHint={
-                isLiked ? 'Unlikes the post' : 'Likes the post'
-              }
-            >
-              <Ionicons
-                name={isLiked ? 'heart' : 'heart-outline'}
-                size={24}
-                color={isLiked ? theme.colors.error : theme.colors.iconPrimary}
-                style={[isLikePending && { opacity: theme.opacity.disabled }]}
-              />
-              <Text variant="body" style={styles.engagementText}>
-                {formatNumber(post.likesCount)}
-              </Text>
-            </Pressable>
-
-            <Pressable
-              onPress={handleCommentPress}
-              style={styles.engagementButton}
-              hitSlop={8}
-              accessibilityRole="button"
-              accessibilityLabel="View comments"
-              accessibilityHint="Press to view comments"
-            >
-              <Ionicons
-                name="chatbubble-outline"
-                size={24}
-                color={theme.colors.iconPrimary}
-              />
-              <Text variant="body" style={styles.engagementText}>
-                {formatNumber(post.commentsCount)}
-              </Text>
-            </Pressable>
-          </View>
-
+      </ScrollView>
+      {/* Engagement Actions */}
+      <View style={styles.engagementSection}>
+        <View style={styles.engagementLeft}>
           <Pressable
-            onPress={handleBookmarkPress}
-            style={styles.bookmarkButton}
+            onPress={handleLikePress}
+            style={styles.engagementButton}
             hitSlop={8}
-            disabled={isBookmarkPending}
+            disabled={isLikePending}
             accessibilityRole="button"
-            accessibilityLabel={
-              isBookmarked ? 'Remove bookmark' : 'Bookmark post'
-            }
-            accessibilityHint={
-              isBookmarked
-                ? 'Removes the post from bookmarks'
-                : 'Bookmarks the post'
-            }
+            accessibilityLabel={isLiked ? 'Unlike post' : 'Like post'}
+            accessibilityHint={isLiked ? 'Unlikes the post' : 'Likes the post'}
           >
             <Ionicons
-              name={isBookmarked ? 'bookmark' : 'bookmark-outline'}
+              name={isLiked ? 'heart' : 'heart-outline'}
               size={24}
-              color={
-                isBookmarked ? theme.colors.primary : theme.colors.iconPrimary
-              }
-              style={[isBookmarkPending && { opacity: theme.opacity.disabled }]}
+              color={isLiked ? theme.colors.error : theme.colors.iconPrimary}
+              style={[isLikePending && { opacity: theme.opacity.disabled }]}
             />
+            <Text variant="body" style={styles.engagementText}>
+              {formatNumber(post.likesCount)}
+            </Text>
+          </Pressable>
+
+          <Pressable
+            onPress={handleCommentPress}
+            style={styles.engagementButton}
+            hitSlop={8}
+            accessibilityRole="button"
+            accessibilityLabel="View comments"
+            accessibilityHint="Press to view comments"
+          >
+            <Ionicons
+              name="chatbubble-outline"
+              size={24}
+              color={theme.colors.iconPrimary}
+            />
+            <Text variant="body" style={styles.engagementText}>
+              {formatNumber(post.commentsCount)}
+            </Text>
           </Pressable>
         </View>
-      </ScrollView>
+
+        <Pressable
+          onPress={handleBookmarkPress}
+          style={styles.bookmarkButton}
+          hitSlop={8}
+          disabled={isBookmarkPending}
+          accessibilityRole="button"
+          accessibilityLabel={
+            isBookmarked ? 'Remove bookmark' : 'Bookmark post'
+          }
+          accessibilityHint={
+            isBookmarked
+              ? 'Removes the post from bookmarks'
+              : 'Bookmarks the post'
+          }
+        >
+          <Ionicons
+            name={isBookmarked ? 'bookmark' : 'bookmark-outline'}
+            size={24}
+            color={
+              isBookmarked ? theme.colors.primary : theme.colors.iconPrimary
+            }
+            style={[isBookmarkPending && { opacity: theme.opacity.disabled }]}
+          />
+        </Pressable>
+      </View>
     </SafeAreaView>
   );
 };
@@ -277,21 +283,25 @@ const styles = StyleSheet.create(theme => ({
   },
   content: {
     flex: 1,
+    paddingHorizontal: theme.spacing.xl,
   },
   scrollContent: {
     paddingBottom: theme.spacing['3xl'],
   },
   authorSection: {
-    paddingHorizontal: theme.spacing.xl,
     paddingBottom: theme.spacing.md,
+  },
+  featuredImageContainer: {
+    position: 'relative',
+    height: 248,
+    borderRadius: theme.borderRadius.md,
+    overflow: 'hidden',
   },
   featuredImage: {
     width: '100%',
-    height: 400,
-    backgroundColor: theme.colors.backgroundSecondary,
+    height: '100%',
   },
   categoryContainer: {
-    paddingHorizontal: theme.spacing.xl,
     paddingTop: theme.spacing.lg,
   },
   category: {
@@ -300,12 +310,10 @@ const styles = StyleSheet.create(theme => ({
     textTransform: 'capitalize',
   },
   title: {
-    paddingHorizontal: theme.spacing.xl,
     paddingTop: theme.spacing.md,
     color: theme.colors.textPrimary,
   },
   contentSection: {
-    paddingHorizontal: theme.spacing.xl,
     paddingTop: theme.spacing.lg,
     gap: theme.spacing.md,
   },
@@ -317,13 +325,16 @@ const styles = StyleSheet.create(theme => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: theme.spacing.xl,
-    paddingTop: theme.spacing.xl,
-    paddingBottom: theme.spacing.md,
+    borderWidth: 0,
+    borderTopWidth: 1,
+    borderColor: theme.colors.border,
+    padding: theme.spacing.xl,
+    ...(Platform.OS === 'ios' && theme.shadow.md),
   },
   engagementLeft: {
     flexDirection: 'row',
     gap: theme.spacing.xl,
+    alignItems: 'center',
   },
   engagementButton: {
     flexDirection: 'row',

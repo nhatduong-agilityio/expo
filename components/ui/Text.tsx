@@ -94,6 +94,13 @@ const styles = StyleSheet.create(theme => ({
           fontWeight: theme.fontWeight.semiBold,
           color: theme.colors.textPrimary,
         },
+        h5: {
+          fontSize: theme.fontSize.md,
+          lineHeight: theme.lineHeight.md,
+          fontFamily: theme.fontFamily.semiBold,
+          fontWeight: theme.fontWeight.semiBold,
+          color: theme.colors.textPrimary,
+        },
         body: {
           fontSize: theme.fontSize.md,
           lineHeight: theme.lineHeight.md,
