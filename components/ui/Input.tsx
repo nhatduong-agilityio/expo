@@ -310,7 +310,6 @@ const styles = StyleSheet.create(theme => ({
       disabled: {
         true: {
           color: theme.colors.textDisabled,
-          backgroundColor: theme.colors.buttonDisabled,
         },
       },
     },

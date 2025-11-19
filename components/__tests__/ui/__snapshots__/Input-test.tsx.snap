@@ -104,7 +104,6 @@ exports[`Input should match to snapshot 1`] = `
             "variants": {
               "disabled": {
                 "true": {
-                  "backgroundColor": "#EEF1F4",
                   "color": "#B0B3B8",
                 },
               },
