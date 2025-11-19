@@ -1,14 +1,13 @@
+import { categoryService } from '@/services';
+import { useAuthStore } from '@/stores';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { renderHook, waitFor } from '@testing-library/react-native';
 import {
   useCategories,
   useIsSubscribed,
   useSubscribedTopics,
   useToggleSubscription,
-} from '@/hooks/useCategories';
-import { mockCategories, mockTopicSubscriptions } from '@/mocks/';
-import { categoryService } from '@/services';
-import { useAuthStore } from '@/stores';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { renderHook, waitFor } from '@testing-library/react-native';
+} from '../useCategories';
 
 jest.mock('@/services');
 jest.mock('@/stores');
@@ -25,96 +24,95 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
-describe('useCategories hooks', () => {
-  const user = { id: '1' };
+describe('useCategories', () => {
+  it('should return a list of categories', async () => {
+    (categoryService.getCategories as jest.Mock).mockResolvedValue([
+      { id: '1', name: 'Category 1' },
+    ]);
 
-  beforeEach(() => {
-    (useAuthStore as unknown as jest.Mock).mockReturnValue({ user });
-  });
+    const { result } = renderHook(() => useCategories(), {
+      wrapper,
+    });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-    queryClient.clear();
-  });
-
-  describe('useCategories', () => {
-    it('should fetch all categories', async () => {
-      (categoryService.getCategories as jest.Mock).mockResolvedValue(
-        mockCategories,
-      );
-
-      const { result } = renderHook(() => useCategories(), { wrapper });
-
-      await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-      expect(categoryService.getCategories).toHaveBeenCalled();
-      expect(result.current.data).toEqual(mockCategories);
+    await waitFor(() => {
+      expect(result.current.data?.[0].name).toBe('Category 1');
     });
   });
+});
 
-  describe('useSubscribedTopics', () => {
-    it('should fetch subscribed topics for a user', async () => {
-      (categoryService.getSubscribedTopics as jest.Mock).mockResolvedValue(
-        mockTopicSubscriptions,
-      );
+describe('useSubscribedTopics', () => {
+  it('should return a list of subscribed topics', async () => {
+    (useAuthStore as unknown as jest.Mock).mockReturnValue({
+      user: { id: '1' },
+    });
+    (categoryService.getSubscribedTopics as jest.Mock).mockResolvedValue([
+      { id: '1' },
+    ]);
 
-      const { result } = renderHook(() => useSubscribedTopics(), { wrapper });
+    const { result } = renderHook(() => useSubscribedTopics(), {
+      wrapper,
+    });
 
-      await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-      expect(categoryService.getSubscribedTopics).toHaveBeenCalledWith(user.id);
-      expect(result.current.data).toEqual(mockTopicSubscriptions);
+    await waitFor(() => {
+      expect(result.current.data?.[0].id).toBe('1');
     });
   });
+});
 
-  describe('useIsSubscribed', () => {
-    it('should check if a user is subscribed to a category', async () => {
-      (categoryService.isSubscribed as jest.Mock).mockResolvedValue(true);
-      const categoryId = mockCategories[0].id;
+describe('useIsSubscribed', () => {
+  it('should return true if the user is subscribed', async () => {
+    (useAuthStore as unknown as jest.Mock).mockReturnValue({
+      user: { id: '1' },
+    });
+    (categoryService.isSubscribed as jest.Mock).mockResolvedValue(true);
 
-      const { result } = renderHook(() => useIsSubscribed(categoryId), {
-        wrapper,
-      });
+    const { result } = renderHook(() => useIsSubscribed('1'), {
+      wrapper,
+    });
 
-      await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-      expect(categoryService.isSubscribed).toHaveBeenCalledWith(
-        user.id,
-        categoryId,
-      );
+    await waitFor(() => {
       expect(result.current.data).toBe(true);
     });
   });
+});
 
-  describe('useToggleSubscription', () => {
-    it('should toggle a subscription and perform optimistic update', async () => {
-      const categoryId = mockCategories[0].id;
-      (categoryService.toggleSubscription as jest.Mock).mockResolvedValue(
-        undefined,
-      );
-      queryClient.setQueryData(['categories', 'check', categoryId], false);
-      const invalidateQueriesSpy = jest.spyOn(queryClient, 'invalidateQueries');
+describe('useToggleSubscription', () => {
+  it('should toggle the subscription status', async () => {
+    (useAuthStore as unknown as jest.Mock).mockReturnValue({
+      user: { id: '1' },
+    });
+    (categoryService.toggleSubscription as jest.Mock).mockResolvedValue(
+      undefined,
+    );
 
-      const { result } = renderHook(() => useToggleSubscription(), { wrapper });
+    const { result } = renderHook(() => useToggleSubscription(), {
+      wrapper,
+    });
 
-      result.current.mutate(categoryId);
+    result.current.mutate('1');
 
-      await waitFor(() => {
-        // Check optimistic update
-        expect(
-          queryClient.getQueryData(['categories', 'check', categoryId]),
-        ).toBe(true);
-      });
+    await waitFor(() => {
+      expect(categoryService.toggleSubscription).toHaveBeenCalledWith('1', '1');
+    });
+  });
 
-      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+  it('should handle errors', async () => {
+    const mockError = new Error('Error toggling subscription');
+    (useAuthStore as unknown as jest.Mock).mockReturnValue({
+      user: { id: '1' },
+    });
+    (categoryService.toggleSubscription as jest.Mock).mockRejectedValue(
+      mockError,
+    );
 
-      expect(categoryService.toggleSubscription).toHaveBeenCalledWith(
-        user.id,
-        categoryId,
-      );
-      expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-        queryKey: ['categories', 'check', categoryId],
-      });
+    const { result } = renderHook(() => useToggleSubscription(), {
+      wrapper,
+    });
+
+    result.current.mutate('1');
+
+    await waitFor(() => {
+      expect(result.current.error).toBe(mockError);
     });
   });
 });

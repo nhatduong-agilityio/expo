@@ -1,7 +1,9 @@
 import { useIsLiked, useToggleLike } from '@/hooks/useLikes';
+import { NEWS_QUERY_KEYS } from '@/hooks/useNews';
 import { mockNews } from '@/mocks/data';
 import { likeService } from '@/services';
 import { useAuthStore } from '@/stores';
+import { News } from '@/types';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react-native';
 
@@ -72,7 +74,6 @@ describe('useLikes hooks', () => {
       result.current.mutate(newsId);
 
       await waitFor(() => {
-        // Check optimistic update
         expect(queryClient.getQueryData(['likes', 'check', newsId])).toBe(true);
       });
 
@@ -89,27 +90,22 @@ describe('useLikes hooks', () => {
       const error = new Error('Failed to toggle like');
       (likeService.toggleLike as jest.Mock).mockRejectedValue(error);
 
-      // Set initial state to false
       queryClient.setQueryData(['likes', 'check', newsId], false);
 
       const { result } = renderHook(() => useToggleLike(), { wrapper });
 
       result.current.mutate(newsId);
 
-      // Check optimistic update happened
       await waitFor(() => {
         expect(queryClient.getQueryData(['likes', 'check', newsId])).toBe(
           false,
         );
       });
 
-      // Wait for error state
       await waitFor(() => expect(result.current.isError).toBe(true));
 
       expect(likeService.toggleLike).toHaveBeenCalledWith(user.id, newsId);
       expect(result.current.error).toEqual(error);
-
-      // Check rollback happened - data should be back to false
       expect(queryClient.getQueryData(['likes', 'check', newsId])).toBe(false);
     });
 
@@ -127,7 +123,6 @@ describe('useLikes hooks', () => {
       await waitFor(() => expect(result.current.isError).toBe(true));
 
       expect(result.current.error).toEqual(networkError);
-      // Should rollback to original value
       expect(queryClient.getQueryData(['likes', 'check', newsId])).toBe(true);
     });
 
@@ -135,14 +130,12 @@ describe('useLikes hooks', () => {
       const newsId = mockNews[0].id;
       (likeService.toggleLike as jest.Mock).mockResolvedValue(undefined);
 
-      // Don't set any initial query data - simulate no previous data
       const invalidateQueriesSpy = jest.spyOn(queryClient, 'invalidateQueries');
 
       const { result } = renderHook(() => useToggleLike(), { wrapper });
 
       result.current.mutate(newsId);
 
-      // Query data should remain undefined (no optimistic update)
       expect(
         queryClient.getQueryData(['likes', 'check', newsId]),
       ).toBeUndefined();
@@ -160,12 +153,10 @@ describe('useLikes hooks', () => {
       const error = new Error('Failed to toggle like');
       (likeService.toggleLike as jest.Mock).mockRejectedValue(error);
 
-      // Don't set any initial query data
       const { result } = renderHook(() => useToggleLike(), { wrapper });
 
       result.current.mutate(newsId);
 
-      // No optimistic update should happen
       expect(
         queryClient.getQueryData(['likes', 'check', newsId]),
       ).toBeUndefined();
@@ -173,8 +164,223 @@ describe('useLikes hooks', () => {
       await waitFor(() => expect(result.current.isError).toBe(true));
 
       expect(result.current.error).toEqual(error);
-      // Data should still be undefined (no rollback needed)
       expect(queryClient.getQueryData(['likes', 'check', newsId])).toBe(true);
+    });
+
+    // NEW TESTS FOR UNCOVERED LINES
+
+    it('should optimistically update news detail when matching newsId', async () => {
+      const newsId = mockNews[0].id;
+      const newsDetail: News = {
+        ...mockNews[0],
+        id: newsId,
+        isLiked: false,
+        likesCount: 5,
+      };
+
+      (likeService.toggleLike as jest.Mock).mockResolvedValue(undefined);
+      queryClient.setQueryData(NEWS_QUERY_KEYS.details(), newsDetail);
+
+      const { result } = renderHook(() => useToggleLike(), { wrapper });
+
+      result.current.mutate(newsId);
+
+      await waitFor(() => {
+        const updatedNews = queryClient.getQueryData<News>(
+          NEWS_QUERY_KEYS.details(),
+        );
+        expect(updatedNews?.isLiked).toBe(true);
+        expect(updatedNews?.likesCount).toBe(6);
+      });
+
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    });
+
+    it('should not update news detail when newsId does not match', async () => {
+      const newsId = mockNews[0].id;
+      const differentNewsId = 'different-id';
+      const newsDetail: News = {
+        ...mockNews[0],
+        id: differentNewsId,
+        isLiked: false,
+        likesCount: 5,
+      };
+
+      (likeService.toggleLike as jest.Mock).mockResolvedValue(undefined);
+      queryClient.setQueryData(NEWS_QUERY_KEYS.details(), newsDetail);
+
+      const { result } = renderHook(() => useToggleLike(), { wrapper });
+
+      result.current.mutate(newsId);
+
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+      const updatedNews = queryClient.getQueryData<News>(
+        NEWS_QUERY_KEYS.details(),
+      );
+      expect(updatedNews?.isLiked).toBe(false);
+      expect(updatedNews?.likesCount).toBe(5);
+    });
+
+    it('should optimistically update infinite news lists', async () => {
+      const newsId = mockNews[0].id;
+      const infiniteData = {
+        pages: [
+          {
+            data: [
+              { ...mockNews[0], id: newsId, isLiked: false, likesCount: 10 },
+              { ...mockNews[1], id: 'other-id', isLiked: true, likesCount: 5 },
+            ],
+            count: 2,
+            page: 1,
+            limit: 10,
+            totalPages: 1,
+          },
+        ],
+        pageParams: [undefined],
+      };
+
+      (likeService.toggleLike as jest.Mock).mockResolvedValue(undefined);
+      queryClient.setQueryData(NEWS_QUERY_KEYS.infiniteLists(), infiniteData);
+
+      const { result } = renderHook(() => useToggleLike(), { wrapper });
+
+      result.current.mutate(newsId);
+
+      await waitFor(() => {
+        const updated = queryClient.getQueryData<typeof infiniteData>(
+          NEWS_QUERY_KEYS.infiniteLists(),
+        );
+        expect(updated?.pages[0].data[0].isLiked).toBe(true);
+        expect(updated?.pages[0].data[0].likesCount).toBe(11);
+        expect(updated?.pages[0].data[1].isLiked).toBe(true);
+        expect(updated?.pages[0].data[1].likesCount).toBe(5);
+      });
+
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    });
+
+    it('should decrease likes count when unliking in infinite lists', async () => {
+      const newsId = mockNews[0].id;
+      const infiniteData = {
+        pages: [
+          {
+            data: [
+              { ...mockNews[0], id: newsId, isLiked: true, likesCount: 10 },
+            ],
+            count: 1,
+            page: 1,
+            limit: 10,
+            totalPages: 1,
+          },
+        ],
+        pageParams: [undefined],
+      };
+
+      (likeService.toggleLike as jest.Mock).mockResolvedValue(undefined);
+      queryClient.setQueryData(NEWS_QUERY_KEYS.infiniteLists(), infiniteData);
+
+      const { result } = renderHook(() => useToggleLike(), { wrapper });
+
+      result.current.mutate(newsId);
+
+      await waitFor(() => {
+        const updated = queryClient.getQueryData<typeof infiniteData>(
+          NEWS_QUERY_KEYS.infiniteLists(),
+        );
+        expect(updated?.pages[0].data[0].isLiked).toBe(false);
+        expect(updated?.pages[0].data[0].likesCount).toBe(9);
+      });
+
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    });
+
+    it('should optimistically update regular news lists', async () => {
+      const newsId = mockNews[0].id;
+      const listData = {
+        data: [
+          { ...mockNews[0], id: newsId, isLiked: false, likesCount: 8 },
+          { ...mockNews[1], id: 'other-id', isLiked: false, likesCount: 3 },
+        ],
+        count: 2,
+        page: 1,
+        limit: 10,
+        totalPages: 1,
+      };
+
+      (likeService.toggleLike as jest.Mock).mockResolvedValue(undefined);
+      queryClient.setQueryData(NEWS_QUERY_KEYS.lists(), listData);
+
+      const { result } = renderHook(() => useToggleLike(), { wrapper });
+
+      result.current.mutate(newsId);
+
+      await waitFor(() => {
+        const updated = queryClient.getQueryData<typeof listData>(
+          NEWS_QUERY_KEYS.lists(),
+        );
+        expect(updated?.data[0].isLiked).toBe(true);
+        expect(updated?.data[0].likesCount).toBe(9);
+        expect(updated?.data[1].isLiked).toBe(false);
+        expect(updated?.data[1].likesCount).toBe(3);
+      });
+
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    });
+
+    it('should decrease likes count when unliking in regular lists', async () => {
+      const newsId = mockNews[0].id;
+      const listData = {
+        data: [{ ...mockNews[0], id: newsId, isLiked: true, likesCount: 15 }],
+        count: 1,
+        page: 1,
+        limit: 10,
+        totalPages: 1,
+      };
+
+      (likeService.toggleLike as jest.Mock).mockResolvedValue(undefined);
+      queryClient.setQueryData(NEWS_QUERY_KEYS.lists(), listData);
+
+      const { result } = renderHook(() => useToggleLike(), { wrapper });
+
+      result.current.mutate(newsId);
+
+      await waitFor(() => {
+        const updated = queryClient.getQueryData<typeof listData>(
+          NEWS_QUERY_KEYS.lists(),
+        );
+        expect(updated?.data[0].isLiked).toBe(false);
+        expect(updated?.data[0].likesCount).toBe(14);
+      });
+
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    });
+
+    it('should not go below 0 when decreasing likes count', async () => {
+      const newsId = mockNews[0].id;
+      const listData = {
+        data: [{ ...mockNews[0], id: newsId, isLiked: true, likesCount: 0 }],
+        count: 1,
+        page: 1,
+        limit: 10,
+        totalPages: 1,
+      };
+
+      (likeService.toggleLike as jest.Mock).mockResolvedValue(undefined);
+      queryClient.setQueryData(NEWS_QUERY_KEYS.lists(), listData);
+
+      const { result } = renderHook(() => useToggleLike(), { wrapper });
+
+      result.current.mutate(newsId);
+
+      await waitFor(() => {
+        const updated = queryClient.getQueryData<typeof listData>(
+          NEWS_QUERY_KEYS.lists(),
+        );
+        expect(updated?.data[0].likesCount).toBe(0);
+      });
+
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
     });
   });
 });
