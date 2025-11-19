@@ -222,7 +222,8 @@ const EditProfileScreen = () => {
             name="email"
             render={({ field: { value } }) => (
               <Input
-                label="Email Address*"
+                label="Email Address"
+                required
                 value={value}
                 placeholder="Email Address"
                 keyboardType="email-address"

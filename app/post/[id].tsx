@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 // Constants
-import { BLUR_HASH, ROUTES } from '@/constants';
+import { BLUR_HASH, DEFAULT_IMAGE, ROUTES } from '@/constants';
 
 // Hooks
 import {
@@ -113,7 +113,7 @@ const PostDetailScreen = () => {
   }
 
   const imageSource = {
-    uri: post.featuredImageUrl ?? 'https://picsum.photos/100/100',
+    uri: post.featuredImageUrl ? post.featuredImageUrl : DEFAULT_IMAGE,
   };
 
   return (
@@ -158,8 +158,8 @@ const PostDetailScreen = () => {
         {/* Author Info */}
         <View style={styles.authorSection}>
           <AuthorCard
-            avatar={post.author?.avatarUrl || 'https://picsum.photos/100/100'}
-            name={post.author?.fullName || 'Anonymous'}
+            avatar={post.author?.avatarUrl}
+            name={post.author?.fullName}
             timeCreated={post.createdAt}
             following={false}
             size="md"

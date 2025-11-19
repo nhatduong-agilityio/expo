@@ -35,15 +35,17 @@ export const SearchBar = memo(
             accessibilityLabel={defaultAccessibilityLabel}
             accessibilityHint={defaultAccessibilityHint}
           >
-            <Input
-              leftIcon={SearchOutline}
-              placeholder="Search"
-              editable={false}
-              pointerEvents="none"
-              accessibilityLabel={defaultAccessibilityLabel}
-              accessibilityHint="Type to search"
-              {...rest}
-            />
+            <View pointerEvents="none">
+              <Input
+                leftIcon={SearchOutline}
+                placeholder="Search"
+                editable={false}
+                pointerEvents="none"
+                accessibilityLabel={defaultAccessibilityLabel}
+                accessibilityHint="Type to search"
+                {...rest}
+              />
+            </View>
           </Pressable>
         );
       }
