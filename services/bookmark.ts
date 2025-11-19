@@ -56,7 +56,7 @@ export const bookmarkService = {
   addBookmark: async (userId: string, newsId: string): Promise<Bookmark> => {
     const { data, error } = await supabase
       .from('bookmarks')
-      .insert({ user_id: userId, news_id: newsId })
+      .insert({ user_id: userId, news_id: newsId } as never)
       .select()
       .single();
 

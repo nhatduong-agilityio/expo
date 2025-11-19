@@ -1,3 +1,4 @@
+import { AddOutline } from '@/components/icons';
 import { FloatButton } from '@/components/ui';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 
@@ -91,7 +92,7 @@ describe('FloatButton', () => {
   });
 
   it('should render with a specific icon', async () => {
-    const { toJSON } = render(<FloatButton iconName="pencil" />);
+    const { toJSON } = render(<FloatButton icon={AddOutline} />);
     // We rely on snapshot testing to verify the icon, as direct icon name
     // testing is not straightforward without additional test setup.
     await waitFor(() => {

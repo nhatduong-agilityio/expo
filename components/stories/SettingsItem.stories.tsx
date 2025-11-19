@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { fn } from 'storybook/test';
 
 import { SettingsItem } from '@/components/ui';
+import { SettingOutline } from '../icons';
 
 const meta = {
   title: 'UI/SettingsItem',
@@ -26,7 +27,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    icon: 'settings-outline',
+    icon: SettingOutline,
     label: 'Settings Item',
   },
 };
@@ -34,7 +35,7 @@ export const Default: Story = {
 export const Switch: Story = {
   args: {
     label: 'Settings Item',
-    icon: 'settings-outline',
+    icon: SettingOutline,
     showSwitch: true,
   },
 };

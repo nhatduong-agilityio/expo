@@ -136,6 +136,7 @@ export interface CreateNewsInput {
   categoryId?: string;
   featuredImageUrl?: string;
   status?: 'draft' | 'published';
+  published_at?: string;
 }
 
 export interface UpdateNewsInput extends Partial<CreateNewsInput> {

@@ -26,7 +26,7 @@ export const followService = {
   ): Promise<Follow> => {
     const { data, error } = await supabase
       .from('follows')
-      .insert({ follower_id: followerId, following_id: followingId })
+      .insert({ follower_id: followerId, following_id: followingId } as never)
       .select()
       .single();
 
@@ -76,7 +76,8 @@ export const followService = {
 
     if (error) throw error;
 
-    const followers = data?.map(item => item.follower) || [];
+    const followers =
+      data?.map((item: { follower: never }) => item.follower) || [];
 
     return snakeToCamel(followers);
   },
@@ -90,7 +91,8 @@ export const followService = {
 
     if (error) throw error;
 
-    const following = data?.map(item => item.following) || [];
+    const following =
+      data?.map((item: { following: never }) => item.following) || [];
 
     return snakeToCamel(following);
   },

@@ -20,7 +20,7 @@ export const likeService = {
   addLike: async (userId: string, newsId: string): Promise<Like> => {
     const { data, error } = await supabase
       .from('likes')
-      .insert({ user_id: userId, news_id: newsId })
+      .insert({ user_id: userId, news_id: newsId } as never)
       .select()
       .single();
 

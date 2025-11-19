@@ -1,7 +1,13 @@
 module.exports = {
-  '*.{js,jsx,ts,tsx}': [
+  '*.{js,jsx}': [
     'prettier --write',
-    'jest --silent --passWithNoTests',
+    'jest --bail --findRelatedTests --silent --passWithNoTests',
+    'expo lint',
+  ],
+  '*.{ts,tsx}': [
+    'prettier --write',
+    () => 'tsc --noEmit --skipLibCheck',
+    'jest --bail --findRelatedTests --silent --passWithNoTests',
     'expo lint',
   ],
 };

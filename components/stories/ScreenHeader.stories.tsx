@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-native';
 import { View } from 'react-native';
 
 import { ScreenHeader } from '@/components';
+import { SearchOutline } from '../icons';
 
 const meta = {
   title: 'Components/ScreenHeader',
@@ -30,7 +31,7 @@ export const Default: Story = {
 export const WithRight: Story = {
   args: {
     title: 'Title',
-    rightIcon: 'search',
+    rightIcon: SearchOutline,
     showRightIcon: true,
   },
 };

@@ -24,7 +24,7 @@ jest.mock('react-hook-form', () => ({
       _formValues: {},
       _fields: {},
     },
-    handleSubmit: jest.fn(cb => async e => {
+    handleSubmit: jest.fn(cb => async (e: Event) => {
       e?.preventDefault();
       await cb({
         email: 'test@example.com',
