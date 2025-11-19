@@ -7,6 +7,7 @@ module.exports = {
     './unistyles.ts',
   ],
   collectCoverage: true,
+  coveragePathIgnorePatterns: ['/node_modules/', '/components/icons/'],
   testMatch: ['**/__tests__/**/*-test.[jt]s?(x)'],
   testPathIgnorePatterns: ['/node_modules/', '/.giga/'],
 };

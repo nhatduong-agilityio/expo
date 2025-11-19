@@ -5,7 +5,7 @@ import { Platform, Pressable, PressableProps, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 // Constants
-import { BLUR_HASH, DEFAULT_AVATAR, ROUTES } from '@/constants';
+import { BLUR_HASH, DEFAULT_IMAGE, ROUTES } from '@/constants';
 
 // Hooks
 
@@ -65,10 +65,9 @@ export const PostCard = memo(
       </Pressable>
     );
 
-    const imageSource =
-      typeof post.featuredImageUrl === 'string'
-        ? { uri: post.featuredImageUrl }
-        : DEFAULT_AVATAR;
+    const imageSource = {
+      uri: post.featuredImageUrl ? post.featuredImageUrl : DEFAULT_IMAGE,
+    };
 
     const accessibilityLabel = `${post.title} by ${post.author?.fullName || 'Unknown author'}. ${post.category?.name || 'Uncategorized'}. Posted ${getTimeAgo(post.createdAt)}. ${formatNumber(post.likesCount)} likes, ${formatNumber(post.commentsCount)} comments.`;
 
