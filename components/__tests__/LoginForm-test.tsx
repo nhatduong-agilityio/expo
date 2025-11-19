@@ -1,6 +1,6 @@
 import { LoginForm } from '@/components';
 import { authService } from '@/services';
-import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
+import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import { useForm } from 'react-hook-form';
 
 // Mock authService
@@ -33,7 +33,7 @@ jest.mock('react-hook-form', () => ({
       _formValues: {},
       _fields: {},
     },
-    handleSubmit: jest.fn(cb => async e => {
+    handleSubmit: jest.fn(cb => async (e: Event) => {
       e?.preventDefault();
       await cb({
         email: 'test@example.com',
@@ -106,13 +106,16 @@ describe('LoginForm', () => {
     });
   });
 
-  it('should render email, password, and remember me fields', () => {
+  it('should render email, password, and remember me fields', async () => {
     const { getByLabelText, getByText } = render(
       <LoginForm onSubmit={mockOnSubmit} />,
     );
-    expect(getByLabelText('Email*')).toBeTruthy();
-    expect(getByLabelText('Password*')).toBeTruthy();
-    expect(getByText('Remember me')).toBeTruthy();
+
+    await waitFor(() => {
+      expect(getByLabelText('Email*')).toBeTruthy();
+      expect(getByLabelText('Password*')).toBeTruthy();
+      expect(getByText('Remember me')).toBeTruthy();
+    });
   });
 
   it('should call onSubmit with valid data', async () => {
@@ -138,13 +141,13 @@ describe('LoginForm', () => {
       <LoginForm onSubmit={mockOnSubmit} />,
     );
 
-    fireEvent.changeText(getByLabelText('Email*'), 'test@example.com');
-    fireEvent.changeText(getByLabelText('Password*'), 'password123');
-    fireEvent.press(getByText('Login'));
-
     await waitFor(() => {
-      expect(mockOnSubmit).toHaveBeenCalledWith(mockSubmitData);
+      fireEvent.changeText(getByLabelText('Email*'), 'test@example.com');
+      fireEvent.changeText(getByLabelText('Password*'), 'password123');
+      fireEvent.press(getByText('Login'));
     });
+
+    expect(mockOnSubmit).toHaveBeenCalledWith(mockSubmitData);
   });
 
   it('should show error messages for invalid data', async () => {
@@ -180,32 +183,34 @@ describe('LoginForm', () => {
 
     const { getByText } = render(<LoginForm onSubmit={mockOnSubmit} />);
 
-    expect(getByText('Invalid email')).toBeTruthy();
-    expect(getByText('Password too short')).toBeTruthy();
+    await waitFor(() => {
+      expect(getByText('Invalid email')).toBeTruthy();
+      expect(getByText('Password too short')).toBeTruthy();
+    });
   });
 
-  it('should toggle password visibility', () => {
+  it('should toggle password visibility', async () => {
     const { getByLabelText, getByTestId } = render(
       <LoginForm onSubmit={mockOnSubmit} />,
     );
     const passwordInput = getByLabelText('Password*');
     expect(passwordInput.props.secureTextEntry).toBe(true);
 
-    act(() => {
+    waitFor(() => {
       fireEvent.press(getByTestId('right-icon'));
     });
     expect(passwordInput.props.secureTextEntry).toBe(false);
 
-    act(() => {
+    waitFor(() => {
       fireEvent.press(getByTestId('right-icon'));
     });
     expect(passwordInput.props.secureTextEntry).toBe(true);
   });
 
-  it('should update remember me checkbox', () => {
+  it('should update remember me checkbox', async () => {
     const { getByText } = render(<LoginForm onSubmit={mockOnSubmit} />);
     const rememberMeCheckbox = getByText('Remember me');
-    act(() => {
+    waitFor(() => {
       fireEvent.press(rememberMeCheckbox);
     });
     // The actual form state update is handled by react-hook-form's Controller.

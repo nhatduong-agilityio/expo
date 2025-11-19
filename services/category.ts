@@ -61,7 +61,7 @@ export const categoryService = {
   ): Promise<TopicSubscription> => {
     const { data, error } = await supabase
       .from('topic_subscriptions')
-      .insert({ user_id: userId, category_id: categoryId })
+      .insert({ user_id: userId, category_id: categoryId } as never)
       .select('*, category:categories(*)')
       .single();
 

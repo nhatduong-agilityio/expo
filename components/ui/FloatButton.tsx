@@ -55,7 +55,7 @@ export const FloatButton = memo(
       }
 
       return (
-        <View style={styles.iconContainer}>
+        <View style={styles.iconContainer} testID="icon-container">
           <Icon color="white" />
         </View>
       );
@@ -66,7 +66,7 @@ export const FloatButton = memo(
         role="button"
         testID="float-button-pressable"
         accessibilityRole="button"
-        accessibilityLabel="Float button"
+        accessibilityLabel={accessibilityLabel || 'Float button'}
         accessibilityHint={
           accessibilityHint || (loading ? 'Loading' : 'Tap to activate')
         }

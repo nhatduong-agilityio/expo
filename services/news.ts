@@ -121,7 +121,7 @@ export const newsService = {
 
     const { data, error } = await supabase
       .from('news')
-      .insert(newsData)
+      .insert(newsData as never)
       .select(
         `
         *,
@@ -141,11 +141,11 @@ export const newsService = {
 
     // Update published_at if status changes to published
     if (input.status === 'published') {
-      const { data: existing } = await supabase
+      const { data: existing } = (await supabase
         .from('news')
         .select('published_at')
         .eq('id', id)
-        .single();
+        .single()) as { data: { published_at?: string } };
 
       if (existing && !existing.published_at) {
         updateData.published_at = new Date().toISOString();
@@ -154,7 +154,7 @@ export const newsService = {
 
     const { data, error } = await supabase
       .from('news')
-      .update(updateData)
+      .update(updateData as never)
       .eq('id', id)
       .select(
         `
@@ -179,12 +179,13 @@ export const newsService = {
 
   // Increment view count
   incrementViewCount: async (id: string): Promise<void> => {
-    const { error } = await supabase.rpc('increment_counter', {
+    const payload = {
       table_name: 'news',
       column_name: 'views_count',
       row_id: id,
       amount: 1,
-    });
+    } as never;
+    const { error } = await supabase.rpc('increment_counter', payload);
 
     if (error) throw error;
   },

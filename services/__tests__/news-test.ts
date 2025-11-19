@@ -1,5 +1,6 @@
 import { mockNews } from '@/mocks';
 import { newsService, supabase } from '@/services';
+import { CreateNewsInput } from '@/types';
 
 jest.mock('@/services/supabase', () => ({
   supabase: {
@@ -79,10 +80,10 @@ describe('newsService', () => {
       const input = {
         title: mockNew.title,
         content: mockNew.content,
-        image_url: mockNew.imageUrl,
-        category_id: mockNew.categoryId,
+        featuredImageUrl: mockNew.featuredImageUrl,
+        categoryId: mockNew.categoryId,
         status: mockNew.status,
-      };
+      } as CreateNewsInput;
       const mockResponse = { data: mockNew, error: null };
 
       (supabase.from('news').insert as jest.Mock).mockReturnValueOnce({

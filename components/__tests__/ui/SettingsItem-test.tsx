@@ -1,10 +1,19 @@
+import {
+  LinkOutline,
+  LogoutOutline,
+  MoonOutline,
+  NotificationOutline,
+  ProfileOutline,
+  QuestionOutline,
+  SettingOutline,
+} from '@/components/icons';
 import { SettingsItem } from '@/components/ui';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 
 describe('SettingsItem', () => {
   it('should match to snapshot', async () => {
     const { toJSON } = render(
-      <SettingsItem icon="settings" label="Settings" />,
+      <SettingsItem icon={SettingOutline} label="Settings" />,
     );
 
     await waitFor(() => {
@@ -14,7 +23,7 @@ describe('SettingsItem', () => {
 
   it('should render with the correct label and icon', () => {
     const { getByText } = render(
-      <SettingsItem icon="person" label="Profile" />,
+      <SettingsItem icon={ProfileOutline} label="Profile" />,
     );
     expect(getByText('Profile')).toBeTruthy();
     // Icon presence is checked via snapshot
@@ -23,7 +32,11 @@ describe('SettingsItem', () => {
   it('should handle onPress event', () => {
     const onPressMock = jest.fn();
     const { getByText } = render(
-      <SettingsItem icon="log-out" label="Logout" onPress={onPressMock} />,
+      <SettingsItem
+        icon={LogoutOutline}
+        label="Logout"
+        onPress={onPressMock}
+      />,
     );
     fireEvent.press(getByText('Logout'));
     expect(onPressMock).toHaveBeenCalledTimes(1);
@@ -31,7 +44,7 @@ describe('SettingsItem', () => {
 
   it('should show a chevron by default', () => {
     const { toJSON } = render(
-      <SettingsItem icon="notifications" label="Notifications" />,
+      <SettingsItem icon={NotificationOutline} label="Notifications" />,
     );
     // Presence of chevron icon is best verified with a snapshot
     expect(toJSON()).toMatchSnapshot();
@@ -39,14 +52,14 @@ describe('SettingsItem', () => {
 
   it('should hide the chevron when showChevron is false', () => {
     const { toJSON } = render(
-      <SettingsItem icon="help" label="Help" showChevron={false} />,
+      <SettingsItem icon={QuestionOutline} label="Help" showChevron={false} />,
     );
     expect(toJSON()).toMatchSnapshot();
   });
 
   it('should show a Switch when showSwitch is true', () => {
     const { getByTestId } = render(
-      <SettingsItem icon="moon" label="Dark Mode" showSwitch />,
+      <SettingsItem icon={MoonOutline} label="Dark Mode" showSwitch />,
     );
     expect(getByTestId('switch')).toBeTruthy();
   });
@@ -55,7 +68,7 @@ describe('SettingsItem', () => {
     const onSwitchChangeMock = jest.fn();
     const { getByTestId } = render(
       <SettingsItem
-        icon="notifications"
+        icon={NotificationOutline}
         label="Push Notifications"
         showSwitch
         onSwitchChange={onSwitchChangeMock}
@@ -69,7 +82,7 @@ describe('SettingsItem', () => {
     const onPressMock = jest.fn();
     const { getByText } = render(
       <SettingsItem
-        icon="wifi"
+        icon={LinkOutline}
         label="Wi-Fi"
         showSwitch
         onPress={onPressMock}
