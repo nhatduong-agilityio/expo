@@ -30,17 +30,17 @@ This document provides information about React Native Expo practice one.
 
 ## 🛠 Technical Stack
 
-- **React Native & Expo**
-- **React**
-- **TypeScript**
-- **Zustand**
-- **React Query**
-- **React Hook Form**
-- **React Native Unistyles**
-- **Storybook**
-- **Jest & React Native Testing Library**
-- **ESLint & Prettier**
-- **Husky**
+- [**React Native & Expo**](https://docs.expo.dev/)
+- [**React**](https://react.dev/)
+- [**TypeScript**](https://www.typescriptlang.org/)
+- [**Zustand**](https://zustand-demo.pmnd.rs/)
+- [**React Query**](https://tanstack.com/)
+- [**React Hook Form**](https://react-hook-form.com/)
+- [**React Native Unistyles**](https://www.unistyl.es/v3/start/introduction)
+- [**Storybook**](https://storybook.js.org/)
+- [**Jest & React Native Testing Library**](https://jestjs.io/)
+- [**ESLint & Prettier**](https://eslint.org/)
+- [**Husky**](https://typicode.github.io/husky/)
 
 ## 📂 Project Structure
 
@@ -108,9 +108,28 @@ npm install
 yarn install
 ```
 
-3. Create your **.env** file:
+3. Setup environment variables
+
+- Option 1: Create your **.env** file:
 
 ```bash
+EXPO_PUBLIC_SUPABASE_URL=
+EXPO_PUBLIC_SUPABASE_ANON_KEY=
+```
+
+- Option 2: Pull environment variables for your local development (need to Expo account)
+
+Run the following command to create a .env file in the root of your project:
+
+```bash
+eas env:pull --environment development
+```
+
+The created .env.local file will look like this:
+
+```bash
+# Environment: development
+
 EXPO_PUBLIC_SUPABASE_URL=
 EXPO_PUBLIC_SUPABASE_ANON_KEY=
 ```
