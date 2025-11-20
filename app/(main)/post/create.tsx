@@ -57,7 +57,7 @@ const CreatePostScreen = () => {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors, isDirty, isValid },
+    formState: { errors, isDirty },
   } = useForm<CreatePostFormData>({
     resolver: zodResolver(createPostSchema),
     defaultValues: {
@@ -68,6 +68,7 @@ const CreatePostScreen = () => {
       featured_image_url: '',
       status: 'draft',
     },
+    mode: 'onBlur',
   });
 
   const coverImage = watch('featured_image_url');
@@ -429,7 +430,7 @@ const CreatePostScreen = () => {
           size="md"
           onPress={handlePublish}
           loading={isLoading}
-          disabled={isLoading || !isValid}
+          disabled={isLoading || !isDirty}
         >
           Publish
         </Button>

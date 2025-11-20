@@ -10,6 +10,7 @@ import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { Fragment, useEffect } from 'react';
+import { useUnistyles } from 'react-native-unistyles';
 
 // Constants
 import { ROUTES, SCREENS } from '@/constants';
@@ -43,6 +44,7 @@ const RootLayout = () => {
     useAuthStore();
   const segments = useSegments();
   const router = useRouter();
+  const { rt } = useUnistyles();
 
   const [loaded, error] = useFonts({
     Poppins_400Regular,
@@ -142,52 +144,10 @@ const RootLayout = () => {
 
           {/* Protected screens - Only accessible when authenticated */}
           <Stack.Protected guard={isAuthenticated}>
-            <Stack.Screen name={SCREENS.TABS.LAYOUT} />
-            <Stack.Screen
-              name={SCREENS.SEARCH}
-              options={{
-                presentation: 'containedModal',
-                animation: 'slide_from_bottom',
-              }}
-            />
-            <Stack.Screen
-              name={SCREENS.SETTINGS}
-              options={{
-                presentation: 'containedModal',
-                animation: 'slide_from_right',
-              }}
-            />
-            <Stack.Screen
-              name={SCREENS.EDIT_PROFILE}
-              options={{
-                presentation: 'containedModal',
-                animation: 'slide_from_bottom',
-              }}
-            />
-            <Stack.Screen
-              name={SCREENS.AUTHOR_PROFILE}
-              options={{
-                presentation: 'containedModal',
-                animation: 'slide_from_right',
-              }}
-            />
-            <Stack.Screen
-              name={SCREENS.POST_DETAIL}
-              options={{
-                presentation: 'containedModal',
-                animation: 'slide_from_right',
-              }}
-            />
-            <Stack.Screen
-              name={SCREENS.CREATE_POST}
-              options={{
-                presentation: 'containedModal',
-                animation: 'slide_from_bottom',
-              }}
-            />
+            <Stack.Screen name={SCREENS.MAIN.LAYOUT} />
           </Stack.Protected>
         </Stack>
-        <StatusBar style="auto" />
+        <StatusBar style={rt.themeName === 'light' ? 'dark' : 'light'} />
       </QueryClientProvider>
     </Fragment>
   );

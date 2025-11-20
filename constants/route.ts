@@ -6,16 +6,16 @@ export const ROUTES = {
   SIGNUP: '/(auth)/signup',
 
   // Tab routes
-  HOME: '/(tabs)',
-  EXPLORE: '/(tabs)/explore',
-  BOOKMARK: '/(tabs)/bookmark',
-  PROFILE: '/(tabs)/profile',
+  HOME: '/(main)/(tabs)',
+  EXPLORE: '/(main)/(tabs)/explore',
+  BOOKMARK: '/(main)/(tabs)/bookmark',
+  PROFILE: '/(main)/(tabs)/profile',
 
   // Modal routes
-  SEARCH: '/search',
-  SETTINGS: '/settings',
-  EDIT_PROFILE: '/edit-profile',
-  AUTHOR_PROFILE: (id: string): Href => `/author/${id}`,
-  POST_DETAIL: (id: string): Href => `/post/${id}`,
-  CREATE_POST: '/post/create',
+  SEARCH: '/(main)/search',
+  SETTINGS: '/(main)/settings',
+  EDIT_PROFILE: '/(main)/edit-profile',
+  AUTHOR_PROFILE: (id: string): Href => `/(main)/author/${id}`,
+  POST_DETAIL: (id: string): Href => `/(main)/post/${id}`,
+  CREATE_POST: '/(main)/post/create',
 } as const;

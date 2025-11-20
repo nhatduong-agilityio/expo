@@ -68,7 +68,9 @@ describe('PostCard', () => {
     fireEvent.press(getByText(mockNews[0].title));
 
     await waitFor(() => {
-      expect(mockRouterPush).toHaveBeenCalledWith(`/post/${mockNews[0].id}`);
+      expect(mockRouterPush).toHaveBeenCalledWith(
+        `/(main)/post/${mockNews[0].id}`,
+      );
     });
   });
 
@@ -76,7 +78,7 @@ describe('PostCard', () => {
     const { getByText } = render(<PostCard post={mockNews[0]} />);
     fireEvent.press(getByText(mockNews[0].author?.fullName!));
     expect(mockRouterPush).toHaveBeenCalledWith(
-      `/author/${mockNews[0].author?.id}`,
+      `/(main)/author/${mockNews[0].author?.id}`,
     );
   });
 

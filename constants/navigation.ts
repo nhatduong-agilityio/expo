@@ -10,6 +10,11 @@ import {
 } from '@/components/icons';
 
 export const SCREENS = {
+  // Main screens
+  MAIN: {
+    LAYOUT: '(main)',
+  },
+
   // Auth screens
   AUTH: {
     LAYOUT: '(auth)',
