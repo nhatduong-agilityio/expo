@@ -729,8 +729,8 @@ exports[`AuthorCard should match to snapshot 1`] = `
             },
           },
         },
-        false,
         undefined,
+        false,
       ]
     }
     testID="button"
