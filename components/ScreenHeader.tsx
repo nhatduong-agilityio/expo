@@ -1,6 +1,6 @@
 import { ComponentType, memo, ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 
 // Components
 import { SvgProps } from 'react-native-svg';
@@ -32,8 +32,6 @@ export const ScreenHeader = memo(
     showRightIcon = false,
     centerTitle = true,
   }: ScreenHeaderProps) => {
-    const { theme } = useUnistyles();
-
     const LeftIcon = leftIcon;
     const RightIcon = rightIcon;
 
