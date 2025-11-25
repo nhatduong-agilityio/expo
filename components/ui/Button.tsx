@@ -3,7 +3,9 @@ import {
   ActivityIndicator,
   Pressable,
   PressableProps,
+  StyleProp,
   View,
+  ViewStyle,
 } from 'react-native';
 import { SvgProps } from 'react-native-svg';
 import { StyleSheet, UnistylesVariants } from 'react-native-unistyles';
@@ -11,7 +13,7 @@ import { Text } from './Text';
 
 type ButtonVariants = UnistylesVariants<typeof styles>;
 
-export type ButtonProps = Omit<PressableProps, 'children'> & {
+export type ButtonProps = Omit<PressableProps, 'children' | 'style'> & {
   variant?: ButtonVariants['variant'];
   size?: 'md' | 'sm' | 'lg' | 'xs';
   fullWidth?: boolean;
@@ -20,6 +22,7 @@ export type ButtonProps = Omit<PressableProps, 'children'> & {
   children: string;
   leftIcon?: ComponentType<SvgProps>;
   rightIcon?: ComponentType<SvgProps>;
+  style?: StyleProp<ViewStyle>;
 };
 
 export const Button = memo(
@@ -83,10 +86,10 @@ export const Button = memo(
     return (
       <Pressable
         testID="button"
-        style={({ pressed, hovered }) => [
+        style={({ pressed }) => [
           styles.container,
+          style,
           pressed && !isDisabled && styles.pressed,
-          typeof style === 'function' ? style({ pressed, hovered }) : style,
         ]}
         disabled={isDisabled}
         accessibilityRole="button"

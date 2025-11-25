@@ -1,4 +1,5 @@
 import { ProfileStats } from '@/components';
+import { formatNumber } from '@/utils';
 import { fireEvent, render } from '@testing-library/react-native';
 
 // Mock the formatNumber utility
@@ -51,7 +52,6 @@ describe('ProfileStats', () => {
   });
 
   it('should use the formatNumber utility', () => {
-    const { formatNumber } = require('@/utils');
     render(<ProfileStats {...mockProps} />);
     expect(formatNumber).toHaveBeenCalledWith(mockProps.followers);
     expect(formatNumber).toHaveBeenCalledWith(mockProps.following);
