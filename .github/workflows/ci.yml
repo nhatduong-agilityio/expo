@@ -2,9 +2,9 @@ name: CI
 
 on:
   pull_request:
-    branches: [main, expo-practice-one]
+    branches: [expo-practice-one]
   push:
-    branches: [main, expo-practice-one]
+    branches: [expo-practice-one]
 
 jobs:
   # Job 1: Code quality checks
