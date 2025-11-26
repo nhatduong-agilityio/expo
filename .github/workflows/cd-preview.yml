@@ -49,11 +49,7 @@ jobs:
     name: EAS Local Build (Android Preview)
     runs-on: ubuntu-latest
     needs: ci-checks
-    if: |
-      github.event_name == 'pull_request' ||
-      github.event_name == 'push' ||
-      (github.event_name == 'workflow_dispatch' &&
-       (inputs.platform == 'android' || inputs.platform == 'all'))
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -67,7 +63,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Setup Expo and EAS CLI
+      - name: Setup Expo + EAS
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
@@ -85,40 +81,40 @@ jobs:
       - name: Accept Android licenses
         run: yes | sdkmanager --licenses || true
 
-      - name: EAS Local Build Android
-        run: eas build --platform android --profile preview --local --non-interactive --output ./build-output/app.apk
+      - name: Prebuild Android
+        run: npx expo prebuild -p android --clean
+
+      - name: EAS Local Build (Android)
+        run: eas build --platform android --profile preview --local --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           EAS_LOCAL_BUILD_ARTIFACTS_DIR: ./build-output
 
-      - name: Find and list APK files
+      - name: List APK/AAB
         run: |
-          echo "Searching for APK files..."
-          find . -name "*.apk" -type f
-          ls -la *.apk 2>/dev/null || echo "No APK in root"
-          ls -la ./build-output/ 2>/dev/null || echo "No build-output dir"
+          find build-output -name "*.apk" -type f || true
+          find build-output -name "*.aab" -type f || true
 
       - name: Upload Android artifact
         uses: actions/upload-artifact@v4
         with:
           name: android-preview-${{ github.sha }}
           path: |
-            ./*.apk
-            ./*.aab
-            ./build-output/*.apk
-            ./build-output/*.aab
+            ./build-output/**/*.apk
+            ./build-output/**/*.aab
           retention-days: 30
           if-no-files-found: warn
 
   build-preview-ios:
-    name: EAS Local Build (iOS preview)
-    runs-on: macos-14 # macOS 14 = Xcode 15
+    name: EAS Local Build (iOS Simulator Preview)
+    runs-on: macos-14
     needs: ci-checks
     if: |
       github.event_name == 'pull_request' ||
       github.event_name == 'push' ||
       (github.event_name == 'workflow_dispatch' &&
        (inputs.platform == 'ios' || inputs.platform == 'all'))
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -133,12 +129,12 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
-          bundler-cache: true
+
+      - name: Install Fastlane
+        run: brew install fastlane
 
       - name: Install CocoaPods
-        run: |
-          sudo gem install cocoapods -v 1.15.2
-          pod --version
+        run: sudo gem install cocoapods -v 1.15.2
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -149,28 +145,34 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: EAS Local Build iOS
-        run: eas build --platform ios --profile preview --local --non-interactive --output ./build-output/app.ipa
+      - name: Prebuild iOS project
+        run: npx expo prebuild -p ios --clean
+
+      - name: Install Pods
+        run: |
+          cd ios
+          pod install --repo-update
+
+      - name: EAS Local Build (iOS Simulator)
+        run: eas build --platform ios --profile preview --local --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           EAS_LOCAL_BUILD_ARTIFACTS_DIR: ./build-output
 
-      - name: Find and list IPA files
+      - name: Find simulator artifacts
         run: |
-          echo "Searching for IPA files..."
-          find . -name "*.ipa" -type f
-          ls -la *.ipa 2>/dev/null || echo "No IPA in root"
-          ls -la ./build-output/ 2>/dev/null || echo "No build-output dir"
+          echo "Looking for .app or .tar.gz files"
+          find . -name "*.tar.gz" -type f
+          find . -name "*.app" -type d
 
-      - name: Upload iOS artifact
+      - name: Upload simulator artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ios-preview-${{ github.sha }}
+          name: ios-simulator-${{ github.sha }}
           path: |
-            ./*.ipa
-            ./*.app.tar.gz
-            ./build-output/*.ipa
-            ./build-output/*.app.tar.gz
+            ./build-output/*.tar.gz
+            **/*.tar.gz
+
           retention-days: 30
           if-no-files-found: warn
 
