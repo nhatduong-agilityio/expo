@@ -1,4 +1,4 @@
-name: Feature CD Build (EAS Local)
+name: Preview CD Build (EAS Local)
 
 on:
   pull_request:
@@ -45,8 +45,8 @@ jobs:
       - name: Run tests with coverage
         run: yarn test:coverage
 
-  build-feature-android:
-    name: EAS Local Build (Android Feature)
+  build-preview-android:
+    name: EAS Local Build (Android Preview)
     runs-on: ubuntu-latest
     needs: ci-checks
     if: |
@@ -89,21 +89,21 @@ jobs:
         run: yes | sdkmanager --licenses
 
       - name: EAS Local Build Android
-        run: eas build --platform android --profile feature --local --non-interactive
+        run: eas build --platform android --profile preview --local --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
       - name: Upload Android artifact
         uses: actions/upload-artifact@v4
         with:
-          name: android-feature-eas
+          name: android-preview-eas
           path: |
             dist/*.apk
             dist/*.aab
           retention-days: 30
 
-  build-feature-ios:
-    name: EAS Local Build (iOS Feature)
+  build-preview-ios:
+    name: EAS Local Build (iOS preview)
     runs-on: macos-13
     needs: ci-checks
     if: |
@@ -131,28 +131,30 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: EAS Local Build iOS
-        run: eas build --platform ios --profile feature --local --non-interactive
+        run: eas build --platform ios --profile preview --local --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
       - name: Upload iOS artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ios-feature-eas
+          name: ios-preview-eas
           path: |
             dist/*.ipa
+            dist/*.app
+            dist/*.tar.gz
           retention-days: 30
 
   summary:
     name: Build Summary
     runs-on: ubuntu-latest
-    needs: [ci-checks, build-feature-android, build-feature-ios]
+    needs: [ci-checks, build-preview-android, build-preview-ios]
     if: always()
     steps:
       - name: Summary
         run: |
           echo "✅ CI checks: ${{ needs.ci-checks.result }}"
-          echo "🤖 Android: ${{ needs.build-feature-android.result }}"
-          echo "📱 iOS: ${{ needs.build-feature-ios.result }}"
+          echo "🤖 Android: ${{ needs.build-preview-android.result }}"
+          echo "📱 iOS: ${{ needs.build-preview-ios.result }}"
           echo ""
           echo "Download artifacts (APK/IPA) from Actions tab!"
