@@ -1,4 +1,4 @@
-name: Preview CD Build (EAS Local)
+name: Preview CD Build (EAS Cloud)
 
 on:
   pull_request:
@@ -17,103 +17,13 @@ on:
           - ios
 
 jobs:
-  ci-checks:
-    name: Run CI Checks
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '25'
-          cache: 'yarn'
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Run ESLint
-        run: yarn lint
-
-      - name: Check Prettier formatting
-        run: yarn format --check
-
-      - name: TypeScript type check
-        run: npx tsc --noEmit --skipLibCheck
-
-      - name: Run tests with coverage
-        run: yarn test:coverage
-
-  build-preview-android:
-    name: EAS Local Build (Android Preview)
-    runs-on: ubuntu-latest
-    needs: ci-checks
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '25'
-          cache: 'yarn'
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Setup Expo + EAS
-        uses: expo/expo-github-action@v8
-        with:
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Setup Java 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Accept Android licenses
-        run: yes | sdkmanager --licenses || true
-
-      - name: Prebuild Android
-        run: npx expo prebuild -p android --clean
-
-      - name: EAS Local Build (Android)
-        run: eas build --platform android --profile preview --local --non-interactive
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-          EAS_LOCAL_BUILD_ARTIFACTS_DIR: ./build-output
-
-      - name: List APK/AAB
-        run: |
-          find build-output -name "*.apk" -type f || true
-          find build-output -name "*.aab" -type f || true
-
-      - name: Upload Android artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-preview-${{ github.sha }}
-          path: |
-            ./build-output/**/*.apk
-            ./build-output/**/*.aab
-          retention-days: 30
-          if-no-files-found: warn
-
-  build-preview-ios:
-    name: EAS Local Build (iOS Simulator Preview)
+  build-android:
+    name: EAS Cloud Build (Android)
     runs-on: macos-26
-    needs: ci-checks
     if: |
-      github.event_name == 'pull_request' ||
-      github.event_name == 'push' ||
-      (github.event_name == 'workflow_dispatch' &&
-       (inputs.platform == 'ios' || inputs.platform == 'all'))
+      github.event_name != 'workflow_dispatch' ||
+      inputs.platform == 'android' ||
+      inputs.platform == 'all'
 
     steps:
       - name: Checkout code
@@ -125,76 +35,67 @@ jobs:
           node-version: '25'
           cache: 'yarn'
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2'
-
-      - name: Install Fastlane
-        run: brew install fastlane
-
-      - name: Install CocoaPods
-        run: sudo gem install cocoapods -v 1.15.2
-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Setup Expo and EAS CLI
+      - name: Setup Expo and EAS
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Prebuild iOS project
-        run: npx expo prebuild -p ios --clean
+      - name: Run Android Cloud Build
+        run: eas build --platform android --profile preview --non-interactive --clear-cache
 
-      - name: Install Pods
-        run: |
-          cd ios
-          pod install --repo-update
+      - name: Save Android build link
+        run: echo "ANDROID_BUILD_URL=https://expo.dev/accounts/${{ github.repository_owner }}/projects/news-app" >> $GITHUB_ENV
 
-      - name: EAS Local Build (iOS Simulator)
-        run: eas build --platform ios --profile preview --local --non-interactive
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-          EAS_LOCAL_BUILD_ARTIFACTS_DIR: ./build-output
+  build-ios:
+    name: EAS Cloud Build (iOS)
+    runs-on: macos-26
+    if: |
+      github.event_name != 'workflow_dispatch' ||
+      inputs.platform == 'ios' ||
+      inputs.platform == 'all'
 
-      - name: Find simulator artifacts
-        run: |
-          echo "Looking for .app or .tar.gz files"
-          find . -name "*.tar.gz" -type f
-          find . -name "*.app" -type d
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Upload simulator artifact
-        uses: actions/upload-artifact@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          name: ios-simulator-${{ github.sha }}
-          path: |
-            ./build-output/*.tar.gz
-            **/*.tar.gz
+          node-version: '25'
+          cache: 'yarn'
 
-          retention-days: 30
-          if-no-files-found: warn
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Run iOS Cloud Build
+        run: eas build --platform ios --profile preview --non-interactive --clear-cache
+
+      - name: Save iOS build link
+        run: echo "IOS_BUILD_URL=https://expo.dev/accounts/${{ github.repository_owner }}/projects/news-app" >> $GITHUB_ENV
 
   summary:
     name: Build Summary
     runs-on: ubuntu-latest
-    needs: [ci-checks, build-preview-android, build-preview-ios]
+    needs: [build-android, build-ios]
     if: always()
-    steps:
-      - name: Summary
-        run: |
-          echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ CI checks: ${{ needs.ci-checks.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "- 🤖 Android: ${{ needs.build-preview-android.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "- 📱 iOS: ${{ needs.build-preview-ios.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "📦 Download artifacts from the Actions tab above!" >> $GITHUB_STEP_SUMMARY
 
-          # Console output
-          echo "✅ CI checks: ${{ needs.ci-checks.result }}"
-          echo "🤖 Android: ${{ needs.build-preview-android.result }}"
-          echo "📱 iOS: ${{ needs.build-preview-ios.result }}"
-          echo ""
-          echo "📦 Download artifacts (APK/IPA) from Actions tab!"
+    steps:
+      - name: Write summary
+        run: |
+          echo "## ✅ Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- 🤖 Android: ${{ needs.build-android.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 📱 iOS: ${{ needs.build-ios.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "👉 Download builds from EAS dashboard:" >> $GITHUB_STEP_SUMMARY
+          echo "https://expo.dev/accounts/${{ github.repository_owner }}/projects/news-app" >> $GITHUB_STEP_SUMMARY
