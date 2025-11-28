@@ -2,7 +2,8 @@ name: CI
 
 on:
   pull_request:
-    branches: [expo-practice-one]
+    branches: [main, staging, expo-practice-one]
+    types: [opened, synchronize, reopened]
   push:
     branches: [expo-practice-one]
 
@@ -12,17 +13,8 @@ jobs:
     name: Code Quality Checks
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '25'
-          cache: 'yarn'
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-yarn
 
       - name: Run ESLint
         run: yarn lint
@@ -38,17 +30,8 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '25'
-          cache: 'yarn'
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-yarn
 
       - name: Run tests with coverage
         run: yarn test:coverage
@@ -76,17 +59,8 @@ jobs:
     name: Build Validation
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '25'
-          cache: 'yarn'
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-yarn
 
       - name: Setup Expo CLI
         run: yarn global add eas-cli
