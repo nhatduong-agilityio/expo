@@ -19,7 +19,7 @@ on:
 jobs:
   build-android:
     name: EAS Cloud Build (Android)
-    runs-on: macos-26
+    runs-on: macos-latest
     if: |
       github.event_name != 'workflow_dispatch' ||
       inputs.platform == 'android' ||
@@ -32,27 +32,27 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '25'
+          node-version: '22'
           cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
       - name: Setup Expo and EAS
-        uses: expo/expo-github-action@v8
+        uses: expo/expo-github-action@v10
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Run Android Cloud Build
-        run: eas build --platform android --profile preview --non-interactive --clear-cache
+        run: eas build --platform android --profile preview --non-interactive
 
       - name: Save Android build link
-        run: echo "ANDROID_BUILD_URL=https://expo.dev/accounts/${{ github.repository_owner }}/projects/news-app" >> $GITHUB_ENV
+        run: echo "ANDROID_BUILD_URL=https://expo.dev/accounts/${{ github.repository_owner }}/projects/${{ env.PROJECT_SLUG }}" >> $GITHUB_ENV
 
   build-ios:
     name: EAS Cloud Build (iOS)
-    runs-on: macos-26
+    runs-on: macos-latest
     if: |
       github.event_name != 'workflow_dispatch' ||
       inputs.platform == 'ios' ||
@@ -65,23 +65,23 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '25'
+          node-version: '22'
           cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
       - name: Setup Expo and EAS
-        uses: expo/expo-github-action@v8
+        uses: expo/expo-github-action@v10
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Run iOS Cloud Build
-        run: eas build --platform ios --profile preview --non-interactive --clear-cache
+        run: eas build --platform ios --profile preview --non-interactive
 
       - name: Save iOS build link
-        run: echo "IOS_BUILD_URL=https://expo.dev/accounts/${{ github.repository_owner }}/projects/news-app" >> $GITHUB_ENV
+        run: echo "IOS_BUILD_URL=https://expo.dev/accounts/${{ github.repository_owner }}/projects/${{ env.PROJECT_SLUG }}" >> $GITHUB_ENV
 
   summary:
     name: Build Summary
@@ -90,6 +90,12 @@ jobs:
     if: always()
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract Expo project slug
+        run: echo "PROJECT_SLUG=$(jq -r '.expo.slug' app.json)" >> $GITHUB_ENV
+
       - name: Write summary
         run: |
           echo "## ✅ Build Summary" >> $GITHUB_STEP_SUMMARY
@@ -98,4 +104,4 @@ jobs:
           echo "- 📱 iOS: ${{ needs.build-ios.result }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "👉 Download builds from EAS dashboard:" >> $GITHUB_STEP_SUMMARY
-          echo "https://expo.dev/accounts/${{ github.repository_owner }}/projects/news-app" >> $GITHUB_STEP_SUMMARY
+          echo "https://expo.dev/accounts/${{ github.repository_owner }}/projects/${{ env.PROJECT_SLUG }}" >> $GITHUB_STEP_SUMMARY
