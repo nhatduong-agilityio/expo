@@ -4,8 +4,6 @@ on:
   pull_request:
     branches: [main, staging, expo-practice-one]
     types: [opened, synchronize, reopened]
-  push:
-    branches: [expo-practice-one]
 
 jobs:
   # Job 1: Code quality checks
