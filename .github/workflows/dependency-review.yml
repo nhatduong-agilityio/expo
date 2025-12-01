@@ -2,7 +2,8 @@ name: Dependency Review & Security
 
 on:
   pull_request:
-    branches: [expo-practice-one]
+    branches: [main, staging, expo-practice-one]
+    types: [opened, synchronize, reopened]
   schedule:
     # Run security scan weekly on Monday at 9 AM UTC
     - cron: '0 9 * * 1'
@@ -32,17 +33,8 @@ jobs:
     name: Security Audit
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '25'
-          cache: 'yarn'
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-yarn
 
       - name: Run Yarn Audit
         id: yarn-audit
@@ -80,17 +72,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '25'
-          cache: 'yarn'
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-yarn
 
       - name: Check for outdated packages
         run: |
@@ -110,17 +93,8 @@ jobs:
     name: License Compliance
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '25'
-          cache: 'yarn'
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-yarn
 
       - name: Install license checker
         run: npm install -g license-checker
